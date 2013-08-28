@@ -1,4 +1,6 @@
 # Site for Online Debating Tabbing #
+This README is a mess for now. Will move this cluster to 
+wiki pages soon.
 
 ### Features ###
 * Try to remove all inputting time.
