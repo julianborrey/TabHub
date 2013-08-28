@@ -8,13 +8,13 @@
      an account and sign up. The tournament admin will just 
      have to approve the inputs with single clicks (if they 
      have required that there is approval).
-   * Now that each debator has an account the society president 
+   * Now that each debater has an account the society president 
      can open a contingent and people can sign up for that. The 
-     president then submitts the contingent to the tournament 
+     president then submits the contingent to the tournament 
      admin.
    * The input of rooms must be manually inputted by admins but 
      only the first time will it be so bad. Rooms will forever 
-     be saved and associated with an intitution and so they can 
+     be saved and associated with an institution and so they can 
      reimport those rooms to save time.
 
 * User profile contains:
@@ -48,7 +48,7 @@
    * institution
    * start\_date\_time
    * end\_date\_time
-   * remarks (text) (suggest that they input the convenors, CA, etc.)
+   * remarks (text) (suggest that they input the conveners, CA, etc.)
 
 * Tournament\_Admin:
    * tournament\_id
@@ -89,16 +89,16 @@
 ### Status Codes ###
 * 0 - ultimate admin
 * 1 - externals coordinator (can submit a contingent)
-* 2 - presidnet (is there any need? approve that ppl are in a contingent, 
+* 2 - president (is there any need? approve that ppl are in a contingent, 
       approve who can be externals coordinator, pass down authority)
-* 3 - normal debator
+* 3 - normal debater
 
 ### Role Codes ###
-* 0 - convenor
+* 0 - convener
 * 1 - CA
 * 2 - DCA
 * 3 - tab room
 * 4 - MC
 * 5 - admin/support
-* 6 - debator
+* 6 - debater
 * 7 - adjudicator
