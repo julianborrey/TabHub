@@ -52,18 +52,41 @@ class Tournament
    end
 
    def shuffle_teams
-      @teams[0].score = 0
-      @teams[1].score = 1
-      @teams[2].score = 2
-      @teams[3].score = 0
-      @teams[4].score = 1
-      @teams[5].score = 2
-      @teams[6].score = 0
-      @teams[7].score = 1
-      @teams[8].score = 2
-      @teams[9].score = 0
+      @teams[0].score  = 0
+      @teams[0].speaks = 800;
+      
+      @teams[1].score  = 1
+      @teams[1].speaks = 1800;
+      
+      @teams[2].score  = 2
+      @teams[2].speaks = 900;
+      
+      @teams[3].score  = 0
+      @teams[3].speaks = 4300;
+      
+      @teams[4].score  = 1
+      @teams[4].speaks = 234;
+      
+      @teams[5].score  = 2
+      @teams[5].speaks = 493;
+      
+      @teams[6].score  = 0
+      @teams[6].speaks = 948;
+      
+      @teams[7].score  = 1
+      @teams[7].speaks = 232;
+      
+      @teams[8].score  = 2
+      @teams[8].speaks = 22;
+      
+      @teams[9].score  = 0
+      @teams[9].speaks = 948;
+      
       @teams[10].score = 1
+      @teams[10].speaks = 123;
+      
       @teams[11].score = 2
+      @teams[11].speaks = 9000;
    end
    
 end
@@ -100,7 +123,7 @@ class Team
    #1800 is the max. In the case that a tournament was to 
    #go for 100 rounds (which is rediculous) we could imagine 
    #the max speaks being 20,000. This will be our threshold.
-   def self.calc_rank
+   def calc_rank
       return (self.score * 20000) + self.speaks;
    end
 end
