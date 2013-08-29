@@ -13,13 +13,13 @@ class Model
    def run_model #one function to run them all
       #set up
       t = Tournament.new();
-      t.set_teams();
+      t.set_teams_and_adjs();
       #t.show_teams();
       
       #assign scores
       #t.shuffle_teams();
       t.allocate_points_randomly();
-      t.sort_teams();
+      t.sort_teams_and_adjs();
       #t.show_teams(); #verify that they are sorted
       
       #now make rooms
@@ -31,20 +31,38 @@ end
 
 class Tournament
    @@NUM_TEAMS_BP_ROUND; #this is a magic, move it after testing
-   
+   @teams;
+   @adjs;
+
    def initialize
       #hold all teams here
-      @teams = [];
+      @teams = []; #hold team list in here
+      @adjs  = []; #hold adj list in here
       @@NUM_TEAMS_BP_ROUND = 4;
    end
    
-   def set_teams
+   def set_teams_and_adjs
       i = 0;
-      while(i < 10000)             #make many teams
-         t = Team.new()           #make team object
+      while(i < 12)            #make many teams
+         t = Team.new();          #make team object
          t.set_name("Team #{i}"); #set name
          #t.score = (20 - i);     #now we do random scores
          @teams.push(t);          #add to list
+         
+         #make 3 adjs per round for panels
+         # #dontRepeatCode
+         a = Adj.new();
+         a.name = "Adj #{i}_1";
+         @adjs.push(a)
+         
+         a = Adj.new();
+         a.name = "Adj #{i}_2";
+         @adjs.push(a)
+         
+         a = Adj.new();
+         a.name = "Adj #{i}_3";
+         @adjs.push(a)
+         
          i = i + 1;
       end
    end
@@ -131,14 +149,20 @@ class Tournament
          r.input_team(chosen_team, position);
          i = i + 1;
       end
+      
+      #throw in the adjs based simply on rank and top room
+      r.adjs.push(@adjs.pop);
+      r.adjs.push(@adjs.pop);
+      r.adjs.push(@adjs.pop);
 
       r.show();
    end
 
    #method to sort by team points and speaks
-   def sort_teams
+   def sort_teams_and_adjs
       @teams.sort! { |a,b| b.calc_rank <=> a.calc_rank }
-      
+      @adjs.sort!  { |a,b| b.score <=> a.score }
+
       #@teams.sort! { |a,b| b.score <=> a.score } #allows sorting by score only
       #expression is flipped in terms of a and b
       #therefore we have decending in teams by score
@@ -149,6 +173,12 @@ class Tournament
       while(i < @teams.count)
          @teams[i].score  = rand(300);   #imagine the 100 round tournament
          @teams[i].speaks = rand(20000); 
+         i = i + 1;
+      end
+      
+      i = 0;
+      while(i < @adjs.count)
+         @adjs[i].score = rand(1000);
          i = i + 1;
       end
    end
@@ -238,6 +268,14 @@ class Round
    @OO;
    @CG;
    @CO;
+
+   #array of adjs
+   @adjs;
+   attr_accessor(:adjs);
+   
+   def initialize
+      @adjs = [];
+   end
    
    #function to allocate 'team' to 'position'
    def input_team(team, position)
@@ -254,5 +292,14 @@ class Round
    
    def show
       puts("Round has OG: #{@OG.name}, OO: #{@OO.name}, CG: #{@CG.name}, CO: #{@CO.name}");
+      puts("Adjed by #{@adjs[0].name}, #{@adjs[1].name}, #{@adjs[2].name}.");
    end
+end
+
+#pure structure for the adj
+class Adj
+   @name;
+   @score;
+
+   attr_accessor(:name, :score);
 end
