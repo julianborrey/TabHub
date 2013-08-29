@@ -17,12 +17,15 @@ class Model
       #t.show_teams();
       
       #assign scores
-      t.shuffle_teams();
+      #t.shuffle_teams();
+      t.allocate_points_randomly();
       t.sort_teams();
       #t.show_teams(); #verify that they are sorted
       
       #now make rooms
+      time = Time.now(); #for timing operation of making the draw
       t.allocate_rooms();
+      puts("Took #{Time.now() - time}");
    end
 end
 
@@ -37,10 +40,10 @@ class Tournament
    
    def set_teams
       i = 0;
-      while(i < 12)               #make many teams
+      while(i < 10000)             #make many teams
          t = Team.new()           #make team object
          t.set_name("Team #{i}"); #set name
-         t.score = (20 - i);
+         #t.score = (20 - i);     #now we do random scores
          @teams.push(t);          #add to list
          i = i + 1;
       end
@@ -141,6 +144,15 @@ class Tournament
       #therefore we have decending in teams by score
    end
 
+   def allocate_points_randomly
+      i = 0;
+      while(i < @teams.count)
+         @teams[i].score  = rand(300);   #imagine the 100 round tournament
+         @teams[i].speaks = rand(20000); 
+         i = i + 1;
+      end
+   end
+
    def shuffle_teams
       @teams[0].score  = 0
       @teams[0].speaks = 800;
@@ -215,7 +227,7 @@ class Team
    #go for 100 rounds (which is rediculous) we could imagine 
    #the max speaks being 20,000. This will be our threshold.
    def calc_rank
-      return (self.score * 20000) + self.speaks;
+      return (self.score * 20001) + self.speaks;
       end
 end
 
