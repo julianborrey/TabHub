@@ -25,6 +25,8 @@ Some understanding of debating will be needed for somethings but when
 it comes to generic things like user accounts and the like, all 
 experience is quite valuable. Please let me know/code something if you 
 could see improvements. Especially in terms of reliability and security.
-Areas which you can never fully account for.
+Areas which you can never fully account for. See the 
+[Style](https://github.com/julianborrey/superTab/wiki/Style) page on the 
+wiki if you are going to write some code.
 
 ### Never hesitate to ask me anything! ###
