@@ -3,10 +3,13 @@
 ### Name ###
 We need a good name. For now all we have is "super tab."
 
+### [Blog](http://newtabware.blogspot.com/) ###
+There is a [blog](http://newtabware.blogspot.com/) for this project.
+
 ### What's going on? ###
 Tournament tabbing in the world of debating is completely outdated.
-No one seems to have the full scale view of what should be done which 
-is a site full of profiles, sign up to tournaments and automatically 
+There is no full scale tab out there which offers profiles, 
+automatic tournament signup and
 computed statistics pulled directly from the databases.
 
 ### Contribution ###
