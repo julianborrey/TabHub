@@ -6,7 +6,7 @@ We need a good name. For now all we have is "super tab."
 ### [Blog](http://newtabware.blogspot.com/) ###
 There is a [blog](http://newtabware.blogspot.com/) for this project.
 Keeps non-techies upto speed with progress and allows full commenting 
-power so people can stear us in the right direction or suggest cool features.
+power so people can steer us in the right direction or suggest cool features.
 
 ### What's going on? ###
 Tournament tabbing in the world of debating is completely outdated.
