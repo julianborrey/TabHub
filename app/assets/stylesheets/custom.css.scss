@@ -1,0 +1,74 @@
+@import "bootstrap";
+
+//variables
+//$grayMediumLight: #eaeaea;
+
+//code for all, all for code
+
+html {
+   overflow-y: scroll; //assuming this allows for scroll bar??
+}
+
+body {
+   padding-top: 60px;  //padds between title and nav bar
+}                      //nav bar is fixed to the absolut top
+
+section {
+   overflow: auto;
+}
+
+textarea {
+   resize: vertical;
+}
+
+header {
+   ul {
+      .left-tab {
+         margin-left: 100px;
+      } 
+   }
+   
+   .nav {
+      padding-top: 15px;
+   }
+   
+   #logo {
+      padding-top: 5px;
+      float: right;
+      padding-right: 100px;
+      font-size: x-large;
+      font-family: "Rockwell Extra Bold", monospace;
+      font-weight: bold;
+      
+      a:hover {
+         color: gray;
+         text-decoration: none;
+      }
+   }
+}
+
+footer {
+   position: absolute;
+   width: 100%;
+   bottom: 0px;
+   height: 30px;
+   padding-top: 6px;
+   background-color: #eee;
+   border-top: 1px solid #ddd;
+   
+   ul {
+      text-align: center;
+      li {
+         display: block;
+      }
+   }
+}
+
+#info-lines {
+   text-align: right;
+   color: gray;
+}
+
+h1 {
+   color: #575757;
+}

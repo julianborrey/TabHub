@@ -1,14 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>TabSite</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-
-<%= yield %>
-
-</body>
+   <head>
+      <title><%= full_title(yield(:title)) %></title>
+      <!-- Latest compiled and minified CSS -->
+      <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css"> -->
+       
+      <!-- Latest compiled and minified JavaScript -->
+      <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
+      <!-- <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet"> -->
+      
+      <%= stylesheet_link_tag "application", media: "all",
+                              "data-turbolinks-track" => true %>
+      <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+      <%= csrf_meta_tags %>
+      <%= render 'layouts/shim' %>
+   </head>
+   
+   <body>
+      <div class="container" style="max-width:780px">
+         <%= render 'layouts/header' %>
+         
+         <% flash.each do |key, value| %>
+            <%= content_tag(:div, value, class: "alert alert-#{key}") %>
+         <% end %>
+         
+         <%= yield %>
+      </div>
+      
+      <%= render 'layouts/footer' %>
+   </body>
 </html>
