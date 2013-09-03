@@ -59,7 +59,8 @@ footer {
    ul {
       text-align: center;
       li {
-         display: block;
+         display: inline;
+         margin-right: 60px;
       }
    }
 }
@@ -71,4 +72,21 @@ footer {
 
 h1 {
    color: #575757;
+   font-size: 60px;
+}
+
+.recent-motions {
+   .motion {
+   }
+
+   .institution {
+      color: gray;
+      font-weight: bold;
+   }
+}
+
+input[type="text"], input[type="password"] {
+   width: 95%;
+   height: 30px;
+   margin-bottom: 0px;
 }
