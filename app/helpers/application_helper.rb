@@ -9,7 +9,7 @@ module ApplicationHelper
    #helper function to return the title of a page
    #returns a base title unless more is specified
    def full_title(page_title)
-      base_title = "Super Tab";
+      base_title = "TabStack";
       
       #we have made a base title, now chose the return value
       if(page_title.empty? or (page_title == "Home")) #if no page specified
