@@ -79,7 +79,30 @@
          </div>
          
          <div class="span6" style="padding-left:60px">
-            <%= render('static_pages/recent_topics'); %>
+            <h2>Recent Topics</h2>
+            
+            <table class="table table-striped recent-motions">
+               <tr>
+                  <td>
+                     <span class="motion">This house would legalize duels to the death.</span><br>
+                     <span class="institution"> - Colgate IV 2010</span>
+                  </td>
+               </tr>
+
+               <tr>
+                  <td>
+                     <span class="motion">This house would legalize duels to the death.</span><br>
+                     <span class="institution"> - Colgate IV 2010</span>
+                  </td>
+               </tr>
+               
+               <tr>
+                  <td>
+                     <span class="motion">This house would legalize duels to the death.</span><br>
+                     <span class="institution"> - Colgate IV 2010</span>
+                  </td>
+               </tr>
+
                <tr><td></td></td>
 
             </table>
