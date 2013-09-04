@@ -6,6 +6,12 @@
          <%= link_to "Home", root_path %>
       </li>
       
+      <% if signed_in? %>
+         <li class="">
+            <%= link_to "Current Tournament", root_path %>
+         </li>
+      <% end %>
+      
       <li class="dropdown">
          <a class="dropdown-toggle" data-toggle="dropdown">
             Resources

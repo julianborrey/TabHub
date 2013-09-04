@@ -30,6 +30,7 @@ header {
    
    .nav {
       padding-top: 15px;
+      background: white; //stops see through nav bar
    }
    
    #logo {
@@ -48,7 +49,8 @@ header {
 }
 
 footer {
-   position: absolute;
+   position: absolute; //keeps at bottom of page
+   
    width: 100%;
    bottom: 0px;
    height: 30px;
@@ -89,4 +91,27 @@ input[type="text"], input[type="password"] {
    width: 95%;
    height: 30px;
    margin-bottom: 0px;
+}
+
+.title-box {
+   padding-top: 40px;
+}
+
+//user sidebar (left)
+.user-name {
+   font-size: 35px;
+}
+
+.stat-name {
+   color: gray;
+}
+
+.stat-value {
+}
+
+#user-col {
+   padding: 60px 20px 0px 30px;
+   border-right: 1px solid #ddd;
+   height: 520px; //this is a serious hack
+   //need a better solution to this
 }
