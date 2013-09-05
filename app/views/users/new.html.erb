@@ -1,0 +1,16 @@
+<% provide(title: "Sign Up"); %>
+
+<div class="info-page signup-page">
+
+   <h1>Welcome to TabHub</h1>
+   
+   <%= form_for(@user) do |f| %>
+      <%= render('users/fields', f: f); %>
+      
+      <br>
+      <button class="btn btn-primary create-account-btn">
+         Create Account
+      </button>
+   <% end %>
+   
+</div>

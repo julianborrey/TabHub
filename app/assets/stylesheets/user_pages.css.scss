@@ -1,0 +1,33 @@
+$fontSize: 16px;
+
+.signup-page {
+   padding-top: 25px;
+   text-align: center;
+   
+   h1 {
+      margin-bottom: 65px;
+   }
+   
+   .add-on {
+      font-size: $fontSize;
+      text-align: center;
+      background-color: white;
+      
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 10px; //to make same height as input field
+      height: 24px;      //this too
+      width: 100px;
+   }
+
+   .span2 {
+      width: 350px;
+      text-align: center;
+   }
+
+   .create-account-btn {
+      width: 565px;
+      height: 40px;
+      font-size: $fontSize;
+   }
+}
