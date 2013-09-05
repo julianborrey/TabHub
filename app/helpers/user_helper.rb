@@ -11,4 +11,14 @@ module UserHelper
       image_tag(gravatar_url, alt: user.name, class: "gravatar")
    end
    
+   #true if the user is in a tournament right now
+   def in_tournament?
+      return true;
+   end
+   
+   ### WE SHOULD MOVE THIS TO THE TOURNAMENT HELPER ###
+   def round_now?
+      return true;
+   end
+   
 end

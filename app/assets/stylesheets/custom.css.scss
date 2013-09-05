@@ -115,3 +115,74 @@ input[type="text"], input[type="password"] {
    height: 520px; //this is a serious hack
    //need a better solution to this
 }
+
+.current-round {
+   border: 1px solid #ddd;
+   border-radius: 0px 0px 4px 4px;
+   -webkit-border-bottom-left-radius: 4px;
+   -webkit-border-border-right-radius: 4px;
+   -moz-border-radius-bottomleft: 4px;
+   -moz-border-radius-bottomright: 4px;
+   
+   padding: 20px 20px 20px 20px;
+}
+
+.filled-class {
+   border-radius: 4px 4px 0px 0px;
+   -webkit-border-top-left-radius: 4px;
+   -webkit-border-top-right-radius: 4px;
+   -moz-border-radius-topleft: 4px;
+   -moz-border-radius-topright: 4px;
+   
+   margin-bottom: 0px;
+   margin-top: 20px;
+   border-bottom: 0px;
+   text-align: center;
+   font-size: 40px;
+   color: #888;
+}
+
+#round-col {
+   height: 100%;
+   border-right: 1px solid #ddd;
+   height: 370px; ///////HACK!!!!!!!!!
+   font-size: 16px;
+}
+
+.debate-room {
+   table {
+      margin-left: auto;  //to center the table
+      margin-right: auto; 
+   }
+   
+   td {
+      padding: 30px;
+   }
+}
+
+#curr-round-title {
+   line-height: 10px;
+   font-size: 20px;
+   font-weight: bold;
+}
+
+.room-pos-gov {
+   border-right: 2px solid #bbb;
+   text-align: right;
+}
+
+.top-half {
+   border-bottom: 2px solid #bbb;
+}
+
+.adj-table td {
+   text-align: center;
+}
+
+.adj-table th {
+   text-align: center;
+}
+
+.last-row {
+   border-bottom: 1px solid #ddd;
+}

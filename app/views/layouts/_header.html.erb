@@ -1,6 +1,6 @@
 <header class="navbar-fixed-top">
    <ul class="nav nav-tabs">
-      <span id="logo"><%= link_to "TabStack", root_path %></span>
+      <span id="logo"><%= link_to "TabHub", root_path %></span>
       
       <li class="left-tab <% if(request.path == root_path) %><%= "active" %><% end %>">
          <%= link_to "Home", root_path %>
@@ -21,6 +21,7 @@
          <ul class="dropdown-menu">
             <li><%= link_to "WUDC Rules", root_path %></li>
             <li><%= link_to "Motions", root_path %></li>
+            <li><%= link_to "Tournament Schedule", root_path %></li>
             <li><%= link_to "Links", root_path %></li>
             <li><%= link_to "Timer", root_path %></li>
          </ul>
