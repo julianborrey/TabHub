@@ -18,7 +18,7 @@ computed statistics pulled directly from the databases.
 It is an open source project. Why?
 * Should make for a better site.
 * I don't have all the skill in the world...not even close.
-* It quicker to work with others.
+* It's quicker to work with others.
 * It will be an entirely free entity.
 
 Some understanding of debating will be needed for somethings but when 
