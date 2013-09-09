@@ -1,0 +1,43 @@
+<% provide(:title, "Profile") %>
+
+<div class="row-fluid" id="profile-page">
+   <div class="span6" style="font-size:100px">
+      Photo Here!
+   </div>
+
+   <div class="span6">
+      <div class="user-name">
+         <%= "#{current_user.fname} #{current_user.lname}"  %>
+      </div>
+
+      <div class="user-inst">
+         <%= "Duke University" %>
+      </div>
+   </div>
+   
+
+   <div class="row">
+      <h3>Past Tournaments</h3>
+      
+      <table class="table table-striped">
+         <tr>
+            <td>UNSW IV</td>
+            <td>Sydney, Australia</td>
+            <td>August 2, 2013</td>
+         </tr>
+         
+         <tr>
+            <td>US Nationals</td>
+            <td>University of La Verne, LA</td>
+            <td>April 24, 2013</td>
+         </tr>
+         
+         <tr class="last-row">
+            <td>Colgate IV</td>
+            <td>Colgate, NY</td>
+            <td>March 20, 2013</td>
+         </tr>
+      </table>
+   </div>
+   
+</div>

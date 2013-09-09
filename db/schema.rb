@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130905030406) do
+ActiveRecord::Schema.define(version: 20130909061345) do
 
   create_table "institutions", force: true do |t|
     t.string   "short_name"
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 20130905030406) do
     t.string   "email"
     t.string   "password_digest"
     t.string   "remember_token"
-    t.integer  "institution"
+    t.integer  "institution_id"
     t.integer  "status"
     t.datetime "created_at"
     t.datetime "updated_at"
