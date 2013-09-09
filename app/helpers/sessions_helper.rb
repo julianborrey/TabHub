@@ -27,7 +27,7 @@ module SessionsHelper
    
    def signed_in_user
          store_location
-         redirect_to signin_url, notice: "Please sign in." unless signed_in?
+         redirect_to root_path, notice: "Please sign in." unless signed_in?
          #we are adding an option to the redirect_to function which is a hash
          #it updates the flash[] hash
    end

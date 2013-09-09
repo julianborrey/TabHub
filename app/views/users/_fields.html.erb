@@ -15,7 +15,8 @@
 
 <div class="input-prepend">
    <span class="add-on">Institution</span>
-   <%= f.text_field(:institution, {class: "span2"}); %>
+   <% inst_array = Institution.all.map { |inst| [inst.full_name, inst.id]} %>
+   <%= f.select(:institution_id, options_for_select(inst_array), {}, {class: "span2 uni-dropdown"}); %>
 </div>
 
 

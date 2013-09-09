@@ -12,7 +12,7 @@ module GlobalConstants
    #############   Make sure these two are 1-1 revesable ###########################
    #the privilidges code                                                         
    PRIVILEGES     = {general: 0, site_admin: 1}.freeze();                        
-   PRIVILEGES_STR = PRIVILIGES.invert().freeze(); #swaps all key-value pairs     
+   PRIVILEGES_STR = PRIVILEGES.invert().freeze(); #swaps all key-value pairs     
 
    #the roles that people may act in a society, 
    #these previliages will allow for registration ...

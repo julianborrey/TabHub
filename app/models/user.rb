@@ -19,7 +19,8 @@ class User < ActiveRecord::Base
    validates(:fname, presence: true, length: { maximum: 20 });
    validates(:lname, presence: true, length: { maximum: 20 });  
    validates(:institution_id, presence: true); #we get this from a table
-   
+   ### ^^ could do a check to see that it is a valid id ################################
+
    #make a REGEX
    VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i;
    validates(:email, presence: true, format: { with: VALID_EMAIL_REGEX },

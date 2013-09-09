@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-   before_action :signed_in_user,  only: [:index, :edit, :update, :destroy]
+   before_action :signed_in_user,  only: [:show, :destroy, :edit, :update] 
    before_action :correct_user,    only: [:edit, :update]
    before_action :signed_out_user, only: [:new, :create]
    
@@ -8,7 +8,7 @@ class UsersController < ApplicationController
    #end
    
    def show
-      @user = User.find(params[:id])
+      @user = User.find(params[:id]);
    end
    
    def new
@@ -25,9 +25,10 @@ class UsersController < ApplicationController
       if @user.save #if save successful (doesn't return false/nil)
          sign_in @user
          flash[:success] = "Welcome to the Sample App!"
-         redirect_to(@user) #not even using "user_url"
+         redirect_to(user_path(@user.id)) #not even using "user_url"
       else
-         render 'new' #render the new.html.erb template
+         puts(@user.errors.full_messages.to_s);
+         redirect_to(signup_path) #render the new.html.erb template
       end
    end
    
@@ -56,7 +57,7 @@ class UsersController < ApplicationController
    private
       def user_params #function to throw error if no :user input
                       #but to only give pass on the inputs in permit()
-         params.require(:user).permit(:name, :email, :password,
+         params.require(:user).permit(:fname, :lname, :email, :institution_id, :password,
                                       :password_confirmation, :admin)
       end
    

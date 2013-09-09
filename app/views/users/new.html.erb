@@ -1,4 +1,4 @@
-<% provide(title: "Sign Up"); %>
+<% provide(:title, "Sign Up"); %>
 
 <div class="info-page signup-page">
 
@@ -8,9 +8,8 @@
       <%= render('users/fields', f: f); %>
       
       <br>
-      <button class="btn btn-primary create-account-btn">
-         Create Account
-      </button>
+      
+      <%= f.submit "Create Account", {class: "btn btn-primary create-account-btn"} %>
    <% end %>
    
 </div>
