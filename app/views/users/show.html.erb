@@ -2,7 +2,7 @@
 
 <div class="row-fluid" id="profile-page">
    <div class="span6" style="font-size:100px">
-      Photo Here!
+      <!-- Photo Here! -->
    </div>
 
    <div class="span6">
@@ -11,7 +11,7 @@
       </div>
 
       <div class="user-inst">
-         <%= "Duke University" %>
+         <%= current_user.institution.full_name %>
       </div>
    </div>
    
@@ -20,24 +20,16 @@
       <h3>Past Tournaments</h3>
       
       <table class="table table-striped">
-         <tr>
-            <td>UNSW IV</td>
-            <td>Sydney, Australia</td>
-            <td>August 2, 2013</td>
-         </tr>
-         
-         <tr>
-            <td>US Nationals</td>
-            <td>University of La Verne, LA</td>
-            <td>April 24, 2013</td>
-         </tr>
-         
-         <tr class="last-row">
-            <td>Colgate IV</td>
-            <td>Colgate, NY</td>
-            <td>March 20, 2013</td>
-         </tr>
+         <% @tour_list.each { |t| %>
+            <tr class="last-row">
+               <td><%= t.name       %></td>
+               <td><%= t.location   %></td>
+               <td><%= t.start_time %></td>
+            </tr>
+         <% } %>
       </table>
+
+      <%= link_to("Sign Out", signout_path, method: "delete", class: "btn"); %>
    </div>
    
 </div>

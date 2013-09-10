@@ -5,6 +5,10 @@
 # The code to use the User model.
 
 class User < ActiveRecord::Base
+   belongs_to(:institution);
+   has_many(:tournaments);
+   has_many(:tournament_attendees); #which tournaments the user attended
+   
    ### Code to ensure that certain attributes constrainted ###
    #ensure that we are going to input an all lowercase email 
    #(helps with uniqueness check)

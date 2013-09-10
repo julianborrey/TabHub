@@ -12,7 +12,7 @@
       <table class="table">
          <tr>
             <td><span class="stat-name">Currently at:</span></td>
-            <td><span class="stat-value">UNSW IV</span></td>
+            <td><span class="stat-value"><%= current_user.institution.short_name %></span></td>
          </tr>
          
          <tr class="last-row">
@@ -23,7 +23,7 @@
       <br><br>
 
       <div class="btn-group">
-         <button type="button" class="btn btn-default">Profile</button>
+         <%= link_to("Profile", user_path(current_user.id), class: "btn btn-default"); %>
          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
             <span class="caret"></span>
          </button>
