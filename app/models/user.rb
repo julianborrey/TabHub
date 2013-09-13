@@ -38,15 +38,9 @@ class User < ActiveRecord::Base
    
    #password will be a minimum of 6 characters
    validates(:password, length: { minimum: 6 });
-   
-   ### Custom Error Messages ###
-  # HUMANIZED_ATTRIBUTES = {
-  #    email: "E-mail can't be blank"
-  # }
-   
-  # def self.human_attribute_name(attr)
-  #    HUMANIZED_ATTRIBUTES[attr.to_sym] || super;
-  # end
+  
+   #validate they have selected a univeristy
+   validates(:institution_id, numericality: {greater_than: 0});
    
    ### Code to return a boolean value to check against privladges ##
    def has_status?(status_to_check_for)
