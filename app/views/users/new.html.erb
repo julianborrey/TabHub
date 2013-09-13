@@ -10,6 +10,7 @@
    
    <%= form_for(@user) do |f| %>
       <%= render('shared/error_messages', object: f.object); %>
+      <br>
       <%= render('users/fields', f: f); %>
       
       <br>
