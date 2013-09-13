@@ -1,8 +1,8 @@
 class SessionsController < ApplicationController
    include SessionsHelper
 
-   def new
-   end
+   #def new
+   #end
    
    def create #triggered upon signing
       #retrieve the user by email
@@ -15,8 +15,8 @@ class SessionsController < ApplicationController
          redirect_back_or(root_path); #have to change back #user
       else 
          #create an error message and re-render the signin form
-         flash.now[:error] = 'Invalid email/password combination'
-         render 'new'
+         flash.now[:error] = 'Invalid email/password.'
+         render('static_pages/home');
       end
    end
    

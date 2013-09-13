@@ -68,9 +68,14 @@
 <br>
 <br>
 
+
 <div class="row-fluid">
   
    <div class="span6" style="padding-right:60px">
+      <% flash.each do |key, value| %>
+         <%= content_tag(:div, value, class: "alert alert-#{key}") %>
+      <% end %>
+
       <table class="table table-bordered">
          <%= form_for(:session, url: sessions_path) do |f| %>
 

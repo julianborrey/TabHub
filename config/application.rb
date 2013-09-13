@@ -24,5 +24,15 @@ module TabSite
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
+   
+
+    #Need this to stop the wrapping of feilds with divs when the field has an error.
+    #this will edit the style of the input fields by adding a class
+    config.action_view.field_error_proc = Proc.new { |html_tag, instance|
+      attribute_offset = (html_tag =~ /class=['"]/); #user regex to get index of "class=..."
+      html_tag.insert(attribute_offset + 7, "field-with-errors ");
+      #"#{html_tag}".html_safe
+      html_tag.html_safe
+    }
   end
 end

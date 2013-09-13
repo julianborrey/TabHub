@@ -31,11 +31,10 @@ class UsersController < ApplicationController
       
       if @user.save #if save successful (doesn't return false/nil)
          sign_in @user
-         flash[:success] = "Welcome to the Sample App!"
          redirect_to(user_path(@user.id)) #not even using "user_url"
       else
-         puts(@user.errors.full_messages.to_s);
-         redirect_to(signup_path) #render the new.html.erb template
+         #redirect_to(signup_path, object: @user);
+         render('users/new'); #render the new.html.erb template
       end
    end
    

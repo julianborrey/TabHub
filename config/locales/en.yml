@@ -19,5 +19,35 @@
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
 
+############### WARNING ################################
+### This code is white-space sensitive! ###
 en:
-  hello: "Hello world"
+   activerecord:
+      attributes:
+         user:
+            fname: "First name"
+            lname: "Last name"
+            email: "E-mail address"
+            password_confirmation: "Passwords"
+      
+      errors:
+         models:
+           user:
+             attributes:
+              fname: 
+                  blank: "is required."
+                  too_long: "can only be 20 characters long."
+              lname:
+                 blank: "is required."
+                 too_long: "cam only be 20 characters long."
+              email:
+                 blank: "is required."
+                 taken: "has already been taken."
+                 invalid: "is invalid."
+              password: 
+                  blank: "is required."
+                  too_short: "must be at least 6 characters long."
+              password_confirmation:
+                  confirmation: "must match."
+               
+            

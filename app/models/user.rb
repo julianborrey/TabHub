@@ -39,6 +39,15 @@ class User < ActiveRecord::Base
    #password will be a minimum of 6 characters
    validates(:password, length: { minimum: 6 });
    
+   ### Custom Error Messages ###
+  # HUMANIZED_ATTRIBUTES = {
+  #    email: "E-mail can't be blank"
+  # }
+   
+  # def self.human_attribute_name(attr)
+  #    HUMANIZED_ATTRIBUTES[attr.to_sym] || super;
+  # end
+   
    ### Code to return a boolean value to check against privladges ##
    def has_status?(status_to_check_for)
       #return the boolean value of correct status code
@@ -52,7 +61,7 @@ class User < ActiveRecord::Base
    end 
    
    def User.new_remember_token
-      SecureRandom.urlsafe_base64
+     # SecureRandom.urlsafe_base64
    end
 
    def User.encrypt(token)
