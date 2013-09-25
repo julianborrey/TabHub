@@ -25,6 +25,10 @@ module SessionsHelper
       user == current_user
    end
    
+   ####SECURITY#######
+   # Check that manipulating the cookie[:sesson][:return_to] attribute
+   # will not allow entry into restricted area.
+
    def signed_in_user
          store_location
          redirect_to root_path, notice: "Please sign in." unless signed_in?

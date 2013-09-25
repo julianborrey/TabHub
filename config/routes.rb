@@ -21,5 +21,4 @@ TabSite::Application.routes.draw do
    match '/signup',    to: 'users#new',            via: 'get'
    match '/users/:id', to: 'users#show',           via: 'get'
    
-   
 end
