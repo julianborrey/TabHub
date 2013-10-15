@@ -6,10 +6,15 @@ Keeps non-techies upto speed with progress and allows full commenting
 power so people can steer us in the right direction or suggest cool features.
 
 ### What's going on? ###
-Tournament tabbing in the world of debating is completely outdated.
-There is no full scale tab out there which offers profiles, 
-automatic tournament signup and
-computed statistics pulled directly from the databases.
+The only software used to coordinate debating tournaments which is 
+entirely trusted is [Tournaman](http://tournaman.wikidot.com/)
+here are a few online platform starting 
+to emerge but they have proven not to work - often causing disruptions to 
+tournaments. This project is another attempt to solve the problem.
+
+We aim to create tab software which will facilitate automatic registration, 
+automatically computed statistics and use correct implementations of algorithms
+to prevent the same failures that other platforms led to.
 
 ### Contribution ###
 It is an open source project. Why?
