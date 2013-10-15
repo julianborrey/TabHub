@@ -1,8 +1,5 @@
 # Site for Online Debating Tabbing #
 
-### Name ###
-We need a good name. For now all we have is "super tab."
-
 ### [Blog](http://newtabware.blogspot.com/) ###
 There is a [blog](http://newtabware.blogspot.com/) for this project.
 Keeps non-techies upto speed with progress and allows full commenting 
