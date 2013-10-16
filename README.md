@@ -16,10 +16,18 @@ We aim to create tab software which will facilitate automatic registration,
 automatically computed statistics and use correct implementations of algorithms
 to prevent the same failures that other platforms led to.
 
+### Currently ###
+* A proof of algorithm (sort of like a proof of concept) can be found 
+in the root directory, [test1.rb](https://github.com/julianborrey/TabHub/blob/master/test1.rb) 
+which simulates the allocation of teams and rooms for the next round.
+
+* Apart from that is a bunch of code to support user accounts and so on.
+
+* The next thing to come is the instance creation of a tournament on the server.
+
 ### Contribution ###
 It is an open source project. Why?
-* Should make for a better site.
-* I don't have all the skill in the world...not even close.
+* Should make for a better site - the more skills the better.
 * It's quicker to work with others.
 * It will be an entirely free entity.
 
@@ -31,4 +39,6 @@ Areas which you can never fully account for. See the
 [Style](https://github.com/julianborrey/superTab/wiki/Style) page on the 
 wiki if you are going to write some code.
 
-### Never hesitate to ask me anything! ###
+### Credit ###
+Much of the boiler plate comes from Michael Hartl's [Rails Tutorial](http://ruby.railstutorial.org/).
+It is a brilliant tutorial and was the framework for the site, particularly the user infrastructure.
