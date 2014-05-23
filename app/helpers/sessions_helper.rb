@@ -9,6 +9,8 @@ module SessionsHelper
    end
 
    def signed_in?
+	puts("in SINGED_IN?");
+	puts("we currently have " + @current_user.to_s);
       !(current_user.nil?)
    end
 
@@ -17,6 +19,7 @@ module SessionsHelper
    end
 
    def current_user
+      puts("this is RT: " + cookies[:remember_token].to_s);
       remember_token  = User.encrypt(cookies[:remember_token])
       @current_user ||= User.find_by(remember_token: remember_token)
    end
