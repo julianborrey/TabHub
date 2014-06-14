@@ -77,4 +77,13 @@ class Tournament < ActiveRecord::Base
    def get_current_round
       return "4";
    end
+
+   #return true if currently in a round
+   def in_round?
+      return true;
+   end
+
+   #return true is user is a debater at this tournament
+   def debater_in(user)
+   end
 end

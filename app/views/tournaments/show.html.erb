@@ -22,7 +22,22 @@
    
    <%= render('tournaments/status_bar'); %>
    
-   <%= render('tournaments/tournament_info'); %>   
-   
+   <div class="row-fluid">
+      <div class="span2">
+         <%= render('tournaments/sidebar'); %>
+      </div>
+      
+      <div class="span10">
+         <%= render('tournaments/tournament_info'); %>   
+         
+         <% if @tournament.rounds_started? %>
+            <%= render('tournaments/current_round'); %>
+         <% end %>
+      
+         <% if !@user.nil? && @tournament.debater_in(@user) %>
+            <%= render('tournaments/user_stats'); %>
+         <% end %>
+      </div>
+   </div>
    
 </div>
