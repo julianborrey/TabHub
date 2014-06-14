@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
       if user && user.authenticate(params[:session][:password])
          #sign user in and redirect to the user show page
          sign_in user
-         redirect_back_or(root_path); #have to change back #user
+         redirect_to(root_path); #have to change back #user
       else 
          #create an error message and re-render the signin form
          flash.now[:error] = 'Invalid email/password.'

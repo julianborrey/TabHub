@@ -102,6 +102,18 @@ input[type="text"], input[type="password"] {
    font-size: 35px;
 }
 
+.user-home-sidebar-info {
+}
+
+.inst-name {
+}
+
+.inst-value {
+}
+
+.list-title {
+}
+
 .stat-name {
    color: gray;
 }
@@ -115,6 +127,8 @@ input[type="text"], input[type="password"] {
    height: 520px; //this is a serious hack
    //need a better solution to this
 }
+
+
 
 .current-round {
    border: 1px solid #ddd;
@@ -192,4 +206,8 @@ input[type="text"], input[type="password"] {
    width: 300px;
    margin-left: auto;
    margin-right: auto;
+}
+
+.field-with-errors input[type="text"]{
+      background-color: red;
 }

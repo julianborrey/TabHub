@@ -4,51 +4,55 @@
    
    <div class="span3" id="user-col">
       
-      <span class="user-name-bar"><%= "#{current_user.fname} #{current_user.lname}" %></span>
-      <br><br><br><br>
+      <span class="user-name-bar"><a href="<%= user_path(@user); %>">
+         <%= "#{@user.full_name}" %>
+      </a></span>
+      <br><br>
 
       <!-- photo -->
-        
-      <table class="table">
-         <tr>
+      
+      <table class="table table-condensed">
+         <thead><tr>
             <td><span class="inst-name">Institution:</span></td>
             <td><span class="inst-value">
-               <% @inst = current_user.institution; %>
+               <% @inst = @user.institution; %>
                <a href="<%= institution_path(@inst) %>">
-                  <%= @isnt.short_name %>
+                  <%= @inst.short_name %>
                </a>
             </span></td>
-         </tr>
-
-         <% @tourn_list[:current].each { |t| %>
-           <tr class="space-row"></tr>
-           <tr>
-              <td><span class="list-title">Currrently at:</span></td>
-           </tr>
-           <tr>
-              <td><span class="stat-name">Tournament:</span></td>
-              <td><span class="stat-value">t.name</span></td>
-           </tr>
-           <tr class="last-row">
-              <td><span class="stat-name">Representing:</span></td>
-              <td><span class="stat-value">TEAM!</span></td>
-           </tr>
-         <% } %>
-
-         <% else %>
-            No tournaments attended
+         </tr></thead>
+      </table>
+      
+     <br>
+      
+      <table class="table">
+         <% if !@tourn_list[:current].empty? %>
+            <% @tourn_list[:current].each { |t| %>
+              <tr class="space-row"></tr>
+              <tr>
+                 <td><span class="list-title">Currrently at:</span></td>
+              </tr>
+              <tr>
+                 <td><span class="stat-name">Tournament:</span></td>
+                 <td><span class="stat-value"><%= t.name %></span></td>
+              </tr>
+              <tr class="last-row">
+                 <td><span class="stat-name">Representing:</span></td>
+                 <td><span class="stat-value"><%= current_team(@user) %></span></td>
+              </tr>
+            <% } %>
          <% end %>
       </table>
       <br><br>
 
       <div class="btn-group">
-         <%= link_to("Profile", user_path(current_user.id), class: "btn btn-default"); %>
+         <%= link_to("Profile", user_path(@user.id), class: "btn btn-default"); %>
          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
             <span class="caret"></span>
          </button>
          
          <ul class="dropdown-menu">
-            <li><%= link_to "Edit", edit_user_path(current_user) %></li>
+            <li><%= link_to "Edit", edit_user_path(@user) %></li>
             <li><%= link_to "Sign Out", signout_path, method: 'delete' %></li>
          </ul>
       </div>
@@ -56,14 +60,16 @@
    </div>
    
    <div class="span9" style="padding-left:60px">
-      <% if in_tournament? %>
-         <% if round_now? %>
-            <%= render('layouts/upcoming'); %>
+      <% if @user.in_tournament? %>
+         <% if !@user.round_now? %>
+            <% puts(''); #render('tournaments/_user_info'); %>
          <% else %>
             <%= render('layouts/current_round'); %>
          <% end %>
       <% end %>
-      <%= render('static_pages/buttons_and_feed') %>
+         
+      <%= render('layouts/upcoming'); %>
+      <%= render('static_pages/buttons_and_feed'); %>
    </div>
 </div>
 

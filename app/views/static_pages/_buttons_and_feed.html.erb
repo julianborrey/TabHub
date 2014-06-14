@@ -7,17 +7,13 @@
            <table class="table table-bordered"> 
                <tr>
                   <td>
-                     <button type="button" class="btn btn-primary btn-large btn-block">
-                        Join a Tournament
-                     </button>
+                     <%= link_to "Join a Tournament", tournaments_path, class: "btn btn-primary btn-large btn-block"%>
                   </td>
                </tr>
 
                <tr>
                   <td>
-                     <button type="button" class="btn btn-info btn-large btn-block">
-                        Create a Tournament
-                     </button>
+                     <%= link_to "Create a Tournament", new_tournament_path, class: "btn btn-info btn-large btn-block" %>
                   </td>
                </tr>
             </table>

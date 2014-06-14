@@ -23,13 +23,4 @@ module UserHelper
       return str;
    end
 
-   #true if the user is in a tournament right now
-   def in_tournament?
-      return true;
-   end
-   
-   ### WE SHOULD MOVE THIS TO THE TOURNAMENT HELPER ###
-   def round_now?
-      return true;
-   end
 end

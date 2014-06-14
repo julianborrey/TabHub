@@ -19,6 +19,7 @@ class TournamentsController < ApplicationController
    
    def show
       @tournament = Tournament.find(params[:id]);
+      @user = nil || current_user;
    end
 
    def edit

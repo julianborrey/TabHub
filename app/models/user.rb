@@ -75,6 +75,37 @@ class User < ActiveRecord::Base
       return (self.institution_id == inst.id && self.status == GlobalConstants::SOCIETY_ROLES[:president]);
    end
    
+   #true if the user is in a tournament right now
+   def in_tournament?
+      return !current_tournaments.empty?
+   end
+   
+   def current_tournaments
+      list = self.tournament_attendees.to_a(); #record of user attedance
+      
+      current_tourns = [];
+      list.each { |ta|
+         t = Tournament.find(ta.tournament_id);
+         if !t.nil? && t.status == GlobalConstants::TOURNAMENT_STATUS[:present]
+            #if ### SHould have something here about someone leaving a tournament
+            current_tourns.push(t.name);
+            #end
+         end
+      }
+      
+      #if we made it here, there was no active tournament
+      return current_tourns;
+   end
+   #could for see a situation where someone is somehow in 2 tournaments
+   #at the same time and isn't given access to the one they need.
+   #have a page to view my current tournaments, button to be able to leave
+      
+   #true if the user is currently in a round
+   def round_now?
+      #something like the above, but also goes into finding the tournament and then cheking if any rounds are active.
+      return false;
+   end
+   
    def User.new_remember_token
       SecureRandom.urlsafe_base64
    end
@@ -82,7 +113,7 @@ class User < ActiveRecord::Base
    def User.encrypt(token)
       Digest::SHA1.hexdigest(token.to_s)
    end
-   
+
    private
       def create_remember_token
          self.remember_token = User.encrypt(User.new_remember_token)

@@ -6,15 +6,15 @@
 # The controller to serve the static pages.
 
 class StaticPagesController < ApplicationController
-   include InstitutionHelper
+   include TournamentsHelper
 
    def home
       @user = nil;
       @user ||= current_user;
-      
+
       @tourn_list = nil;
       if !@user.nil?
-         @tourn_list = get_user_tourn_ids(@user);
+         @tourn_list = get_user_tourns(@user);
       end
    end
    

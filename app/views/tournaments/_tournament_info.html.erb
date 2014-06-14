@@ -1,0 +1,36 @@
+<div class="row-fluid tournament-info">
+   <table class="table infoTable">
+       <col width="100px">
+       <col width="300px">
+       <col width="100px">
+       <col width="300px">
+
+      <thead><tr>
+         <td class="info-name">Hosted by:</td>
+         <td class="info-value midCol">
+            <a href="<%= institutions_path(@tournament.institution.id)%>">
+            <%= @tournament.get_host_name %></a>
+         </td>
+         <td class="info-name">Location:</td>
+         <td class="info-value"><%= @tournament.location %></td>
+      </tr></thead>
+
+      <tr>
+         <td class="info-name">Format:</td>
+         <td class="info-value midCol">
+            <a href="#linkToFormatrules">British Parliamentary</a>
+         </td>
+         <td class="info-name">Rounds:</td>
+         <td class="info-value"><%= @tournament.get_num_rounds %></td>
+      </tr>
+      
+      <tr>
+         <td class="info-name">Start Time:</td>
+         <td class="info-value midCol"><%= @tournament.start_time %></td>
+         <td class="info-name">End Time:</td>
+         <td class="info-value"><%= @tournament.end_time %></td>
+      </tr>
+   </table>
+
+   
+</div>

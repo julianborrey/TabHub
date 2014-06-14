@@ -1,0 +1,27 @@
+<div class="fluid-row statusBar">
+   <table class="table statusTable">
+      <% @live = @tournament.live? %>
+      <!-- hmm, inline? -->
+      
+      <% if @live %>
+         <col width="100px">
+         <col width="300px">
+         <col width="200px">
+         <col width="100px">
+      <% else %>
+         <col width="200px">
+         <col width="100px">
+      <% end %>
+
+      <tr>
+         <td class="info-name">Status:</td>
+         <% stat = @tournament.get_status %>
+         <td class="info-value" style="color:<%= stat.keys.first %>"><%= stat.values.first %>
+         
+      <% if @live %>
+         <td class="info-name">Current Round:</td>
+         <td class="info-value"><%= @tournament.get_current_round %></td>
+      <% end %>
+      </tr>
+   </table>
+</div>

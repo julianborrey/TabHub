@@ -6,12 +6,28 @@
          <%= link_to "Home", root_path %>
       </li>
       
-      <% if signed_in? %>
-         <li class="">
-            <%= link_to "Current Tournament", root_path %>
-         </li>
-      <% end %>
+      <li class="dropdown">
+         <a class="dropdown-toggle" data-toggle="dropdown">
+            Tournament
+            <b class="caret"></b>
+         </a>
+
+         <ul class="dropdown-menu">
+            <% if signed_in? && current_user.in_tournament?%>
+               <li><%= link_to "Current Tournament", tournament_path(current_user.current_tournaments.first) %></li>
+               <!-- feature to add...would be a an '!' symbol to say you are currently in tourns at once if such occured...
+               link to page to rectify this issue -->
+            <% end %>
+            
+            <% if signed_in? %>
+               <li><%= link_to "My Tournaments", user_path(current_user) %></li>
+            <% end %>
+            <li><%= link_to "All Tournaments Schedule", tournaments_path %></li>
+            <li><%= link_to "Create Tournament", new_tournament_path %></li>
+         </ul>
+      </li>
       
+
       <li class="dropdown">
          <a class="dropdown-toggle" data-toggle="dropdown">
             Resources
@@ -20,7 +36,6 @@
 
          <ul class="dropdown-menu">
             <li><%= link_to "Past Motions", root_path %></li>
-            <li><%= link_to "Tournament Schedule", root_path %></li>
             <li><%= link_to "WUDC Rules", root_path %></li>
             <li><%= link_to "3v3 Rules", root_path %></li>
             <li><%= link_to "Links", root_path %></li>

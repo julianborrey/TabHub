@@ -14,10 +14,15 @@
 
 <div class="input-prepend">
    <span class="add-on">Start Time</span>
-   <%= f.text_field(:name, {class: "span2", value: "#{@tournament.start_time}"}); %>
+   <%= f.text_field(:start_time, {class: "span2", value: "#{@tournament.start_time}"}); %>
 </div>
 
 <div class="input-prepend">
    <span class="add-on">End Time</span>
-   <%= f.text_field(:location, {class: "span2", value: "#{@tournament.end_time}"}); %>
+   <%= f.text_field(:end_time, {class: "span2", value: "#{@tournament.end_time}"}); %>
+</div>
+
+<div class="remarks-box">
+   <span class="remarks-title">Remarks/Notes - This is where you can put general information.</span>
+   <%= f.text_field(:remarks, {class: "", value: "#{@tournament.end_time}"}); %>
 </div>

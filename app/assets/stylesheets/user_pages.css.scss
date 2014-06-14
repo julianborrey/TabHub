@@ -3,7 +3,6 @@ $fontSize: 16px;
 .signup-page {
    padding-top: 25px;
    text-align: center;
-   width: 630px;
    
    h1 {
       margin-bottom: 65px;
@@ -15,7 +14,7 @@ $fontSize: 16px;
       background-color: white;
       
       padding-left: 50px;
-      padding-right: 75px;
+      padding-right: 50px;
       padding-top: 10px; //to make same height as input field
       height: 24px;      //this too
       width: 100px;
@@ -53,6 +52,7 @@ $fontSize: 16px;
 
 .user-inst {
    font-size: 30px;
+   color: gray;
    padding-top: 40px;
    text-align: right;
    padding-right: 10px;
@@ -60,11 +60,4 @@ $fontSize: 16px;
 
 .icon-question-sign {
    margin-top: -3px;
-   color: gray;
-}
-
-#inst-info-box {
-   display: none;
-   color: #666;
-   position: absolute;
 }
