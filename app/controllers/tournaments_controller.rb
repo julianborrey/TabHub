@@ -39,6 +39,11 @@ class TournamentsController < ApplicationController
    
    def destroy
    end
+   
+   #attendees page function
+   def attendees
+      @tournament = Tournament.find(params[:id]);
+   end
 
    private
       def tournament_params

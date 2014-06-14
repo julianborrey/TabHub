@@ -1,6 +1,6 @@
 <div class="row-fluid tournamentSidebar">
    
-   <div><%= link_to("Attendees", "#", class: "btn btn-success"); %></div>
+   <div><%= link_to("Attendees", tournament_path(@tournament) + "/attendees", class: "btn btn-success"); %></div>
    <div><%= link_to("Motions", "#", class: "btn btn-info");      %></div>
    <div><%= link_to("Tab", "#", class: "btn btn-primary");       %></div>
    

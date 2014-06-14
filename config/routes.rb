@@ -24,9 +24,9 @@ TabSite::Application.routes.draw do
    ### User Pages ###
    match '/signup',    to: 'users#new',            via: 'get'
    #^ this is just an additional path to it
-
-
    
-
+   ### Tournament Offshoots ###
+   match '/tournaments/:id/attendees', to: 'tournaments#attendees', via: 'get'
+   
    #match '/pastmotions', to: 'static_pages#pastmotions', via: 'get'
 end

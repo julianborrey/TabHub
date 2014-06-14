@@ -2,16 +2,7 @@
 
 <div class="row-fluid tournament-page">
    
-   <div class="row-fluid tournament-header">
-      <div class="span9">
-         <div class=tournament-name>
-            <%= @tournament.name %>
-         </div>
-      </div>
-      <div class="span3">
-         <!-- tournament logo -->
-      </div>
-   </div>
+   <%= render('tournaments/title_shim'); %>
    
    <% if @tournament.is_authorized?(@user) %>  
       <div class="row-fluid ctrl-btn-row">
