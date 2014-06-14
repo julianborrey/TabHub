@@ -1,0 +1,21 @@
+<% provide(:title, "Create Tournament"); %>
+
+<div class="info-page signup-page">
+   
+   <h1>Create Tournament</h1>
+   
+   <% flash.each do |key, val| %>
+      <%= content_tag(:div, val, class: "alert alert-#{key}"); %>
+   <% end %>
+
+   <%= form_for(@tournament) do |f| %>
+      <%= render('shared/error_messages', object: f.object); %>
+      <br>
+      <%= render('tournament/fields', f: f); %>
+      
+      <br><br>
+      
+      <%= f.submit "Create Tournament", {class: "btn btn-primary create-account-btn"} %>
+   <% end %>
+   
+</div>

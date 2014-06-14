@@ -24,4 +24,7 @@ module GlobalConstants
    TOURNAMENT_ROLES = {debater: 0, adjudicator: 1, tab_room: 2, ca: 3, dca: 4}.freeze();
    TOURNAMENT_ROLES_STR = TOURNAMENT_ROLES.invert().freeze();
    
+   #these keep track of tournaments activity
+   TOURNAMENT_STATUS = {past: -1, present: 0, future: 1}.freeze();
+   TOURNAMENT_STATUS_STR = TOURNAMENT_STATUS.invert().freeze();
 end

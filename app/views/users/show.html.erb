@@ -1,8 +1,13 @@
-<% provide(:title, "Profile") %>
+<% provide(:title, "User Profile - " + getUserName(params[:id])) %>
 
 <div class="row-fluid" id="profile-page">
    <div class="span6" style="font-size:100px">
       <!-- Photo Here! -->
+
+      <% if current_user.id == params[:id].to_i %>
+         <%= link_to("Edit Account", edit_user_path(current_user), class: "btn"); %>
+         <%= link_to("Sign Out", signout_path, method: "delete", class: "btn"); %>
+      <% end %>
    </div>
 
    <div class="span6">
@@ -29,7 +34,7 @@
          <% } %>
       </table>
 
-      <%= link_to("Sign Out", signout_path, method: "delete", class: "btn"); %>
+
    </div>
    
 </div>

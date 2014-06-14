@@ -11,11 +11,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130910054045) do
+ActiveRecord::Schema.define(version: 20140613123244) do
+
+  create_table "cities", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "institutions", force: true do |t|
     t.string   "short_name"
     t.string   "full_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "show_members"
+  end
+
+  create_table "points", force: true do |t|
+    t.decimal  "lat"
+    t.decimal  "long"
+    t.integer  "status"
+    t.integer  "city_id"
+    t.string   "url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "teams", force: true do |t|
+    t.string   "name"
+    t.integer  "institution_id"
+    t.integer  "tournament_id"
+    t.integer  "member_1"
+    t.integer  "member_2"
+    t.float    "total_speaks"
+    t.integer  "points"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -32,12 +61,13 @@ ActiveRecord::Schema.define(version: 20130910054045) do
     t.string   "name"
     t.integer  "institution_id"
     t.string   "location"
-    t.datetime "start_time"
-    t.datetime "end_time"
+    t.string   "start_time"
+    t.string   "end_time"
     t.text     "remarks"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "status"
   end
 
   create_table "users", force: true do |t|
@@ -50,6 +80,7 @@ ActiveRecord::Schema.define(version: 20130910054045) do
     t.integer  "status"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "active"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

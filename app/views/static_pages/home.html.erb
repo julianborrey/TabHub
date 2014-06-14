@@ -11,14 +11,33 @@
         
       <table class="table">
          <tr>
-            <td><span class="stat-name">Currently at:</span></td>
-            <td><span class="stat-value"><%= current_user.institution.short_name %></span></td>
+            <td><span class="inst-name">Institution:</span></td>
+            <td><span class="inst-value">
+               <% @inst = current_user.institution; %>
+               <a href="<%= institution_path(@inst) %>">
+                  <%= @isnt.short_name %>
+               </a>
+            </span></td>
          </tr>
-         
-         <tr class="last-row">
-            <td><span class="stat-name">Representing:</td>
-            <td><span class="stat-value">Lennon &amp Assange</td>
-         </tr>
+
+         <% @tourn_list[:current].each { |t| %>
+           <tr class="space-row"></tr>
+           <tr>
+              <td><span class="list-title">Currrently at:</span></td>
+           </tr>
+           <tr>
+              <td><span class="stat-name">Tournament:</span></td>
+              <td><span class="stat-value">t.name</span></td>
+           </tr>
+           <tr class="last-row">
+              <td><span class="stat-name">Representing:</span></td>
+              <td><span class="stat-value">TEAM!</span></td>
+           </tr>
+         <% } %>
+
+         <% else %>
+            No tournaments attended
+         <% end %>
       </table>
       <br><br>
 
@@ -29,7 +48,7 @@
          </button>
          
          <ul class="dropdown-menu">
-            <li><%= link_to "Edit", root_path %></li>
+            <li><%= link_to "Edit", edit_user_path(current_user) %></li>
             <li><%= link_to "Sign Out", signout_path, method: 'delete' %></li>
          </ul>
       </div>

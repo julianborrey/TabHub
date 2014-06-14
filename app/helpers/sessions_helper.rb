@@ -19,7 +19,6 @@ module SessionsHelper
    end
 
    def current_user
-      puts("this is RT: " + cookies[:remember_token].to_s);
       remember_token  = User.encrypt(cookies[:remember_token])
       @current_user ||= User.find_by(remember_token: remember_token)
    end
@@ -53,6 +52,7 @@ module SessionsHelper
 
       def store_location
          session[:return_to] = request.url
+         session[:return_to] ||= root_path; #in case this was a cold request
       end
 
       def clear_return_to

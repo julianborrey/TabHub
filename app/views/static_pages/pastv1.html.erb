@@ -1,0 +1,148 @@
+<html>
+   <head>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+      <%= stylesheet_link_tag "timeline"%>
+      
+      <style type="text/css">
+         #mainBody {
+            background: #000;
+            color: #FFF;
+         }
+         
+         #mainTitle {
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+            
+            font-size: 60px;
+            font-family: "Times New Roman";
+            letter-spacing: 10px;
+         }
+         
+         .textBox {
+            width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 18px;
+            text-align: justify;
+         }
+         
+         .textBoxTitle {
+            text-align: center;
+            font-size:24px;
+         }
+         .textBoxTitle:hover {
+            cursor: pointer;
+         }
+         
+         .close {
+            float: right;
+            color: #BBB;
+            font-size: 14px;
+         }
+         .close {
+            cursor: pointer;
+         }
+         
+         #table {
+            width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 20px;
+         }
+         
+         .motion {
+            padding-left: 100px;
+         }
+         
+         .year {
+            color: #CCC;
+         }
+      </style>
+   </head>
+   
+   
+   <body id="mainBody">
+      <br>
+      <div id="header">
+         <div id="mainTitle">Debating Motions of the Past</div>
+      </div>
+      
+      <br><br><br>
+            
+      <div class="textBox" id="about">
+         <div class="textBoxTitle" id="aboutTitle">About</div>
+         <div id="description" style="display:none">
+            Below is a collections of motions that were found in the 
+            archives of the <a href=http://dukedebate.org>Duke University 
+            Debating Society</a>. They remind 
+            us of the issues that were debated in those years - a time 
+            which was politically and socially very different. Between 
+            ... and ... Duke Debate was doing the ... code of debating 
+            which use one motion for the whole season.
+            <span class="close" id="closeDesc">[close]</span>
+         </div>
+         
+         <script>
+            $("#aboutTitle").click(function() {
+               $("#description").toggle(500);
+            });
+            
+            $("#closeDesc").click(function() {
+               $("#description").toggle(500);
+            });
+         </script>
+      </div>
+      
+      <br><br>
+      
+      
+      <table id="table">
+         <col width=200px;>
+         <col width=800px;>
+
+         <tr>
+            <td>
+               <ul class="timeline">
+                  <li class="event offset-first">1994</li>
+                  <li class="event">1996</li>
+                  <li class="event">1994</li>
+                  <li class="event">1996</li>
+               </ul>
+            </td>
+            
+            <td>
+               <div class="motion">THBT we kk!</div>
+               <div class="motion">THBT we kk!</div>
+            </td>
+         </tr>
+      </table>
+      
+      <br><br>
+      
+      <div class="textBox" id="appeal">
+            <div class="textBoxTitle" id="appealTitle">I have some antique motions...</div>
+            <div id="appealDesc" style="display:none">
+               If your society has antique motions that you would like 
+               to contribute to this website then please contact 
+               julianborrey[at]gmail.com. There are plans to expand this 
+               small digital museum so that old motions from unviersities 
+               all over the worlds can be viewed. Seeing topics from the 
+               same decade but from different countries could be interesting.
+               <span class="close" id="closeAppeal">[close]</span>
+            </div>
+            
+            <script>
+               $("#appealTitle").click(function() {
+                  $("#appealDesc").toggle(500);
+               });
+               
+               $("#closeAppeal").click(function() {
+                  $("#appealDesc").toggle(500);
+               });
+            </script>
+      </div>
+   
+   </body>
+
+</html>

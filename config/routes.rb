@@ -1,12 +1,16 @@
 TabSite::Application.routes.draw do
    
+  get "teams/new"
    #home page
    root 'static_pages#home'
    
    #resources for objects
    resources :sessions, only: [:new, :create, :destroy]
-   resources :users, execpt: [:index] #allows URL reflected user   
-   
+   resources :users, except: [:index] #allows URL reflected user   
+   resources :institutions, except: [:index]
+   resources :tournaments, except: [:index]
+   resources :teams, except: [:index]
+
    ### Static Pages ###
    match '/about',    to: 'static_pages#about',    via: 'get'
    match '/contact',  to: 'static_pages#contact',  via: 'get'
@@ -19,6 +23,10 @@ TabSite::Application.routes.draw do
 
    ### User Pages ###
    match '/signup',    to: 'users#new',            via: 'get'
-   match '/users/:id', to: 'users#show',           via: 'get'
+   #^ this is just an additional path to it
+
+
    
+
+   #match '/pastmotions', to: 'static_pages#pastmotions', via: 'get'
 end

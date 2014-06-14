@@ -1,0 +1,23 @@
+<div class="input-prepend">
+   <span class="add-on">Tournament Name</span>
+   <%= f.text_field(:name, {class: "span2", value: "#{@tournament.name}"}); %>
+</div>
+
+<div class="input-prepend">
+   <span class="add-on">Location</span>
+   <%= f.text_field(:location, {class: "span2", value: "#{@tournament.location}"}); %>
+</div>
+
+<div>
+   Note that the times should be in the timezone of the location.
+</div>
+
+<div class="input-prepend">
+   <span class="add-on">Start Time</span>
+   <%= f.text_field(:name, {class: "span2", value: "#{@tournament.start_time}"}); %>
+</div>
+
+<div class="input-prepend">
+   <span class="add-on">End Time</span>
+   <%= f.text_field(:location, {class: "span2", value: "#{@tournament.end_time}"}); %>
+</div>

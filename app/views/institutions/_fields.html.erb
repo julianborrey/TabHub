@@ -1,0 +1,9 @@
+<div class="input-prepend">
+   <span class="add-on">Full Institution Name</span>
+   <%= f.text_field(:full_name, {class: "span2", value: "#{@institution.full_name}"}); %>
+</div>
+
+<div class="input-prepend">
+   <span class="add-on">Short Institution Name</span>
+   <%= f.text_field(:short_name, {class: "span2", value: "#{@institution.short_name}"}); %>
+</div>

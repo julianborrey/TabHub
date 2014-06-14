@@ -6,7 +6,16 @@
 # The controller to serve the static pages.
 
 class StaticPagesController < ApplicationController
+   include InstitutionHelper
+
    def home
+      @user = nil;
+      @user ||= current_user;
+      
+      @tourn_list = nil;
+      if !@user.nil?
+         @tourn_list = get_user_tourn_ids(@user);
+      end
    end
    
    def about
@@ -19,5 +28,9 @@ class StaticPagesController < ApplicationController
    end
 
    def test
+   end
+
+   def pastmotions
+      render "static_pages/past", :layout => false
    end
 end

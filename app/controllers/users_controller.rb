@@ -12,7 +12,7 @@ class UsersController < ApplicationController
       
       #get past tournaments data
       attend_list = TournamentAttendee.where("user_id = ?", @user.id);
-
+      
       @tour_list = []; #put each tournament into a list from relationship table
       attend_list.each { |e| @tour_list.push(Tournament.find(e.tournament_id)) }
       @tour_list.sort! { |x,y| y.start_time <=> x.start_time } #descending time order
@@ -31,6 +31,7 @@ class UsersController < ApplicationController
       
       if @user.save #if save successful (doesn't return false/nil)
          sign_in @user
+         flash[:success] = "Welcome to TabHub!";
          redirect_to(user_path(@user.id)) #not even using "user_url"
       else
          #redirect_to(signup_path, object: @user);
@@ -45,7 +46,7 @@ class UsersController < ApplicationController
    end
    
    def edit
-     #@user = User.find(params[:id])
+     @user = User.find(params[:id])
    end
    
    def update
@@ -74,6 +75,7 @@ class UsersController < ApplicationController
       end
       
       #mine!
+      #no destroy remember_token here?
       def signed_out_user
          redirect_to root_path unless !signed_in?
       end

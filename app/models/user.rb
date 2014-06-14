@@ -52,7 +52,28 @@ class User < ActiveRecord::Base
    def privileges_str
       raw_str = GlobalConstants::PRIVILEGES_STR[self.status];
       return raw_str.capitalize(); #return with a the first capitalized letter 
-   end 
+   end
+
+   ### returns str which is the users role in given society. nil for not a part of the socity
+   def society_role_str
+      raw_str = GlobalConstants::SOCIETY_ROLES_STR[self.status];
+      return raw_str.capitalize();
+   end
+
+   ### returns the full name of the user
+   def full_name
+      return self.fname + " " + self.lname;
+   end
+
+   ### true is pres
+   def president?
+      return self.status == GlobalConstants::SOCIETY_ROLES[:president];
+   end
+   
+   ### true/false for user being president of given institution
+   def president_of_institution?(inst)
+      return (self.institution_id == inst.id && self.status == GlobalConstants::SOCIETY_ROLES[:president]);
+   end
    
    def User.new_remember_token
       SecureRandom.urlsafe_base64

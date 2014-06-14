@@ -11,6 +11,18 @@ module UserHelper
       image_tag(gravatar_url, alt: user.name, class: "gravatar")
    end
    
+   #function to make page title by user name
+   def getUserName(id)
+      u = User.find(id);
+      if u.nil?
+         render :status => 404;
+      else
+         str = u.full_name;
+      end
+
+      return str;
+   end
+
    #true if the user is in a tournament right now
    def in_tournament?
       return true;
@@ -20,5 +32,4 @@ module UserHelper
    def round_now?
       return true;
    end
-   
 end
