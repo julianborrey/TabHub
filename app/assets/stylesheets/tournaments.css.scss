@@ -76,3 +76,44 @@
       margin-left: 20px;
    }
 }
+
+.topicBox {
+   margin-right: auto;
+   margin-left:  auto;
+   max-width: 800px;
+   border: 1px solid #ddd;
+   max-height: 200px;
+   overflow: scroll;
+   margin-bottom: 20px;
+   margin-top: 20px;
+   font-size: 16px;
+   padding: 20px;
+}
+
+.topicBoxTitle {
+   font-weight: bold;
+}
+
+.topicBoxMotion {
+}
+
+.statsBox {
+   margin-right: auto;
+   margin-left: auto;
+   max-width: 800px;
+   border: 1px solid #ddd;
+   max-height: 120px;
+   overflow: scroll;
+   margin-bottom: 20px;
+   margin-top: 20px;
+   font-size: 16px;
+   padding: 10px;
+
+   table {
+      margin-bottom: 0px;
+   }
+}
+
+.statsBoxTitle {
+   margin-left: 400px;
+}

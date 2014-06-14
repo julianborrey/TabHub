@@ -1,0 +1,23 @@
+<div class="row-fluid">
+   <div class="statsBox">
+      <div class="statsBoxTitle"><p><b>Your Stats</b></p></div>
+
+      <% stats = @tournament.debater_stats(@user) %>
+      <% if !stats.empty? %>
+         <table class="table">
+            <tr>
+               <td><b>Round</b></td>
+               <% for i in 1..stats.length %>
+                  <td><%= i  %></td>
+               <% end %>
+            </tr>
+            <tr>
+               <td><b>Points</b></td>
+               <% stats.each { |p| %>
+                  <td><%= p %></td>
+               <% } %>
+            </tr>
+         </table>
+      <% end %>
+   </div>
+</div>

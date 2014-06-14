@@ -77,13 +77,31 @@ class Tournament < ActiveRecord::Base
    def get_current_round
       return "4";
    end
-
-   #return true if currently in a round
-   def in_round?
-      return true;
+   
+   #return current topic or "" if there is none
+   def current_topic
+      return "THW go ham.";
    end
 
    #return true is user is a debater at this tournament
-   def debater_in(user)
+   def debater_in?(user)
+      #again, coming from the user side for faster processing
+      user_list = User.tournament_attendees.to_a;
+      user_list.each { |ta|
+         if (ta.tournament_id == self.if) && (ta.user_id == user.id)
+            return true;
+         end
+      }
+      return false;
+   end
+   
+   #returns array of numbers which corresponds to the number of points in each round
+   def debater_stats(user)
+      points_each_round = []; #return value
+      
+      #for testing
+      points_each_round = [1, 3, 2, 3, 0, 2, 4, 1, 3, 1, 3,2,3,1,2,32,1,3,21];
+      
+      return points_each_round;
    end
 end

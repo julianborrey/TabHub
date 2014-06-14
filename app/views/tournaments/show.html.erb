@@ -28,15 +28,16 @@
       </div>
       
       <div class="span10">
-         <%= render('tournaments/tournament_info'); %>   
-         
-         <% if @tournament.rounds_started? %>
+         <% @topic = @tournament.current_topic %>
+         <% if !@topic.empty? %>
             <%= render('tournaments/current_round'); %>
          <% end %>
       
-         <% if !@user.nil? && @tournament.debater_in(@user) %>
+         <% if !@user.nil? && !@tournament.debater_stats(@user).empty? %>
             <%= render('tournaments/user_stats'); %>
          <% end %>
+         
+         <%= render('tournaments/tournament_info'); %>   
       </div>
    </div>
    
