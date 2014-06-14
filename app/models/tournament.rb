@@ -4,6 +4,8 @@ class Tournament < ActiveRecord::Base
 
    has_many(:tournament_attendee); #table matching users to tournaments
    has_many(:team);
+   has_many(:round);
+   has_many(:motion);
    
    validates(:name, presence: true, length: {maximum: 100});
    validates(:institution_id, presence: true);

@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140613123244) do
+ActiveRecord::Schema.define(version: 20140614222521) do
+
+  create_table "adjudicators", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "round_id"
+    t.boolean  "chair"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "cities", force: true do |t|
     t.string   "name"
@@ -27,12 +35,48 @@ ActiveRecord::Schema.define(version: 20140613123244) do
     t.boolean  "show_members"
   end
 
+  create_table "motions", force: true do |t|
+    t.string   "wording"
+    t.integer  "user_id"
+    t.integer  "tournament_id"
+    t.integer  "round_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "points", force: true do |t|
     t.decimal  "lat"
     t.decimal  "long"
     t.integer  "status"
     t.integer  "city_id"
     t.string   "url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "rooms", force: true do |t|
+    t.string   "name"
+    t.string   "location"
+    t.string   "remarks"
+    t.integer  "institution_id"
+    t.integer  "place_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "rounds", force: true do |t|
+    t.integer  "tournament_id"
+    t.integer  "round_num"
+    t.integer  "room_id"
+    t.integer  "og"
+    t.integer  "oo"
+    t.integer  "cg"
+    t.integer  "co"
+    t.integer  "first"
+    t.integer  "second"
+    t.integer  "third"
+    t.integer  "fourth"
+    t.integer  "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
