@@ -10,6 +10,7 @@ TabSite::Application.routes.draw do
    resources :tournaments, except: [:index]
    resources :teams, except: [:index]
    resources :rounds, except: [:index]
+   resources :tournament_settings, only: [:create, :edit]
 
    ### Static Pages ###
    match '/about',    to: 'static_pages#about',    via: 'get'

@@ -9,13 +9,28 @@
    <% end %>
 
    <%= form_for(@tournament) do |f| %>
-      <%= render('shared/error_messages', object: f.object); %>
-      <br>
-      <%= render('tournaments/fields', f: f); %>
-      
-      <br><br>
-      
-      <%= f.submit "Create Tournament", {class: "btn btn-primary create-account-btn"} %>
+      <%= form_for(@settings) do |g| %>
+         <%= render('shared/error_messages', object: f.object); %>
+         <br>
+         <%= render('tournaments/fields', f: f, g: g); %>
+         
+         <br><br>
+         
+         <%= g.submit "Create Settings", {id: "submitG", style: "display:none"}; %>
+         <!-- is the fact that you could submit only one a security threat? -->
+         <!-- probably just set default conservative settings if only f submitted -->
+      <% end %>
+
+   <%= f.submit "Create Info", {id: "submitF", style: "display:none"}; %>
    <% end %>
+   <%= link_to "Create Tournament", "#", id: "doubleSubmit", class: "btn btn-primary create-account-btn" %>
+
+   <script>
+      /* submition of both forms */
+      $("#doubleSubmit").onClick(function() {
+         $("#submitF").trigger "submit";
+         $("#submitG").trigger "submit";
+      });
+   </script>
    
 </div>

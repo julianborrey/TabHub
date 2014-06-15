@@ -4,6 +4,7 @@ class TournamentsController < ApplicationController
    
    def new
       @tournament = Tournament.new();
+      @settings = TournamentSetting.new();
    end
    
    def create
@@ -17,6 +18,7 @@ class TournamentsController < ApplicationController
          #need to set this person as authorized at least
          TournamentAttendee.new(tournament_id: @tournament.id, user_id: u.id,
                                 role: GlobalConstants::TOURNAMENT_ROLES[:tab_room]).save;
+         @settings.tournament_id = self.id;
          
          flash[:success] = "Tournament Created!"
          redirect_to(tournament_path(@tournament));

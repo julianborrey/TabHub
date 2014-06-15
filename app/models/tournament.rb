@@ -107,20 +107,15 @@ class Tournament < ActiveRecord::Base
       return false;
    end
 
-   ### format change spike! ###
    ### lets make this array one day
-   ##### and lets alias mem1 and mem2 to simply .users
    #returns the team of user in this tournament
    def team_of(user)
-      team = "";
-      teams = self.team.to_a;
-      teams.each { |t|
-         if t.member_1 == user.id || t.member_2.user.id
-            team = t.name;
-            return team;
+      user.teams.each { |t|
+         if t.tournament_id == self.id
+         return t.name;
          end
       }
-      return team;
+      return nil;
    end
    
    #returns array of numbers which corresponds to the number of points in each round
