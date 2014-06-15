@@ -1,0 +1,2 @@
+User.new(fname: ("Bob" + i.to_s), lname: ("Bab" + i.to_s), email: ("fake" + i.to_s + "@fake.com"), password: "hello1", password_confirmation: "hello1", instition_id: 1, status: 1, active: true).save
+

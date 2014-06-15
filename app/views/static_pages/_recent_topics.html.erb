@@ -1,24 +1,13 @@
 <h2>Recent Topics</h2>
       
-      <table class="table table-striped recent-motions">
-         <tr>
-            <td>
-               <span class="motion">This house would legalize duels to the death.</span><br>
-               <span class="institution"> - Colgate IV 2010</span>
-            </td>
-         </tr>
-
-         <tr>
-            <td>
-               <span class="motion">This house would legalize duels to the death.</span><br>
-               <span class="institution"> - Colgate IV 2010</span>
-            </td>
-         </tr>
-         
-         <tr class="last-row">
-            <td>
-               <span class="motion">This house would legalize duels to the death.</span><br>
-               <span class="institution"> - Colgate IV 2010</span>
-            </td>
-         </tr>
+      <table class="table table-striiped recent-motions">
+         <% @recent_rounds = recent_rounds %>
+         <% @recent_rounds.each { |r| %>
+            <tr>
+               <td>
+                  <span class="motion"><%= r.motion.first.wording %></span><br>
+                  <span class="institution"><%= "- " + r.tournament.name %></span>
+               </td>
+            </tr>
+         <% } %>
       </table>

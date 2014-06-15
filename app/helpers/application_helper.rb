@@ -19,5 +19,25 @@ module ApplicationHelper
       end
    end
 
+   #give 3 random but recent rounds - must have been launched and public
+   def recent_rounds
+      rounds= []; #return value
 
+      i = 0;
+      numRounds = Round.count;
+      potentials = Round.order(created_at: :desc).limit(100).to_a;
+      potentials.shuffle!;
+      #surely in 100 rounds we can find what we want
+      ###can fix this later to true for larger --- expand this foo later
+      
+      #keep searching until length is 3
+      while rounds.length < 3
+         if true #eventuall --> potentials[i].tournament.settings.public?
+            rounds.push(potentials[i]);
+         end
+         i = i + 1;
+      end
+
+      return rounds;
+   end
 end

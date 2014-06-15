@@ -11,11 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140614222521) do
+ActiveRecord::Schema.define(version: 20140615145309) do
 
   create_table "adjudicators", force: true do |t|
     t.integer  "user_id"
-    t.integer  "round_id"
+    t.integer  "room_draw_id"
     t.boolean  "chair"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -54,6 +54,23 @@ ActiveRecord::Schema.define(version: 20140614222521) do
     t.datetime "updated_at"
   end
 
+  create_table "room_draws", force: true do |t|
+    t.integer  "tournament_id"
+    t.integer  "round_id"
+    t.integer  "room_id"
+    t.integer  "og"
+    t.integer  "oo"
+    t.integer  "cg"
+    t.integer  "co"
+    t.integer  "first"
+    t.integer  "second"
+    t.integer  "third"
+    t.integer  "fourth"
+    t.integer  "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "rooms", force: true do |t|
     t.string   "name"
     t.string   "location"
@@ -66,17 +83,11 @@ ActiveRecord::Schema.define(version: 20140614222521) do
 
   create_table "rounds", force: true do |t|
     t.integer  "tournament_id"
-    t.integer  "round_num"
-    t.integer  "room_id"
-    t.integer  "og"
-    t.integer  "oo"
-    t.integer  "cg"
-    t.integer  "co"
-    t.integer  "first"
-    t.integer  "second"
-    t.integer  "third"
-    t.integer  "fourth"
+    t.integer  "motion_id"
+    t.string   "start_time"
+    t.string   "end_prep_time"
     t.integer  "status"
+    t.integer  "round_num"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
