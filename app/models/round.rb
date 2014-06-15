@@ -8,4 +8,19 @@ class Round < ActiveRecord::Base
    validates(:round_num, presence: true);
    validates(:status, presence: true);
    
+   #returns the start time of the round (start of prep)
+   def start_time
+      return "1530";
+   end
+
+   #returns amount of time passed in prep
+   #will end at 15:00
+   def prep_time_passed
+      return "7:34"
+   end
+
+   #returns time of prep time end
+   def prep_time_end
+      return "1545";
+   end
 end

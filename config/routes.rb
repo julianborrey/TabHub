@@ -9,6 +9,7 @@ TabSite::Application.routes.draw do
    resources :institutions, except: [:index]
    resources :tournaments, except: [:index]
    resources :teams, except: [:index]
+   resources :rounds, except: [:index]
 
    ### Static Pages ###
    match '/about',    to: 'static_pages#about',    via: 'get'

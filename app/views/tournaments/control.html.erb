@@ -1,0 +1,31 @@
+<% provide(:title,  @tournament.name + "| Control Panel") %>
+
+<div class="row-fluid tournament-page">
+   <div class="row-fluid">
+      <span style="float:right;"><b><%= link_to "Help", (tournaments_path + "/help") %></b></span>
+   </div>
+
+   <%= render('tournaments/title_shim'); %>
+   <%= render('tournaments/status_bar'); %>
+
+   <% if @tournament.live? %>
+      <%= render('tournaments/current_round_control'); %>
+      <%= render('tournaments/next_round_control'); %>
+   <% else %>
+      <div class="row-fluid">
+         <div class="startButtons">
+            <span class="startButton"><%= button_to "Open Registration", (tournament_path(@tournament) + "control/open"),
+                                          class: "btn btn-info", method: :post %></span>
+
+            <% startIssues = @tournament.check_for_start(); %>
+            <span class="startButton" style="margin-left:20px"><%= button_to "Start Tournament", 
+               (tournament_path(@tournament) + "/control/start"), class: "btn btn-primary", method: :post %></span>
+            <!-- also need to put in the thing to display the issues is any, dissallows continuing -->
+
+         </div>
+      </div>
+   <% end %>
+   
+   <%= render('tournaments/settings'); %>
+   <%= render('tournaments/logistics'); %>
+</div>

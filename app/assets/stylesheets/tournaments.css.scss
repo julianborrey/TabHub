@@ -129,3 +129,39 @@
       font-weight: bold;
    }
 }
+
+
+/* Control Panel */
+
+.startButtons {
+   width: 400px;
+   margin-left: auto;
+   margin-right: auto;
+}
+
+.startButton {
+   display: inline-block;
+}
+
+.settingsBox {
+   margin-left: auto;
+   margin-right: auto;
+   width: 900px;
+   border: 1px solid #ddd;
+   padding: 20px;
+   margin-bottom: 40px;
+
+   thead {
+      font-weight: bold;
+   }
+}
+
+.qIcon {
+   margin-left: 3px;
+}
+
+.tickIcon {
+   margin-right: auto;
+   margin-left: auto;
+   display: flex;
+}

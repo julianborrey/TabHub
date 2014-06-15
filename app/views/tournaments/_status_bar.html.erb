@@ -20,7 +20,7 @@
          
       <% if @live %>
          <td class="info-name">Current Round:</td>
-         <td class="info-value"><%= @tournament.get_current_round %></td>
+         <td class="info-value"><%= @tournament.current_round.round_num %></td>
       <% end %>
       </tr>
    </table>

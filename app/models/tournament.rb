@@ -76,8 +76,12 @@ class Tournament < ActiveRecord::Base
       return status;
    end
 
-   def get_current_round
-      return "4";
+   def current_round
+      return Round.first;
+   end
+
+   def next_round
+      return Round.find(2);
    end
    
    #return current topic or "" if there is none
@@ -96,6 +100,22 @@ class Tournament < ActiveRecord::Base
       }
       return false;
    end
+
+   ### format change spike! ###
+   ### lets make this array one day
+   ##### and lets alias mem1 and mem2 to simply .users
+   #returns the team of user in this tournament
+   def team_of(user)
+      team = "";
+      teams = self.team.to_a;
+      teams.each { |t|
+         if t.member_1 == user.id || t.member_2.user.id
+            team = t.name;
+            return team;
+         end
+      }
+      return team;
+   end
    
    #returns array of numbers which corresponds to the number of points in each round
    def debater_stats(user)
@@ -105,5 +125,10 @@ class Tournament < ActiveRecord::Base
       points_each_round = [1, 3, 2, 3, 0, 2, 4, 1, 3, 1, 3,2,3,1,2,32,1,3,21];
       
       return points_each_round;
+   end
+   
+   #returns array of issues with starting the tournament now
+   def check_for_start
+      return [];
    end
 end

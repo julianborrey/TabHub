@@ -1,0 +1,17 @@
+<div class="row-fluid">
+   <div class="settingsBox">
+      <% @next_round = @tournament.next_round %>
+      <p><b><a href="<%= round_path(@next_round) %>">Next Round</a></b><p>
+      <p><b>Motion:</b><%= " " + @next_round.motion.first.wording %></p>
+      
+      <table class="table", style="margin-bottom:0px">
+         <thead><tr>
+            <td><%= button_to "Make Draw", (tournament_path(@tournament) + "/control/make-draw"), 
+                    class: "btn btn-primary", method: :post %></td>
+            <td><%= button_to "See Draw", round_path(@next_round), class: "btn btn-info", method: :post %></td>
+            <td><%= button_to "Release Draw", (round_path(@next_round) + "/release"), class: "btn btn-warning", method: :post %></td>
+            <td><%= button_to "Start Round", (round_path(@next_round) + "/start"), class: "btn btn-danger", method: :post %></td>
+         </tr></thead>
+      </table>
+   </div>
+</div>

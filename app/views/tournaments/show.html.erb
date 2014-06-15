@@ -19,8 +19,8 @@
       </div>
       
       <div class="span10">
-         <% @topic = @tournament.current_topic %>
-         <% if !@topic.empty? %>
+         <% @current_round = @tournament.current_round %>
+         <% if !@current_round.nil? %>
             <%= render('tournaments/current_round'); %>
          <% end %>
       

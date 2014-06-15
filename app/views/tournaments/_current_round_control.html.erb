@@ -1,0 +1,23 @@
+<!-- I think we will unify this and the other current_round shim -->
+
+<div class="row-fluid">
+   <div class="settingsBox">
+      <% @current_round = @tournament.current_round %>
+      <p><b><a href="<%= round_path(@current_round) %>">Current Round</a></b><p>
+      <p><b>Motion:</b><%= " " + @current_round.motion.first.wording %></p>
+      
+      <table class="table", style="margin-bottom:0px">
+         <thead><tr>
+            <td>Start Time</td>
+            <td>Prep Time Passed (refresh page for update)</td>
+            <td>End of Prep Time</td>
+         </tr></thead>
+
+         <tr>
+            <td><%= @current_round.start_time %></td>
+            <td><%= @current_round.prep_time_passed %></td>
+            <td><%= @current_round.prep_time_end %></td>
+         <tr>
+      </table>
+   </div>
+</div>

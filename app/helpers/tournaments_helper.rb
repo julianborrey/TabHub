@@ -32,4 +32,13 @@ module TournamentsHelper
       return user_list;
    end
 
+   #return an hash of arrays which give role and positions of such
+   ### we will get to this...its a lot of work
+   def tourn_listing_wrapper(user)
+      user_list = get_user_tourns(user); #get the list
+      
+      listing = {}; #rtn value
+      
+   end
+
 end

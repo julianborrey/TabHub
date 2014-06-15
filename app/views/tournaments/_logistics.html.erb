@@ -1,0 +1,37 @@
+<div class="row-fluid">
+   <div class= "settingsBox" style="margin-bottom:60px">
+      <p><b>Logistics</b> - click lists below to edit.</p>
+      
+      <table class="table">
+         <thead><tr>
+            <td><b>Attribute</b></td>
+            <td><b>Count</b></td>
+         </tr><thead>
+         
+         <tr>
+            <td><%= link_to "Tab Room", (tournament_path(@tournament) + "/control/tab-room") %><i class="icon-question-sign qIcon"></i></td>
+            <td>16</td>
+         </tr>
+         <tr>
+            <td><%= link_to "Rounds", (tournament_path(@tournament) + "/control/rounds") %><i class="icon-question-sign qIcon"></i></td>
+            <td>9</td>
+         </tr>
+          <tr>
+            <td><%= link_to "Rooms", (tournament_path(@tournament) + "/rooms") %><i class="icon-question-sign qIcon"></i></td>
+            <td>32</td>
+         </tr>
+         <tr>
+            <td><%= link_to "Ballots", (tournament_path(@tournament) + "/control/ballots") %><i class="icon-question-sign qIcon"></i></td>
+            <td>78</td>
+         </tr>
+         <tr>
+            <td><%= link_to "Teams", (tournament_path(@tournament) + "/teams") %><i class="icon-question-sign qIcon"></i></td>
+            <td>358</td>
+         </tr>
+         <tr>
+            <td><%= link_to "Judges", (tournament_path(@tournament) + "/judges") %><i class="icon-question-sign qIcon"></i></td>
+            <td>211</td>
+         </tr>
+      </table>
+   </div>
+</div>
