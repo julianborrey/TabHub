@@ -1,23 +1,29 @@
 module TournamentsHelper
 
-   def get_user_attendence(user)
+   def get_user_tourns(user)
       if user.nil? #if not signed in
          return nil; #no user to be attending
       end
       
+      #get array of tournaments
+      tournament_list = [];
+      user.tournament_attendees.each { |e|
+         tournament_list.push(Tournament.find(e.tournament_id));
+      }
+
       user_list = {past: [], present: [], future: []};
 
       #get most current if exists
-      user.tournament_attendees.each { |t| #check each tournament
-         if t.tournament.status == GlobalConstants::TOURNAMENT_STATUS[:past] #if in the past
+      tournament_list.each { |t| #check each tournament
+         if t.status == GlobalConstants::TOURNAMENT_STATUS[:past] #if in the past
             user_list[:past].push(t);
          end
          
-         if t.tournament.status == GlobalConstants::TOURNAMENT_STATUS[:present] #if currently attneding one
+         if t.status == GlobalConstants::TOURNAMENT_STATUS[:present] #if currently attneding one
             user_list[:present].push(t);
          end
          
-         if t.tournament.status == GlobalConstants::TOURNAMENT_STATUS[:future] #if coming up
+         if t.status == GlobalConstants::TOURNAMENT_STATUS[:future] #if coming up
             user_list[:future].push(t);
          end
       }

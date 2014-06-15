@@ -1,13 +1,28 @@
 <div class="row-fluid">
    <div class="statsBox">
-      <div class="statsBoxTitle"><p><b>Your Stats</b></p></div>
-
+      <% @c_team = @user.current_team; %>
+      <div class="statsBoxTitle">
+         <p>
+            <a class="tournStatsLink" href="<%= tournament_path(@tournament) + "/stats" %>">Full Tournament Stats</a>
+            <b style="margin-left:230px;">Your Stats</b>
+            <a class="teamDrawsLink" href="<%= team_path(@c_team) %>">See Your Draws</a>
+         </p>
+      </div>
+      
+      <table class="table">
+         <tr>
+            <td><%= @c_team.name %></td>
+            <td>Total Points: <b><%= @c_team.points %></b></td>
+            <td>Team Rank (by points): <b><%= @c_team.rank_by_only_points %></b></td>
+         </tr>
+      </table>
+      
       <% stats = @tournament.debater_stats(@user) %>
       <% if !stats.empty? %>
          <table class="table">
             <tr>
                <td><b>Round</b></td>
-               <% for i in 1..stats.length %>
+               <% for i in 1..(stats.length) %>
                   <td><%= i %></td>
                <% end %>
             </tr>

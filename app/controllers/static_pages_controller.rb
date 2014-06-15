@@ -14,7 +14,7 @@ class StaticPagesController < ApplicationController
 
       @tourn_list = nil;
       if !@user.nil?
-         @tourn_list = get_user_tourns(@user);
+         @tourn_list = get_user_attendence(@user);
       end
    end
    

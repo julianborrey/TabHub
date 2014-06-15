@@ -1,0 +1,43 @@
+<% provide(:title,  @tournament.name + " | Statistics") %>
+
+<div class="row-fluid tournament-page">
+   
+   <%= render('tournaments/title_shim'); %>
+   
+
+   <table class="table infoTable">
+      <tr>
+         <td>Total Number of Rounds:</td>
+         <td><%= @tournament.get_num_rounds %></td>
+         <td>Number of Rounds Completed:</td>
+         <td><%= @tournament.num_rounds_complete %></td>
+      </tr>
+      <tr>
+         <td>Number of Attendees:</td>
+         <td><%= @tournament.count_people %></td>
+         <td>Number of Teams:</td>
+         <td><%= @tournament.count_teams %></td>
+      </tr>
+   </table>
+   
+   <table class="table attendeeTable">
+      <thead><tr>
+         <td>Rank (by points only)</td>
+         <td>Team</td>
+         <td>Institution</td>
+         <td>Points</td>
+      </tr></thead>
+      
+      <% i = 1; %>
+      <% @ranked_list.each { |t| %>
+         <tr>
+            <td><%= i.to_s %></td>
+            <td><a href="<%= team_path(t) %>"><%= t.name %></a></td>
+            <td><a href="<%= institution_path(t.institution) %>"><%= t.institution.short_name %></a></td>
+            <td><%= t.points %></td>
+         </tr>
+      <% i = i + 1; %>
+      <% } %>
+   </table>
+   
+</div>

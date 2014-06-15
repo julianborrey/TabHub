@@ -10,7 +10,7 @@
          <td>Institution</td>
          <td>Role</td>
       </tr></thead>
-
+      
       <% @tournament.tournament_attendee.to_a.each { |a| %>
          <tr>
             <% u = User.find(a.user_id); %>

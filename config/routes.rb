@@ -28,6 +28,7 @@ TabSite::Application.routes.draw do
    ### Tournament Offshoots ###
    match '/tournaments/:id/control',   to: 'tournaments#control', via: 'get'
    match '/tournaments/:id/attendees', to: 'tournaments#attendees', via: 'get' 
+   match '/tournaments/:id/stats',     to: 'tournaments#stats', via: 'get'
 
    #match '/pastmotions', to: 'static_pages#pastmotions', via: 'get'
 end

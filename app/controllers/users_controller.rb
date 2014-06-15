@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+   include TournamentsHelper
+   
    before_action :signed_in_user,  only: [:show, :destroy, :edit, :update] 
    before_action :correct_user,    only: [:edit, :update]
    before_action :signed_out_user, only: [:new, :create]
@@ -10,12 +12,17 @@ class UsersController < ApplicationController
    def show
       @user = User.find(params[:id])
       
-      #get past tournaments data
-      attend_list = TournamentAttendee.where("user_id = ?", @user.id);
-      
-      @tour_list = []; #put each tournament into a list from relationship table
-      attend_list.each { |e| @tour_list.push(Tournament.find(e.tournament_id)) }
-      @tour_list.sort! { |x,y| y.start_time <=> x.start_time } #descending time order
+      #they will have settings of privacey that we need to check
+      #4 modes. private, public to other debaters, public to others of my institution, public to the world
+      #for now not implemented
+      #implement here and views will do nothing if [] --> empty array
+      #only one check, not multiple which could screw up, also best here to lower processing time
+      #in implementation we need to see if the tournament wanted to be public ####################
+
+      @tour_list = get_user_attendence(@user);
+      @tour_list[:future].sort!  { |x,y| y.tournament.start_time <=> x.tournament.start_time } #descending time order
+      @tour_list[:present].sort! { |x,y| y.tournament.start_time <=> x.tournament.start_time } #descending time order
+      @tour_list[:past].sort!    { |x,y| y.tournament.start_time <=> x.tournament.start_time } #descending time order
    end
    
    def new

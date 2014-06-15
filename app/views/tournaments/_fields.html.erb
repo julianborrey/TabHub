@@ -2,13 +2,16 @@
    <span class="add-on">Tournament Name</span>
    <%= f.text_field(:name, {class: "span2", value: "#{@tournament.name}"}); %>
 </div>
+<div style="margin-top:-5px; margin-bottom:20px">
+   Please include the year in the tournament name.
+</div>
 
 <div class="input-prepend">
    <span class="add-on">Location</span>
    <%= f.text_field(:location, {class: "span2", value: "#{@tournament.location}"}); %>
 </div>
 
-<div>
+<div style="margin-top:20px">
    Note that the times should be in the timezone of the location.
 </div>
 
@@ -24,5 +27,9 @@
 
 <div class="remarks-box">
    <span class="remarks-title">Remarks/Notes - This is where you can put general information.</span>
-   <%= f.text_field(:remarks, {class: "", value: "#{@tournament.end_time}"}); %>
+   <%= f.text_area(:remarks, {class: "remarksInputBox", value: "#{@tournament.remarks}"}); %>
+</div>
+
+<div style="margin-top:20px">
+   Note that this tournament will be made under your institution.
 </div>

@@ -20,21 +20,49 @@
       </div>
    </div>
    
-
+   <% if !@tour_list[:present].empty? %>
    <div class="row">
-      <h3>Past Tournaments</h3>
-      
+      <h3>Current Tournaments</h3> 
       <table class="table table-striped">
-         <% @tour_list.each { |t| %>
+         <% @tour_list[:present].each { |t| %>
             <tr class="last-row">
-               <td><%= t.name       %></td>
-               <td><%= t.location   %></td>
-               <td><%= t.start_time %></td>
+               <td><a href="<%= tournament_path(t.tournament_id) %>"><%= t.tournament.name %></a></td>
+               <td><%= t.tournament.location   %></td>
+               <td><%= t.tournament.start_time %></td>
+               <td><%= GlobalConstants::TOURNAMENT_ROLES_STR[t.role].capitalize %></td>
             </tr>
          <% } %>
       </table>
-
-
    </div>
+   <% end %>
    
+   <% if !@tour_list[:future].empty? %>
+   <div class="row">
+      <h3>Future Tournaments</h3> 
+      <table class="table table-striped">
+         <% @tour_list[:future].each { |t| %>
+            <tr class="last-row">
+               <td><a href="<%= tournament_path(t.tournament_id) %>"><%= t.tournament.name %></a></td>
+               <td><%= t.tournament.location   %></td>
+               <td><%= t.tournament.start_time %></td>
+               <td><%= GlobalConstants::TOURNAMENT_ROLES_STR[t.role].capitalize %></td>
+            </tr>
+         <% } %>
+      </table>
+   </div>
+   <% end %>
+   
+   <div class="row">
+      <h3>Past Tournaments</h3> 
+      <table class="table table-striped">
+         <% @tour_list[:past].each { |t| %>
+            <tr class="last-row">
+               <td><a href="<%= tournament_path(t.tournament_id) %>"><%= t.tournament.name %></a></td>
+               <td><%= t.tournament.location   %></td>
+               <td><%= t.tournament.start_time %></td>
+               <td><%= GlobalConstants::TOURNAMENT_ROLES_STR[t.role].capitalize %></td>
+            </tr>
+         <% } %>
+      </table>
+   </div>
 </div>

@@ -8,12 +8,20 @@ class TournamentsController < ApplicationController
    
    def create
       @tournament = Tournament.new(tournament_params);
+      u = current_user;
+      @tournament.user_id = u.id;
+      @tournament.institution_id = u.institution_id;
+      @tournament.status = GlobalConstants::TOURNAMENT_STATUS[:future]; #starts not begun (naturally)
 
       if @tournament.save()
+         #need to set this person as authorized at least
+         TournamentAttendee.new(tournament_id: @tournament.id, user_id: u.id,
+                                role: GlobalConstants::TOURNAMENT_ROLES[:tab_room]).save;
+         
          flash[:success] = "Tournament Created!"
-         redirecit_to(tournament_path(@tournament));
+         redirect_to(tournament_path(@tournament));
       else
-         render 'tournament/new';
+         render 'tournaments/new';
       end
    end
    
@@ -48,6 +56,12 @@ class TournamentsController < ApplicationController
    #attendees page function
    def attendees
       @tournament = Tournament.find(params[:id]);
+   end
+
+   #stats page method
+   def stats
+      @tournament = Tournament.find(params[:id]);
+      @ranked_list = @tournament.get_ranked_list_from_only_points(); #sort teams in desending order
    end
 
    private

@@ -14,7 +14,7 @@
 
          <ul class="dropdown-menu">
             <% if signed_in? && current_user.in_tournament?%>
-               <li><%= link_to "Current Tournament", tournament_path(current_user.current_tournaments.first) %></li>
+               <li><%= link_to "Current Tournament", tournament_path(get_user_attendence(current_user)[:present].first.tournament_id) %></li>
                <!-- feature to add...would be a an '!' symbol to say you are currently in tourns at once if such occured...
                link to page to rectify this issue -->
             <% end %>

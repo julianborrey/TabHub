@@ -2,12 +2,13 @@ class Tournament < ActiveRecord::Base
    belongs_to(:user);        #host of the tournament online
    belongs_to(:institution); #uni host of the tournament
 
-   has_many(:tournament_attendee); #table matching users to tournaments
-   has_many(:team);
+   has_many(:tournament_attendees); #table matching users to tournaments
+   has_many(:teams);
    has_many(:round);
    has_many(:motion);
    
    validates(:name, presence: true, length: {maximum: 100});
+   validates(:name, uniqueness: true); 
    validates(:institution_id, presence: true);
    validates(:location, presence: true);
    validates(:start_time, presence: true);
@@ -52,6 +53,11 @@ class Tournament < ActiveRecord::Base
    def get_num_rounds
         #fill in when do rounds
         return "9";
+   end
+
+   #returns number of rounds complete so far
+   def num_rounds_complete
+      return "4";
    end
    
    #true if tournament is currently happening
@@ -130,5 +136,23 @@ class Tournament < ActiveRecord::Base
    #returns array of issues with starting the tournament now
    def check_for_start
       return [];
+   end
+
+   #returns number of attendees
+   def count_people
+      #need to watch out for poeple with duplicate roles
+      attendees = self.tournament_attendees.to_a;
+      attendees.uniq! { |a| a.user_id };
+      return attendees.count;
+   end
+
+   #return number of teams
+   def count_teams
+      return self.teams.count;
+   end
+
+   #gives ranked list of teams
+   def get_ranked_list_from_only_points
+      return self.teams.sort { |x,y| y.points <=> x.points };
    end
 end

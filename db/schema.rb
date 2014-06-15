@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140615145309) do
+ActiveRecord::Schema.define(version: 20140615180549) do
 
   create_table "adjudicators", force: true do |t|
     t.integer  "user_id"
@@ -96,8 +96,8 @@ ActiveRecord::Schema.define(version: 20140615145309) do
     t.string   "name"
     t.integer  "institution_id"
     t.integer  "tournament_id"
-    t.integer  "member_1"
-    t.integer  "member_2"
+    t.integer  "member_1_id"
+    t.integer  "member_2_id"
     t.float    "total_speaks"
     t.integer  "points"
     t.datetime "created_at"

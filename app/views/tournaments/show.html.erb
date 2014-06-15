@@ -4,7 +4,7 @@
    
    <%= render('tournaments/title_shim'); %>
    
-   <% if @tournament.is_authorized?(@user) %>  
+   <% if @user.in_tab_room?(@tournament) %>  
       <div class="row-fluid ctrl-btn-row">
          <%= link_to "Tournament Control Panel", (tournament_path(@tournament) + "/control"),
              class: "btn btn-warning" %>

@@ -26,19 +26,20 @@
      <br>
       
       <table class="table">
-         <% if !@tourn_list[:current].empty? %>
-            <% @tourn_list[:current].each { |t| %>
+         <% if !@tourn_list[:present].empty? %>
+            <tr>
+                 <td><span class="list-title">Currrently at:</span></td>
+            </tr>
+            <% @tourn_list[:present].each { |t| %>
               <tr class="space-row"></tr>
               <tr>
-                 <td><span class="list-title">Currrently at:</span></td>
-              </tr>
-              <tr>
                  <td><span class="stat-name">Tournament:</span></td>
-                 <td><span class="stat-value"><%= t.name %></span></td>
+                 <td><span class="stat-value"><%= t.tournament.name %></span></td>
               </tr>
               <tr class="last-row">
+                 <!-- this needs to be expanded to "repping/Role" -->
                  <td><span class="stat-name">Representing:</span></td>
-                 <td><span class="stat-value"><%= t.team_of(@user) %></span></td>
+                 <td><span class="stat-value"><%= t.tournament.team_of(@user) %></span></td>
               </tr>
             <% } %>
          <% end %>
@@ -61,14 +62,13 @@
    
    <div class="span9" style="padding-left:60px">
       <% if @user.in_tournament? %>
-         <% if !@user.round_now? %>
-            <% puts(''); #render('tournaments/_user_info'); %>
-         <% else %>
+         <% if @user.round_now? %>
             <%= render('layouts/current_round'); %>
          <% end %>
+      <% else %>      
+         <%= render('layouts/upcoming'); %>
       <% end %>
-         
-      <%= render('layouts/upcoming'); %>
+
       <%= render('static_pages/buttons_and_feed'); %>
    </div>
 </div>

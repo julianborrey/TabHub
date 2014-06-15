@@ -1,20 +1,49 @@
 class Team < ActiveRecord::Base
    belongs_to(:tournament);
    belongs_to(:institution);
-   belongs_to(:user);
-
+   
+   belongs_to(:member_1, class_name: 'User');
+   belongs_to(:member_2, class_name: 'User');
+   #make this function to get both members in one
+   def users
+      return [member_1, member_2];
+   end
+   
    validates(:name, presence: true, length: {maximum: 50});
    validates(:institution_id, presence: true); #if = 0, open team
    validates(:tournament_id, presence: true);
    validates(:total_speaks, presence: true);
    validates(:points, presence: true);
    
-   #could make this better by linking the databases probably
-   ### returns an array of the members in the team
-   def members
-      m = []; #rtn value
-      m.push(nil || User.find(self.member_1));
-      m.push(nil || User.find(self.member_2));
-      return m;
+   #returns true for the team being in an active tournament
+   def current?
+      return self.tournament.live?
+   end
+   
+   #returns the team's rank at the teams tournament
+   def rank_by_only_points
+      list = self.tournament.get_ranked_list_from_only_points.to_a;
+      #return (list.index(self) + 1);
+      #this was a nice idea, but it doesn't work because of ties
+      
+      i = 0;
+      current_rank = 1;
+      previous_points = -1;
+      number_tied_teams = 0;
+      while list[0] != self #go through list until we find us
+         #if points of team before was the same, no rank increase
+         #but we count the number of teams on same points
+         #then add them all at once to the rank
+         if (previous_points > list[0].points) || (previous_points == -1)
+            current_rank = current_rank + number_tied_teams + 1;
+            previous_points = list[0].points;
+            number_tied_teams = 0;
+         else #in this case we had teams on same num points
+            number_tied_teams = number_tied_teams + 1;
+         end
+         i = i + 1;
+      end
+
+      return current_rank;
    end
 end

@@ -6,9 +6,17 @@
 
 class User < ActiveRecord::Base
    belongs_to(:institution);
+   
+   has_many(:team_1, class_name: 'Team', foreign_key: 'member_1_id');
+   has_many(:team_2, class_name: 'Team', foreign_key: 'member_2_id');
+   #getting all teams from user
+   def teams
+      return team_1 + team_2;
+   end
+   
    has_many(:tournaments);
    has_many(:tournament_attendees); #which tournaments the user attended
-   
+
    ### Code to ensure that certain attributes constrainted ###
    #ensure that we are going to input an all lowercase email 
    #(helps with uniqueness check)
@@ -115,6 +123,16 @@ class User < ActiveRecord::Base
          end
       }
       return false;
+   end
+
+   #returns the current Team of the user
+   def current_team
+      self.teams.each { |t|
+         if t.current?
+            return t;
+         end
+      }
+      return nil;
    end
    
    def User.new_remember_token
