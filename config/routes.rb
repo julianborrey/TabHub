@@ -1,6 +1,5 @@
 TabSite::Application.routes.draw do
    
-  get "teams/new"
    #home page
    root 'static_pages#home'
    
@@ -26,7 +25,8 @@ TabSite::Application.routes.draw do
    #^ this is just an additional path to it
    
    ### Tournament Offshoots ###
-   match '/tournaments/:id/attendees', to: 'tournaments#attendees', via: 'get'
-   
+   match '/tournaments/:id/control',   to: 'tournaments#control', via: 'get'
+   match '/tournaments/:id/attendees', to: 'tournaments#attendees', via: 'get' 
+
    #match '/pastmotions', to: 'static_pages#pastmotions', via: 'get'
 end

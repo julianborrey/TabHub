@@ -1,6 +1,6 @@
 class TournamentsController < ApplicationController
-   before_action :signed_in_user, only: [:show, :new, :create]
-   #before_action :authorized_for_tournament, only: [:destroy, :edit, :update]
+   before_action :signed_in_user, only: [:show, :new, :create];
+   before_action :authorized_for_tournament, only: [:destroy, :edit, :update, :control];
    
    def new
       @tournament = Tournament.new();
@@ -40,6 +40,11 @@ class TournamentsController < ApplicationController
    def destroy
    end
    
+   #control panel page
+   def control
+      @tournament = Tournament.find(params[:id]);
+   end
+
    #attendees page function
    def attendees
       @tournament = Tournament.find(params[:id]);
@@ -49,6 +54,12 @@ class TournamentsController < ApplicationController
       def tournament_params
          params.require(:tournament).permit(:name, :institution_id, :location, :start_time, :end_time, :remarks);
          #the :institution_id may come from selecting from a list (convenor does this) or by the users :id
+      end
+
+      #checks that the user is authorized to view ctrlPanel or edit tournament (tabRoom power)
+      def authorized_for_tournament
+         @t = Tournament.find(params[:id]);
+         redirect_to tournament_path(@t) unless current_user.in_tab_room?(@t);
       end
    
 end

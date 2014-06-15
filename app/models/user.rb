@@ -105,6 +105,17 @@ class User < ActiveRecord::Base
       #something like the above, but also goes into finding the tournament and then cheking if any rounds are active.
       return false;
    end
+
+   #returns true is user in tabroom of tournament t
+   def in_tab_room?(t)
+      attendee_list = self.tournament_attendees.to_a;
+      attendee_list.each { |e|
+         if (e.tournament_id == t.id) && (e.role == GlobalConstants::TOURNAMENT_ROLES[:tab_room])
+            return true;
+         end
+      }
+      return false;
+   end
    
    def User.new_remember_token
       SecureRandom.urlsafe_base64
