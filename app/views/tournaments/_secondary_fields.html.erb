@@ -94,7 +94,7 @@
             <% choice_map = [["Open", 1], ["Visible to account holders", 2],
                             ["Visible only to participants", 3]];%>
             <% selected = g.object.privacy %>
-            <%= g.select(:privacy, options_for_select(choice_map,selected), {}, {style: "height:31px"}); %>
+            <%= g.select(:privacy, options_for_select(choice_map, selected), {}, {style: "height:31px"}); %>
          </span>
          
          <i class="icon-question-sign" id="privacyInfo-btn"></i>
@@ -127,7 +127,7 @@
       <span class="input-prepend" style="margin-left:18px">
          <span class="add-on" style="height:20px;padding-top:5px">Attendees List</span>
             <% choice_map = [["Open", 1], ["Visible to account holders", 2],
-                             ["Visible to participants", 3], ["Closed", 4]];%>
+                             ["Visible to participants", 3], ["Closed", 4]]; %>
             <% selected = g.object.attendees %>
             <%= g.select(:attendees, options_for_select(choice_map, selected), {}, {style: "height:31px"}); %>
          </span>

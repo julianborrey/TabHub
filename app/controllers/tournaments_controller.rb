@@ -77,7 +77,7 @@ class TournamentsController < ApplicationController
       def tournament_params
          params.require(:tournament).permit(:name, :institution_id, :location, 
          :start_time, :end_time, :remarks, tournament_setting_attributes: 
-         [:motion, :tab, :registration, :privacy, :attendess, :teams]);
+         [:motion, :tab, :registration, :privacy, :attendees, :teams]);
          #the :institution_id may come from selecting from a list (convenor does this) or by the users :id
       end
       
