@@ -1,7 +1,24 @@
 class TournamentsController < ApplicationController
+   include TournamentsHelper
+   
    before_action :signed_in_user, only: [:show, :new, :create];
    before_action :authorized_for_tournament, only: [:destroy, :edit, :update, :control];
    
+   
+   def index
+      #make a has of lists of tournaments by region
+      @list = {};
+      @year_sum = 0;
+      
+      #we are entirely generalized off the globalconstants module
+      GlobalConstants::TOURNAMENT_REGIONS.each { |key,val|
+         @list[key] = Tournament.where(region: val).to_a;
+         @year_sum = @year_sum + @list[key].count; #count up the number of tournaments
+         #soon we will add year to the "where" filter above
+         #for seperate index pages by year
+      }
+   end
+
    def new
       @tournament = Tournament.new();
       @tournament.tournament_setting = TournamentSetting.new();
@@ -72,6 +89,20 @@ class TournamentsController < ApplicationController
       @tournament = Tournament.find(params[:id]);
       @ranked_list = @tournament.get_ranked_list_from_only_points(); #sort teams in desending order
    end
+   
+   #tab_room page shows authorized users
+   def tab_room
+      @tournament = Tournament.find(params[:id]);
+      @tab_room_attendee_array = TournamentAttendee.where(tournament_id: @tournament.id, 
+                                 role: GlobalConstants::TOURNAMENT_ROLES[:tab_room]);
+      @temp_email = "";
+   end
+   
+   #rednders the rooms page
+   def rooms
+      @tournament = Tournament.find(params[:id]);
+      @room       = Room.new();
+   end
 
    private
       def tournament_params
@@ -81,10 +112,4 @@ class TournamentsController < ApplicationController
          #the :institution_id may come from selecting from a list (convenor does this) or by the users :id
       end
       
-      #checks that the user is authorized to view ctrlPanel or edit tournament (tabRoom power)
-      def authorized_for_tournament
-         @t = Tournament.find(params[:id]);
-         redirect_to tournament_path(@t) unless current_user.in_tab_room?(@t);
-      end
-   
 end

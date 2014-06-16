@@ -1,0 +1,43 @@
+<% provide(:title,  "Tournaments") %>
+
+<div class="row-fluid tournament-page">
+   
+   <!-- when we get enuogh, we can do this -->
+   <% #render('tournaments/year_of_tournaments'); %>
+   
+   <div class="tourIndexTitle">
+      <h1>Full Tournaments List</h1><br>
+      <p>Total Count: <b><%= @year_sum %></b></p>
+   </div>
+   
+   <% @list.each { |key,val| %>
+      <% if !(val.nil? || val.empty?) %>
+      <div class="tournByRegion">
+         <h3><%= key.to_s.titleize %></h3>
+         
+         <table class="table table-striped">
+            <thead><tr>
+               <td>Tournament Name</td>
+               <td>Host Institution</td>
+               <td>Location</td>
+               <td>Start Time</td>
+               <td>Status</td>
+            </tr></thead>
+
+            <% val.each { |t| %>
+               <tr>
+                  <td><a href="<%= tournament_path(t) %>"><%= t.name %></a></td>
+                  <td><a href="<%= institution_path(t.institution) %>"><%= t.institution.short_name %></a></td>
+                  <td><%= t.location %></td>
+                  <td><%= t.start_time %></td>
+                  
+                  <% stat = t.get_status %>
+                  <td style="color:<%= stat.keys.first %>"><%= stat.values.first %></td>
+               </tr>
+            <% } %>
+         </table>
+      </div>
+      <% end %>
+   <% } %>
+    
+</div>

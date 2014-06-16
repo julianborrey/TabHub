@@ -9,7 +9,7 @@
    <div class="oneSetting">
          <span class="input-prepend" style="margin-left:18px">
             <span class="add-on" style="height:20px;padding-top:5px">
-               <%= GlobalConstants::SETTINGS_TITLES[s[0]].delete(' '); %>
+               <%= GlobalConstants::SETTINGS_TITLES[s[0]] %>
             </span>
             
             <% choice_map = GlobalConstants::SETTINGS_VALUES[s[0]].map { |key,val| [key, val] }; %>

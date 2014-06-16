@@ -1,0 +1,58 @@
+<% provide(:title,  @tournament.name + " | Rooms List") %>
+
+<div class="row-fluid tournament-page">
+   
+   <%= render('tournaments/title_shim'); %>
+   
+   <div class="tableTitle">
+      <h3>Debate Rooms List</h3>
+      <a href="<%= tournament_path(@tournament) + '/control'%>">back to control panel</a>
+   </div>
+
+   <table class="table attendeeTable">
+      <thead><tr>
+         <td>Name</td>
+         <td>Location</td>
+      </tr></thead>
+      
+      <% @tournament.institution.rooms.each { |r| %>
+         <tr>
+            <td><%= r.name %></td>
+            <td><%= r.location %></td>
+         </tr>
+      <% } %>
+      
+      <tr>
+         <td><p id="addUserBtn">Add Room</td>
+         <td></td>
+      </tr>
+   </table>
+   
+   <div class="newTabbieForm" id="tabRoomForm" 
+      <% if @room.errors.empty? %>
+         style="display:none;"
+      <% end %>
+   >  
+      
+      <%= form_for(@room) do |f| %>
+         <% puts("here is room: " + @room.to_json ); %>
+         <span>Room Name: <%= f.text_field(:name, style: "height:14px; margin-bottom:0px; width:250px; margin-right:20px;") %></span>
+         <span>Location:  <%= f.text_field(:location,  style: "height:14px; margin-bottom:0px; width:250px;") %></span>
+         
+         <div style="margin-top:20px;">
+            Remarks:    <%= f.text_area(:remarks,    style: "width:598px; margin-bottom:0px; margin-left: 21px;") %>
+         </div>
+         <%= hidden_field_tag 'institution_id', @tournament.institution.id %>
+         <%= hidden_field_tag 'tournament_id', @tournament.id %>
+         <%= f.submit "Add", {class: "btn newTabbieBtn", style: "margin-top: -39px; float: right"} %>
+         <%= render('shared/error_messages', object: f.object); %>
+      <% end %>
+      
+      <script>
+         $("#addUserBtn").on("click", function() {
+            $("#tabRoomForm").toggle();
+         });
+      </script>
+   </div>
+   
+</div>

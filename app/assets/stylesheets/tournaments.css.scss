@@ -157,6 +157,31 @@
 }
 
 
+/* index page */
+
+.tourIndexTitle {
+   width: 575px;
+   margin-left: auto;
+   margin-right: auto;
+   margin-top: 30px;
+   margin-bottom: 40px;
+   
+   p {
+      text-align: center;
+   }
+}
+
+.tournByRegion {
+   width: 900px;
+   margin-left: auto;
+   margin-right: auto;
+   margin-bottom: 50px;
+
+   h3 { 
+   }
+}
+
+
 /* Control Panel */
 
 .startButtons {
@@ -207,6 +232,34 @@
    padding: 7px;
    font-weight: normal;
 }
+
+
+/* /control/tab-room */
+
+.tableTitle {
+   text-align: center;
+   margin-bottiom: 40px; 
+}
+
+#addUserBtn {
+   color: blue;
+   &:hover {
+      text-decoration: underline;
+   }
+}
+
+.newTabbieForm {
+   width: 785px;
+   margin-left: auto;
+   margin-right: auto;
+   margin-top: -50px;
+   //display: none; //sometimes no
+}
+
+.newTabbieBtn {
+   margin-left: 216px;
+}
+
 
 /* _tournament_user_stats.html.erb */
 

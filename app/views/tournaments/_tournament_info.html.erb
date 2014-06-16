@@ -11,15 +11,21 @@
             <a href="<%= institutions_path(@tournament.institution.id)%>">
             <%= @tournament.get_host_name %></a>
          </td>
+
          <td class="info-name">Location:</td>
          <td class="info-value"><%= @tournament.location %></td>
       </tr></thead>
 
       <tr>
-         <td class="info-name">Format:</td>
+         <td class="info-name">Region:</td>
+         <td class="info-value"><%= GlobalConstants::TOURNAMENT_REGIONS_STR[@tournament.region].to_s.titleize %></td>
+        
+        <!-- we will get there...
+        <td class="info-name">Format:</td>
          <td class="info-value midCol">
             <a href="#linkToFormatrules">British Parliamentary</a>
          </td>
+         -->
          <td class="info-name">Rounds:</td>
          <td class="info-value"><%= @tournament.get_num_rounds %></td>
       </tr>
@@ -34,6 +40,6 @@
    
    <div class="remarksBox">
       <p><b>Information:</b></p>
-      <%= @tournament.remarks %>
+      <%= simple_format(@tournament.remarks) %>
    </div>
 </div>

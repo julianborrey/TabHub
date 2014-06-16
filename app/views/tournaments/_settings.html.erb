@@ -9,7 +9,7 @@
             <% i = 1; #counter to move tooltip left if too far right %>
             <% a.each { |s| %>
                <td>
-                  <%= GlobalConstants::SETTINGS_TITLES[s[0]].delete(' '); %>
+                  <%= GlobalConstants::SETTINGS_TITLES[s[0]] %>
                   <i class="icon-question-sign qIcon" id="<%= s[0].to_s + "Info-btn" %>"></i>
                   
                   <span id="<%= s[0].to_s + "Info" %>" class="pull-left infoBoxCtrlPanel

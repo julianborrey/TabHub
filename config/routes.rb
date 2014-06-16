@@ -7,11 +7,13 @@ TabSite::Application.routes.draw do
    resources :sessions, only: [:new, :create, :destroy]
    resources :users, except: [:index] #allows URL reflected user   
    resources :institutions, except: [:index]
-   resources :tournaments, except: [:index]
+   resources :tournaments
    resources :teams, except: [:index]
    resources :rounds, except: [:index]
    resources :tournament_settings, only: [:create, :edit]
-
+   resources :tournament_attendees, only: [:create, :destroy]
+   resources :rooms, only: [:create, :destroy]
+   
    ### Static Pages ###
    match '/about',    to: 'static_pages#about',    via: 'get'
    match '/contact',  to: 'static_pages#contact',  via: 'get'
@@ -27,9 +29,11 @@ TabSite::Application.routes.draw do
    #^ this is just an additional path to it
    
    ### Tournament Offshoots ###
-   match '/tournaments/:id/control',   to: 'tournaments#control', via: 'get'
-   match '/tournaments/:id/attendees', to: 'tournaments#attendees', via: 'get' 
-   match '/tournaments/:id/stats',     to: 'tournaments#stats', via: 'get'
-
+   match '/tournaments/:id/control',           to: 'tournaments#control',   via: 'get'
+   match '/tournaments/:id/attendees',         to: 'tournaments#attendees', via: 'get' 
+   match '/tournaments/:id/stats',             to: 'tournaments#stats',     via: 'get'
+   match '/tournaments/:id/control/tab-room',  to: 'tournaments#tab_room',  via: 'get'
+   match '/tournaments/:id/control/rooms',     to: 'tournaments#rooms',     via: 'get'
+   
    #match '/pastmotions', to: 'static_pages#pastmotions', via: 'get'
 end

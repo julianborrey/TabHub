@@ -28,6 +28,12 @@ module GlobalConstants
    TOURNAMENT_STATUS = {past: -1, present: 0, future: 1}.freeze();
    TOURNAMENT_STATUS_STR = TOURNAMENT_STATUS.invert().freeze();
    
+   #tournament reigons
+   TOURNAMENT_REGIONS = {international: 1, australasia: 2, asia: 3, africa: 4, 
+                         middle_east: 5, europe: 6, north_america: 7, 
+                         south_america: 8}.freeze();
+   TOURNAMENT_REGIONS_STR = TOURNAMENT_REGIONS.invert().freeze();
+   
    #used for the tournament settings
    SETTINGS_TITLES     = {registration: "Registration", motion: "Motion", tab: "Tab",
                           privacy:      "Tournament Privacy", attendees: "Attendees List",

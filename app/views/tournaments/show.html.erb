@@ -8,7 +8,7 @@
       <div class="row-fluid ctrlBtnRow">
          <% flash.each do |key, val| %>
             <%= content_tag(:div, val, class: "alert alert-#{key}"); %>
-      <% end %>
+         <% end %>
          
          <span><%= link_to "Tournament Control Panel", (tournament_path(@tournament) + "/control"),
              class: "btn btn-warning" %></span>
