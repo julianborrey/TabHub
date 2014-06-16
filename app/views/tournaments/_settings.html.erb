@@ -6,21 +6,37 @@
       <table class="table">
          <thead><tr>
             <td>Attributes:</td>
+            <% i = 1; #counter to move tooltip left if too far right %>
             <% a.each { |s| %>
                <td>
-                  <% puts("asking for: " + s.to_s + " in " + GlobalConstants::SETTINGS_TITLES.to_s); %>
-                  <% str = GlobalConstants::SETTINGS_TITLES[s[0]] %>
-                  <%= str %>
-                  <i class="icon-question-sign qIcon" id="<%= str + "Info" %>"></i>
+                  <%= GlobalConstants::SETTINGS_TITLES[s[0]].delete(' '); %>
+                  <i class="icon-question-sign qIcon" id="<%= s[0].to_s + "Info-btn" %>"></i>
+                  
+                  <span id="<%= s[0].to_s + "Info" %>" class="pull-left infoBoxCtrlPanel
+                     <% if i > 4 #only have space for 4 cols %>
+                        <%= "specialCase" + s[0].to_s %>">
+                        
+                        <style>
+                           .<%= "specialCase" + s[0].to_s %> {
+                              margin-left: <%= ((i-4) * 100 * -1).to_s %>px;
+                           }
+                        </style>
+                     <% else %>
+                  ">
+                     <% end %>
+                     <%= GlobalConstants::SETTINGS_INFO[s[0]].html_safe %>
+                  </span>
+               
                </td>
                
                <script>
-                  $("<%= "#" + str + "Info-btn" %>").mouseover(function() {
-                     $("<%= "#" + str + "Info" %>").show();
+                  $("<%= "#" + s[0].to_s + "Info-btn" %>").mouseover(function() {
+                     $("<%= "#" + s[0].to_s + "Info" %>").show();
                   }).mouseout(function() {
-                     $("<%= "#" + str + "Info" %>").hide();
+                     $("<%= "#" + s[0].to_s + "Info" %>").hide();
                   });
                </script>
+            <% i = i + 1; %>
             <% } %>
          </tr></thead>
 

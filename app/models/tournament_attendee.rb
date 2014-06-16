@@ -7,9 +7,7 @@ class TournamentAttendee < ActiveRecord::Base
    # returns string for display of the role for this entry
    def get_role
       str = ""; #return value
-      puts("self role  = " +self.role.to_s);
-      str = GlobalConstants::TOURNAMENT_ROLES_STR[self.role].capitalize;
-
+      str = GlobalConstants::TOURNAMENT_ROLES_STR[self.role].to_s.humanize.capitalize;
       return str;
    end
 end

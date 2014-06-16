@@ -53,4 +53,47 @@ module GlobalConstants
    SETTINGS_VALUES_STR[:attendees]    = SETTINGS_VALUES[:attendees].invert();
    SETTINGS_VALUES_STR[:teams]        = SETTINGS_VALUES[:teams].invert();
    SETTINGS_VALUES_STR.freeze();
+   
+   #description of setting
+   SETTINGS_INFO = {registration: "Registration can be done in many ways with TabHub. 
+                                  <b>Manual</b> registration means that only authorized people 
+                                  (the tab room) can register teams. 
+                                  <b>Open to authorized institutions</b> can make the workload 
+                                  lighter for you by having institutions input their teams 
+                                  and adjudicators once you have allocated them their spots.
+                                  <b>Open to selected institutions</b> means that anyone from 
+                                  institutions selected by you can enrol.
+                                  <b>Completely open</b> registration will allow anyone to 
+                                  sign up for this tournament. (You will always have the ability 
+                                  to check, remove, add and modify the teams.)",
+                    
+                    motion:       "Motions can be release in two ways. <b>Mass release</b> 
+                                  makes the motion public to the tournament when you start the 
+                                  given round. This allows people to see the motions on their 
+                                  phones, tablets, etc. all at the same time. <b>Single release</b> is 
+                                  the traditional method of putting the motion on a big screen 
+                                  for all to see.",
+                    
+                    tab:          "A <b>Constatly visibile</b> tab can be viewed by all participants 
+                                  throughout the tournament as it progresses. Alternatively, you 
+                                  can opt to only have the tab released when you choose.",
+                    
+                    privacy:      "<b>Open</b> privacy means that anyone can see the tournament's existence, information, 
+                                  motions (as they are released) and draw. Selecting <b>Visible to account holders</b> 
+                                  will make the tournament visible to anyone who is logged into TabHub. The most private 
+                                  setting is to make the tournament <b>Visible only to participants</b> which means only 
+                                  registered users can view tournament.
+                                  (You can always change this setting later.)",
+                    
+                    attendees:    "<b>Open</b> will allow anyone to view the list of attendees.
+                                  You can instead make the list available to anyone logged into TabHub 
+                                  (<b>Visible to account holders</b>) or to people who are attending the 
+                                  tournament (<b>Visible to participants</b>). <b>Closed</b> will make 
+                                  the attendees list unavailable.",
+                    
+                    teams:        "<b>Open</b> will allow anyone to view the list of teams.
+                                  You can instead make the list available to anyone logged into TabHub 
+                                  (<b>Visible to account holders</b>) or to people who are attending the 
+                                  tournament (<b>Visible to participants</b>). <b>Closed</b> will make 
+                                  the teams list unavailable."}.freeze();
 end

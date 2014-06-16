@@ -147,9 +147,13 @@
    display: none;
    color: #666;
    position: absolute;
-   margin-left: 60px;
+   margin-left: 15px;
    text-align: justify;
    width: 270px;
+   background-color: rgba(255, 255, 255, 0.93);
+   border: 1px solid #ddd;
+   border-radius: 5px;
+   padding: 7px;
 }
 
 
@@ -189,6 +193,20 @@
    display: flex;
 }
 
+.infoBoxCtrlPanel {
+   margin-top: -204px;
+   width: 400px;
+   margin-left: 0px;
+   display: none;
+   color: #666;
+   position: absolute;
+   text-align: justify;
+   background-color: rgba(255, 255, 255, 0.93);
+   border: 1px solid #ddd;
+   border-radius: 5px;
+   padding: 7px;
+   font-weight: normal;
+}
 
 /* _tournament_user_stats.html.erb */
 
