@@ -1,0 +1,183 @@
+<div class="settingsSelect">
+   <div style="margin-top:30px">
+      All settings below can be changed at anytime during the tournament.
+   </div>
+   <!-- change to say, except for 3v3, when we get there. -->
+   
+   <div class="oneSetting">
+      <span class="input-prepend" style="margin-left:18px">
+         <span class="add-on" style="height:20px;padding-top:5px">Registration</span>
+            <% choice_map = [["Manual", 1], ["Open to authorized institutions", 2], 
+                             ["Open to selected institutions", 3], ["Completely open", 4]];%>
+            <% selected = g.object.registration %>
+            <%= g.select(:registration, options_for_select(choice_map, selected), {}, {style: "height:31px"}); %>
+         </span>
+         
+         <i class="icon-question-sign" id="regoInfo-btn"></i>
+         <span id="regoInfo" class="pull-left infoBox" style="margin-top:-120px">
+            Registration can be done in many ways with TabHub. 
+            <b>Manual</b> registration means that only authorized people 
+            (the tab room) can register teams. 
+            <b>Open to authorized institutions</b> can make the workload 
+            lighter for you by having institutions input their teams 
+            and adjudicators once you have allocated them their spots.
+            <b>Open to selected institutions</b> means that anyone from 
+            institutions selected by you can enrol.
+            <b>Completely open</b> registration will allow anyone to 
+            sign up for this tournament. (You will always have the ability 
+            to check, remove, add and modify the teams.)
+         </span>
+         
+         <script>
+            $("#regoInfo-btn").mouseover(function() {
+               $("#regoInfo").show();
+            }).mouseout(function() {
+               $("#regoInfo").hide();
+            });
+         </script>
+   </div>
+   
+   <div class="oneSetting">
+      <span class="input-prepend" style="margin-left:18px">
+         <span class="add-on" style="height:20px;padding-top:5px">Motion</span>
+            <% choice_map = [["Mass release", 1], ["Single release", 2]];%>
+            <% selected = g.object.motion %>
+            <%= g.select(:motion, options_for_select(choice_map, selected), {}, {style: "height:31px"}); %>
+         </span>
+         
+         <i class="icon-question-sign" id="motionInfo-btn"></i>
+         <span id="motionInfo" class="pull-left infoBox" style="margin-top:-60px">
+            Motions can be release in two ways. <b>Mass release</b> 
+            makes the motion public to the tournament when you start the 
+            given round. This allows people to see the motions on their 
+            phones, tablets, etc. all at the same time. <b>Single release</b> is 
+            the traditional method of putting the motion on a big screen 
+            for all to see.
+         </span>
+         
+         <script>
+            $("#motionInfo-btn").mouseover(function() {
+               $("#motionInfo").show();
+            }).mouseout(function() {
+               $("#motionInfo").hide();
+            });
+         </script>
+   </div>
+   
+   <div class="oneSetting">
+      <span class="input-prepend" style="margin-left:18px">
+         <span class="add-on" style="height:20px;padding-top:5px">Tab</span>
+            <% choice_map = [["Constantly visible", 1], ["Release when commanded", 2]];%>
+            <% selected = g.object.tab %>
+            <%= g.select(:tab, options_for_select(choice_map, selected), {}, {style: "height:31px"}); %>
+         </span>
+         
+         <i class="icon-question-sign" id="tabInfo-btn"></i>
+         <span id="tabInfo" class="pull-left infoBox" style="margin-top:-30px">
+            A <b>Constatly visibile</b> tab can be viewed by all participants 
+            throughout the tournament as it progresses. Alternatively, you 
+            can opt to only have the tab released when you choose.
+         </span>
+         
+         <script>
+            $("#tabInfo-btn").mouseover(function() {
+               $("#tabInfo").show();
+            }).mouseout(function() {
+               $("#tabInfo").hide();
+            });
+         </script>
+   </div>
+   
+   <div class="oneSetting">
+      <span class="input-prepend" style="margin-left:18px">
+         <span class="add-on" style="height:20px;padding-top:5px">Tournament Privacy</span>
+            <% choice_map = [["Open", 1], ["Visible to account holders", 2],
+                            ["Visible only to participants", 3]];%>
+            <% selected = g.object.privacy %>
+            <%= g.select(:privacy, options_for_select(choice_map,selected), {}, {style: "height:31px"}); %>
+         </span>
+         
+         <i class="icon-question-sign" id="privacyInfo-btn"></i>
+         <span id="privacyInfo" class="pull-left infoBox" style="margin-top:-60px">
+            <b>Open</b> privacy means that anyone can see the tournament's existence, information, 
+            motions (as they are released) and draw. Selecting <b>Visible to account holders</b> 
+            will make the tournament visible to anyone who is logged into TabHub. The most private 
+            setting is to make the tournament <b>Visible only to participants</b> which means only 
+            registered users can view tournament.
+            (You can always change this setting later.)
+         </span>
+         <!-- note the issue here, I will need to have a way of inviting people to tournaments 
+         if they are on max privacy because how you register for them otherwise? So we will have 
+         to make it visible to club presidents/externals who have be authorized -->
+         
+         <script>
+            $("#privacyInfo-btn").mouseover(function() {
+               $("#privacyInfo").show();
+            }).mouseout(function() {
+               $("#privacyInfo").hide();
+            });
+         </script>
+   </div>
+   
+   
+   <!-- I could see a situation when a tournament is CLOSED and the attendee list is OPEN and hence visible. Ensure the threat is eliminated. -->
+   
+   
+   <div class="oneSetting">
+      <span class="input-prepend" style="margin-left:18px">
+         <span class="add-on" style="height:20px;padding-top:5px">Attendees List</span>
+            <% choice_map = [["Open", 1], ["Visible to account holders", 2],
+                             ["Visible to participants", 3], ["Closed", 4]];%>
+            <% selected = g.object.attendees %>
+            <%= g.select(:attendees, options_for_select(choice_map, selected), {}, {style: "height:31px"}); %>
+         </span>
+         
+         <i class="icon-question-sign" id="attendeesInfo-btn"></i>
+         <span id="attendeesInfo" class="pull-left infoBox" style="margin-top:-60px">
+            <b>Open</b> will allow anyone to view the list of attendees.
+            You can instead make the list available to anyone logged into TabHub 
+            (<b>Visible to account holders</b>) or to people who are attending the 
+            tournament (<b>Visible to participants</b>). <b>Closed</b> will make 
+            the attendees list unavailable.
+         </span>
+         
+         <script>
+            $("#attendeesInfo-btn").mouseover(function() {
+               $("#attendeesInfo").show();
+            }).mouseout(function() {
+               $("#attendeesInfo").hide();
+            });
+         </script>
+   </div>
+   
+   <div class="oneSetting">
+      <span class="input-prepend" style="margin-left:18px">
+         <span class="add-on" style="height:20px;padding-top:5px">Teams List</span>
+            <% choice_map = [["Open", 1], ["Visible to account holders", 2],
+                             ["Visible to participants", 3], ["Closed", 4]];%>
+            <% selected = g.object.teams %>
+            <%= g.select(:teams, options_for_select(choice_map, selected), {}, {style: "height:31px"}); %>
+         </span>
+         
+         <i class="icon-question-sign" id="teamsInfo-btn"></i>
+         <span id="teamsInfo" class="pull-left infoBox" style="margin-top:-60px">
+            <b>Open</b> will allow anyone to view the list of teams.
+            You can instead make the list available to anyone logged into TabHub 
+            (<b>Visible to account holders</b>) or to people who are attending the 
+            tournament (<b>Visible to participants</b>). <b>Closed</b> will make 
+            the teams list unavailable.
+         </span>
+         
+         <script>
+            $("#teamsInfo-btn").mouseover(function() {
+               $("#teamsInfo").show();
+            }).mouseout(function() {
+               $("#teamsInfo").hide();
+            });
+         </script>
+   </div>
+</div>
+
+<div style="margin-top:20px">
+   Note that this tournament will be registered under your institution.
+</div>

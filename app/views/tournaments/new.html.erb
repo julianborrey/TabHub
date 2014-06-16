@@ -7,30 +7,21 @@
    <% flash.each do |key, val| %>
       <%= content_tag(:div, val, class: "alert alert-#{key}"); %>
    <% end %>
-
+   
    <%= form_for(@tournament) do |f| %>
-      <%= form_for(@settings) do |g| %>
+      <% puts("we got class: " + @setting.class.to_s); %>
          <%= render('shared/error_messages', object: f.object); %>
          <br>
-         <%= render('tournaments/fields', f: f, g: g); %>
+         <%= render('tournaments/fields', f: f) %>
+         
+         <% puts("we havvvvve " + @tournament.tournament_setting.motion.to_s); %>
+         <%= f.fields_for(:tournament_setting) do |g| %>
+            <div>aaaaaaaaaaaa</div>
+            <%= render('tournaments/secondary_fields', g: g); %>
+         <% end %>
          
          <br><br>
-         
-         <%= g.submit "Create Settings", {id: "submitG", style: "display:none"}; %>
-         <!-- is the fact that you could submit only one a security threat? -->
-         <!-- probably just set default conservative settings if only f submitted -->
-      <% end %>
-
-   <%= f.submit "Create Info", {id: "submitF", style: "display:none"}; %>
+      <%= f.submit "Create Tournament", class: "btn btn-primary create-account-btn" %>
    <% end %>
-   <%= link_to "Create Tournament", "#", id: "doubleSubmit", class: "btn btn-primary create-account-btn" %>
-
-   <script>
-      /* submition of both forms */
-      $("#doubleSubmit").onClick(function() {
-         $("#submitF").trigger "submit";
-         $("#submitG").trigger "submit";
-      });
-   </script>
    
 </div>

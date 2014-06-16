@@ -9,16 +9,18 @@ module TournamentsHelper
 
       #get most current if exists
       user.tournament_attendees.each { |t| #check each tournament
-         if t.tournament.status == GlobalConstants::TOURNAMENT_STATUS[:past] #if in the past
-            user_list[:past].push(t);
-         end
-         
-         if t.tournament.status == GlobalConstants::TOURNAMENT_STATUS[:present] #if currently attneding one
-            user_list[:present].push(t);
-         end
-         
-         if t.tournament.status == GlobalConstants::TOURNAMENT_STATUS[:future] #if coming up
-            user_list[:future].push(t);
+         if !t.tournament.nil? #would occur if db broke or tournament go deleted (NEVER!)
+            if t.tournament.status == GlobalConstants::TOURNAMENT_STATUS[:past] #if in the past
+               user_list[:past].push(t);
+            end
+            
+            if t.tournament.status == GlobalConstants::TOURNAMENT_STATUS[:present] #if currently attneding one
+               user_list[:present].push(t);
+            end
+            
+            if t.tournament.status == GlobalConstants::TOURNAMENT_STATUS[:future] #if coming up
+               user_list[:future].push(t);
+            end
          end
       }
       

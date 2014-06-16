@@ -93,11 +93,13 @@ class User < ActiveRecord::Base
       
       current_tourns = [];
       list.each { |ta|
-         t = Tournament.find(ta.tournament_id);
-         if !t.nil? && t.status == GlobalConstants::TOURNAMENT_STATUS[:present]
-            #if ### SHould have something here about someone leaving a tournament
-            current_tourns.push(t.name);
-            #end
+         if Tournament.exists?(ta.tournament_id)
+            t = Tournament.find(ta.tournament_id);
+            if !t.nil? && t.status == GlobalConstants::TOURNAMENT_STATUS[:present]
+               #if ### SHould have something here about someone leaving a tournament
+               current_tourns.push(t.name);
+               #end
+            end
          end
       }
       

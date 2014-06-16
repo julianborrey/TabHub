@@ -7,6 +7,9 @@ class Tournament < ActiveRecord::Base
    has_many(:round);
    has_many(:motion);
    
+   has_one(:tournament_setting);
+   accepts_nested_attributes_for(:tournament_setting);
+
    validates(:name, presence: true, length: {maximum: 100});
    validates(:name, uniqueness: true); 
    validates(:institution_id, presence: true);
