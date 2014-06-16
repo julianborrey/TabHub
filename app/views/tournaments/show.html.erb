@@ -5,9 +5,16 @@
    <%= render('tournaments/title_shim'); %>
    
    <% if @user.in_tab_room?(@tournament) %>  
-      <div class="row-fluid ctrl-btn-row">
-         <%= link_to "Tournament Control Panel", (tournament_path(@tournament) + "/control"),
-             class: "btn btn-warning" %>
+      <div class="row-fluid ctrlBtnRow">
+         <% flash.each do |key, val| %>
+            <%= content_tag(:div, val, class: "alert alert-#{key}"); %>
+      <% end %>
+         
+         <span><%= link_to "Tournament Control Panel", (tournament_path(@tournament) + "/control"),
+             class: "btn btn-warning" %></span>
+         <span>
+            <b> | <%= link_to "Edit Tournament", edit_tournament_path(@tournament) %></b>
+         </span>
       </div>
    <% end %>
    
@@ -23,11 +30,14 @@
          <% if !@current_round.nil? %>
             <%= render('tournaments/current_round'); %>
          <% end %>
-      
-         <% if !@user.nil? && !@tournament.debater_stats(@user).empty? %>
-            <%= render('tournaments/user_stats'); %>
-         <% end %>
          
+         <% if !@user.nil? %>
+            <% @c_team = @user.current_team %>
+            <% if !@c_team.nil? && !@tournament.debater_stats(@user).empty? %>
+               <%= render('tournaments/user_stats'); %>
+            <% end %>
+         <% end %>
+
          <%= render('tournaments/tournament_info'); %>   
       </div>
    </div>

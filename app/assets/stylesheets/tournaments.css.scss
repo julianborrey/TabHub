@@ -14,11 +14,14 @@
    margin-bottom: 20px;
 }
 
-.ctrl-btn-row {
+.ctrlBtnRow {
    padding-top: 20px;
    padding-bottom: 20px;
    text-align: center;
    font-weight: bold;
+   width: 400px;
+   margin-left: auto;
+   margin-right: auto;
 }
 
 .statusBar {
@@ -169,6 +172,7 @@
    border: 1px solid #ddd;
    padding: 20px;
    margin-bottom: 40px;
+   overflow: scroll;
 
    thead {
       font-weight: bold;

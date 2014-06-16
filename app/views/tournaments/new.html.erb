@@ -9,14 +9,11 @@
    <% end %>
    
    <%= form_for(@tournament) do |f| %>
-      <% puts("we got class: " + @setting.class.to_s); %>
          <%= render('shared/error_messages', object: f.object); %>
          <br>
          <%= render('tournaments/fields', f: f) %>
          
-         <% puts("we havvvvve " + @tournament.tournament_setting.motion.to_s); %>
          <%= f.fields_for(:tournament_setting) do |g| %>
-            <div>aaaaaaaaaaaa</div>
             <%= render('tournaments/secondary_fields', g: g); %>
          <% end %>
          

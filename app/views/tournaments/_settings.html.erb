@@ -1,50 +1,36 @@
 <div class="row-fluid">
    <div class="settingsBox">
       <p><b>Settings</b> - <%= link_to "Edit", edit_tournament_path(@tournament) %></p>
+      <% a = @tournament.tournament_setting.to_paired_array; %>
+      
       <table class="table">
          <thead><tr>
             <td>Attributes:</td>
-            <td>Mass Registration   <i class="icon-question-sign qIcon" id="massRegInfo"></i></td>
-            <td>Mass Release Motions<i class="icon-question-sign qIcon" id="massRelInfo"></i></td>
-            <td>Running Tab Visible <i class="icon-question-sign qIcon" id="runTabInfo" ></i></td>
-            <td>Attendee List Public<i class="icon-question-sign qIcon" id="attsPubInfo"></i></td>
-            <td>Team List Public    <i class="icon-question-sign qIcon" id="teamPubInfo"></i></td>
+            <% a.each { |s| %>
+               <td>
+                  <% puts("asking for: " + s.to_s + " in " + GlobalConstants::SETTINGS_TITLES.to_s); %>
+                  <% str = GlobalConstants::SETTINGS_TITLES[s[0]] %>
+                  <%= str %>
+                  <i class="icon-question-sign qIcon" id="<%= str + "Info" %>"></i>
+               </td>
+               
+               <script>
+                  $("<%= "#" + str + "Info-btn" %>").mouseover(function() {
+                     $("<%= "#" + str + "Info" %>").show();
+                  }).mouseout(function() {
+                     $("<%= "#" + str + "Info" %>").hide();
+                  });
+               </script>
+            <% } %>
          </tr></thead>
 
          <tr>
-            <td>On/Off:</td>
-            <td class="onOffVal">
-               <!-- need to insert the hash -->
-               <!-- can only have things we will never list/index under -->
-               <!-- not visibility status -->
-               <% if true %>
-                  <i class="icon-ok tickIcon"></i>
-               <% end %>
-            </td>
-            
-            <td class="onOffVal">
-               <% if true %>
-                  <i class="icon-ok tickIcon"></i>
-               <% end %>
-            </td>
-            
-            <td class="onOffVal">
-               <% if true %>
-                  <i class="icon-ok tickIcon"></i>
-               <% end %>
-            </td>
-            
-            <td class="onOffVal">
-               <% if true %>
-                  <i class="icon-ok tickIcon"></i>
-               <% end %>
-            </td>
-            
-            <td class="onOffVal">
-               <% if true %>
-                  <i class="icon-ok tickIcon"></i>
-               <% end %>
-            </td>
+            <td>Selection:</td>
+            <% a.each { |s| %>
+               <td class="onOffVal">
+                  <%= GlobalConstants::SETTINGS_VALUES_STR[s[0]][s[1]] %>
+               </td>
+            <% } %>
          </tr>
       </table>
    </div>

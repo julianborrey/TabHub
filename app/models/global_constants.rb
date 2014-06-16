@@ -27,4 +27,30 @@ module GlobalConstants
    #these keep track of tournaments activity
    TOURNAMENT_STATUS = {past: -1, present: 0, future: 1}.freeze();
    TOURNAMENT_STATUS_STR = TOURNAMENT_STATUS.invert().freeze();
+   
+   #used for the tournament settings
+   SETTINGS_TITLES     = {registration: "Registration", motion: "Motion", tab: "Tab",
+                          privacy:      "Tournament Privacy", attendees: "Attendees List",
+                          teams:        "Teams List"}.freeze();
+   SETTINGS_VALUES     = {registration: {"Manual" => 1, "Open to authorized institutions" => 2,
+                                         "Open to selected institutions" => 3, "Completely open" => 4},
+                          motion:       {"Mass release" => 1, "Single release" => 2},
+                          tab:          {"Constatnly visible" => 1, "Release on command" => 2},
+                          privacy:      {"Open" => 1, "Visible to account holders" => 2, 
+                                         "Visible to participants" => 3},
+                          attendees:    {"Open" => 1, "Visible to account holders" => 2, 
+                                         "Visible to participants" => 3, "Closed" => 4},
+                          teams:        {"Open" => 1, "Visible to account holders" => 2, 
+                                         "Visible to participants" => 3, "Closed" => 4},
+                         }.freeze();
+   
+   #generalize this more later
+   SETTINGS_VALUES_STR = {};
+   SETTINGS_VALUES_STR[:registration] = SETTINGS_VALUES[:registration].invert();
+   SETTINGS_VALUES_STR[:motion]       = SETTINGS_VALUES[:motion].invert();
+   SETTINGS_VALUES_STR[:tab]          = SETTINGS_VALUES[:tab].invert();
+   SETTINGS_VALUES_STR[:privacy]      = SETTINGS_VALUES[:privacy].invert();
+   SETTINGS_VALUES_STR[:attendees]    = SETTINGS_VALUES[:attendees].invert();
+   SETTINGS_VALUES_STR[:teams]        = SETTINGS_VALUES[:teams].invert();
+   SETTINGS_VALUES_STR.freeze();
 end
