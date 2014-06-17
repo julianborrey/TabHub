@@ -29,6 +29,7 @@ class RoomsController < ApplicationController
 
    def create
       room_params = safe_params;
+      puts("room para s: " + room_params.to_s);
       @room = Room.new(room_params);
       @room.place_id = 0; 
       @flash = [];
@@ -68,8 +69,8 @@ class RoomsController < ApplicationController
    
    private
       def safe_params
-         p = params.require(:room).permit(:name, :location, :remarks, :id);
-         p[:institution_id] = p[:institution_id].to_i;
+         p = params.require(:room).permit(:name, :location, :remarks, :id, :institution_id);
+         p["institution_id"] = params["institution_id"].to_i; #hole?
          return p;
       end
 

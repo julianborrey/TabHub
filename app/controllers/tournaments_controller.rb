@@ -4,8 +4,9 @@ class TournamentsController < ApplicationController
    before_action :signed_in_user, only: [:show, :new, :create];
    before_action :authorized_for_tournament, only: [:destroy, :edit, :update, 
                                              :control, :tab_room, :rooms, 
-                                             :import_rooms]; 
-   
+                                             :import_rooms, :import_room,
+                                             :remove_room];
+
    def index
       #make a has of lists of tournaments by region
       @list = {};
@@ -108,6 +109,37 @@ class TournamentsController < ApplicationController
    end
    
    def import_rooms
+      @tournament = Tournament.find(params[:id]);
+   end
+
+   def import_room
+      t = Tournament.find(safe_import_room_params[:id]);
+      
+      #check not duplicate
+      room_id = safe_import_room_params[:room_id].to_i;
+      if !t.rooms.include?(room_id)
+         
+         #check this room does infact belong to the institution
+         if t.institution.rooms.include?(Room.find(room_id))
+            t.update_attributes(rooms: t.rooms.push(room_id));
+         end
+
+      end
+
+      render nothing: true;
+   end
+
+   def remove_room
+      t = Tournament.find(safe_import_room_params[:id]);
+      
+      #check the link exists
+      room_id = safe_import_room_params[:room_id].to_i;
+      if t.rooms.include?(room_id)
+         t.rooms.delete(room_id)
+         t.save();
+      end
+      
+      render nothing: true;
    end
    
    private
@@ -116,6 +148,10 @@ class TournamentsController < ApplicationController
          :start_time, :end_time, :remarks, tournament_setting_attributes: 
          [:motion, :tab, :registration, :privacy, :attendees, :teams]);
          #the :institution_id may come from selecting from a list (convenor does this) or by the users :id
+      end
+
+      def safe_import_room_params
+         params.permit(:room_id, :id)
       end
       
 end

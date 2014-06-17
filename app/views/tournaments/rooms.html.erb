@@ -7,40 +7,16 @@
    <div class="tableTitle">
       <h3>Debate Rooms List</h3>
       <a href="<%= tournament_path(@tournament) + '/control'%>">back to control panel</a>
+      <br><br>
+      <p id="addUserBtn" class="linkP" style="display:inline; margin-right:30px;">Add Room</p>
+      <b><%= link_to("Import rooms from previous tournament", (tournament_path(@tournament) + '/control/import-rooms')) %></b>
    </div>
-
-   <table class="table attendeeTable">
-      <thead><tr>
-         <td>Name</td>
-         <td>Location</td>
-         <td></td>
-      </tr></thead>
-      
-      <% @tournament.rooms.each { |r_id| %>
-         <tr>
-            <% r = Room.find(r_id); %>
-            <td><a href="<%= room_path(id: r.id, tournament_id: @tournament.id) %>"><%= r.name %></a></td>
-            <td><%= r.location %></td>
-            <td><%= link_to("Edit", edit_room_path(id: r.id, tournament_id: @tournament.id)) %></td>
-            <td><%= link_to("Remove",    room_path(id: r.id, tournament_id: @tournament.id), 
-                            confirm: ("Are you sure you want to remove " + r.name + " from this tournament?"), 
-                            method: :delete) %></td>
-         </tr>
-      <% } %>
-      
-      <tr>
-         <td><p id="addUserBtn" class="linkP">Add Room</td>
-         <td><%= link_to("Import rooms from previous tournament", (tournament_path(@tournament) + '/import-rooms') %></td>
-         <td></td>
-         <td></td>
-      </tr>
-   </table>
    
-   <div class="newTabbieForm" id="tabRoomForm" 
+   <div class="newTabbieForm" id="tabRoomForm" style="margin-top: 25px; 
       <% if @flash.empty? %>
-         style="display:none;"
+         display:none;
       <% end %>
-   >  
+   ">  
       
       <%= form_for(@room) do |f| %>
          <% puts("here is room: " + @room.to_json ); %>
@@ -59,14 +35,47 @@
       <% @flash.each do |s| %>
          <%= content_tag(:div, s, class: "fadeSoon alert alert-error"); %>
       <% end %>
-      <div style="margin-bottom:80px;">
-      </div>
       
-      <script>
-         $("#addUserBtn").on("click", function() {
-            $("#tabRoomForm").toggle();
-         });
-      </script>
    </div>
+   
+   <table class="table attendeeTable">
+      <thead><tr>
+         <td>Name</td>
+         <td>Location</td>
+         <td></td>
+      </tr></thead>
+      
+      <% i = 1; #for deleting rows %>
+      <% @tournament.rooms.each { |r_id| %>
+         <tr>
+            <% r = Room.find(r_id); %>
+            <td><a href="<%= room_path(id: r.id, tournament_id: @tournament.id) %>"><%= r.name %></a></td>
+            <td><%= r.location %></td>
+            <td><%= link_to("Edit", edit_room_path(id: r.id, tournament_id: @tournament.id)) %></td>
+            <td><p id="<%= "removeRoom" + r.id.to_s %>" class="linkP">Remove</p></td>
+                  <script>
+                     $("<%= "#removeRoom" + r.id.to_s %>").on("click", function(){
+                        $.ajax({
+                           type:    "POST",
+                           url:     "<%= tournament_path(@tournament) + '/control/remove-room' %>",
+                           data:    {room_id: <%= r.id.to_s %>}
+                        }).done(function(){
+                           $(".attendeeTable").deleteRow(<%= i.to_s %>);
+                        });
+                     });
+                  </script>
+         </tr>
+         <% i = i + 1; %>
+      <% } %>
+   </table>
+   
+   <div style="margin-bottom:80px;">
+   </div>
+
+   <script>
+      $("#addUserBtn").on("click", function() {
+         $("#tabRoomForm").toggle();
+      });
+   </script>
    
 </div>

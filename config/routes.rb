@@ -29,16 +29,14 @@ TabSite::Application.routes.draw do
    #^ this is just an additional path to it
    
    ### Tournament Offshoots ###
-   match '/tournaments/:id/control',              to: 'tournaments#control',   via: 'get'
-   match '/tournaments/:id/attendees',            to: 'tournaments#attendees', via: 'get' 
-   match '/tournaments/:id/stats',                to: 'tournaments#stats',     via: 'get'
-   match '/tournaments/:id/control/tab-room',     to: 'tournaments#tab_room',  via: 'get'
-   match '/tournaments/:id/control/rooms',        to: 'tournaments#rooms',     via: 'get'
+   match '/tournaments/:id/control',              to: 'tournaments#control',      via: 'get'
+   match '/tournaments/:id/attendees',            to: 'tournaments#attendees',    via: 'get' 
+   match '/tournaments/:id/stats',                to: 'tournaments#stats',        via: 'get'
+   match '/tournaments/:id/control/tab-room',     to: 'tournaments#tab_room',     via: 'get'
+   match '/tournaments/:id/control/rooms',        to: 'tournaments#rooms',        via: 'get'
    match '/tournaments/:id/control/import-rooms', to: 'tournaments#import_rooms', via: 'get'
+   match '/tournaments/:id/control/import-room',  to: 'tournaments#import_room',  via: 'post'
+   match '/tournaments/:id/control/remove-room',  to: 'tournaments#remove_room',  via: 'post'
    
-   ### Rooms Custom Paths ###
-   #match '/tournaments/:id/control/rooms/:room_id', to: 'rooms#show', via: 'get'
-   #match '/tournaments/:id/control/rooms/:room_id/edit', to: 'rooms#edit', as: :edit_room, via: 'get'
-
    #match '/pastmotions', to: 'static_pages#pastmotions', via: 'get'
 end

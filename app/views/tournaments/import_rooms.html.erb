@@ -4,14 +4,11 @@
    
    <div class="tourIndexTitle">
       <h1>Import Rooms from Past Tournaments</h1><br>
+      <p><%= link_to("back to Rooms List", (tournament_path(@tournament) + '/control/rooms')); %></p>
    </div>
    
-   <% @list = get_past_rooms(@tournament.institution) %>
-   <% @list.each { |key,val| %>
-      <% if !(val.nil? || val.empty?) %>
+   <% @list = get_past_rooms %>
       <div class="tournByRegion">
-         <h3><%= key.to_s.titleize %></h3>
-         
          <table class="table table-striped">
             <thead><tr>
                <td>Room</td>
@@ -19,17 +16,21 @@
                <td></td>
             </tr></thead>
 
-            <% val.each { |r| %>
+            <% @list.each { |r| %>
                <tr>
                   <td><a href="<%= room_path(r) %>"><%= r.name %></a></td>
                   <td><%= r.location %></a></td>
-                  <td><p id="<%= "importRoom" + val.id.to_s %>" class="linkP">Import</p></td>
+                  <td><p id="<%= "importRoom" + r.id.to_s %>" class="linkP">Import</p></td>
                   <script>
-                     $("<%= "#importRoom" + val.id.to_s %>").on("click", function(){
+                     $("<%= "#importRoom" + r.id.to_s %>").on("click", function(){
                         $.ajax({
-                           type: "POST"
-                           url: 
-
+                           type:    "POST",
+                           url:     "<%= tournament_path(@tournament) + '/control/import-room' %>",
+                           data:    {room_id: <%= r.id.to_s %>}
+                        }).done(function(){
+                           $("<%= "#importRoom" + r.id.to_s %>").css('color','gray')
+                                                                .removeClass('linkP')
+                                                                .unbind();
                         });
                      });
                   </script>
@@ -37,7 +38,5 @@
             <% } %>
          </table>
       </div>
-      <% end %>
-   <% } %>
     
 </div>
