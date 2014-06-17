@@ -1,0 +1,21 @@
+<% provide(:title, "Edit Room " + @room.name); %>
+
+<div class="info-page signup-page">
+   
+   <h2>Edit Room <%= @room.name %></h2>
+   
+   <% flash.each do |key, val| %>
+      <%= content_tag(:div, val, class: "alert alert-#{key}"); %>
+   <% end %>
+   
+   <%= form_for(@room) do |f| %>
+      <%= render('shared/error_messages', object: f.object); %>
+      <br>
+      <%= render('rooms/fields', f: f); %>
+      
+      <br>
+      
+      <%= f.submit "Update Room", {class: "btn btn-primary"} %>
+   <% end %>
+   
+</div>

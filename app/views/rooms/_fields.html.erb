@@ -1,0 +1,13 @@
+<div class="input-prepend">
+   <span class="add-on">Room Name</span>
+   <%= f.text_field(:name, {class: "span2", value: "#{@room.name}"}); %>
+</div>
+
+<div class="input-prepend">
+   <span class="add-on">Location</span>
+   <%= f.text_field(:location, {class: "span2", value: "#{@room.location}"}); %>
+</div>
+
+<br><br>
+<div><b>Remarks:</b></div>
+<%= f.text_area(:remarks, {value: @room.remarks, style: "height:100px; width:500px;"}) %>

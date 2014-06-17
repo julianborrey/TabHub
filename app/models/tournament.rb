@@ -6,8 +6,8 @@ class Tournament < ActiveRecord::Base
    
    has_many(:tournament_attendees); #table matching users to tournaments
    has_many(:teams);
-   has_many(:round);
-   has_many(:motion);
+   has_many(:rounds);
+   has_many(:motions);
    
    has_one(:tournament_setting);
    accepts_nested_attributes_for(:tournament_setting);
@@ -86,11 +86,11 @@ class Tournament < ActiveRecord::Base
 
       return status;
    end
-
+   
    def current_round
       return Round.first;
    end
-
+   
    def next_round
       return Round.find(2);
    end
@@ -99,7 +99,23 @@ class Tournament < ActiveRecord::Base
    def current_topic
       return "THW go ham.";
    end
-
+   
+   def enough_rooms
+      return [false, "red", "No"];
+   end
+   
+   def multiple4Check
+      return [true, "#33cc33", "Yes"];
+   end
+   
+   def enoughAdj
+      return [true, "#33cc33", "Yes"];
+   end
+   
+   def ballotCheck
+      return [false, "red", "No"];
+   end
+   
    #return true is user is a debater at this tournament
    def debater_in?(user)
       #again, coming from the user side for faster processing
@@ -154,5 +170,9 @@ class Tournament < ActiveRecord::Base
    #gives ranked list of teams
    def get_ranked_list_from_only_points
       return self.teams.sort { |x,y| y.points <=> x.points };
+   end
+   
+   def tabbies
+      return TournamentAttendee.where(tournament_id: self.id, role: GlobalConstants::TOURNAMENT_ROLES[:tab_room]);
    end
 end

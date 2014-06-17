@@ -6,31 +6,46 @@
          <thead><tr>
             <td><b>Attribute</b></td>
             <td><b>Count</b></td>
+            <td><b>Check</b></td>
+            <td><b>Result</b></td>
          </tr><thead>
          
          <tr>
             <td><%= link_to "Tab Room", (tournament_path(@tournament) + "/control/tab-room") %><i class="icon-question-sign qIcon"></i></td>
-            <td>16</td>
+            <td><%= @tournament.tabbies.count %></td>
+            <td>-</td>
+            <td>-</td>
          </tr>
          <tr>
             <td><%= link_to "Rounds", (tournament_path(@tournament) + "/control/rounds") %><i class="icon-question-sign qIcon"></i></td>
             <td>9</td>
+            <td>-</td>
+            <td>-</td>
          </tr>
           <tr>
             <td><%= link_to "Rooms", (tournament_path(@tournament) + "/control/rooms") %><i class="icon-question-sign qIcon"></i></td>
-            <td>32</td>
+            <td><%= @tournament.rooms.count %></td>
+            <td>Enough rooms?</td>
+            <td><span style="color:<%= @roomCheck[1] %>"><%= @roomCheck[2] %></span></td>
          </tr>
          <tr>
-            <td><%= link_to "Ballots", (tournament_path(@tournament) + "/control/ballots") %><i class="icon-question-sign qIcon"></i></td>
+            <td><%= link_to "Current Round Ballots", (tournament_path(@tournament) + "/control/ballots") %>
+               <i class="icon-question-sign qIcon"></i></td>
             <td>78</td>
+            <td>All Submitted?</td>
+            <td><span style="color:<%= @ballotCheck[1] %>"><%= @ballotCheck[2] %></span></td>
          </tr>
          <tr>
             <td><%= link_to "Teams", (tournament_path(@tournament) + "/teams") %><i class="icon-question-sign qIcon"></i></td>
             <td>358</td>
+            <td>Multiple of 4?</td>
+            <td><span style="color:<%= @multiple4Check[1] %>"><%= @multiple4Check[2] %></span></td>
          </tr>
          <tr>
-            <td><%= link_to "Judges", (tournament_path(@tournament) + "/judges") %><i class="icon-question-sign qIcon"></i></td>
+            <td><%= link_to "Adjudicators", (tournament_path(@tournament) + "/judges") %><i class="icon-question-sign qIcon"></i></td>
             <td>211</td>
+            <td>Enough adjudicators?</td>
+            <td><span style="color:<%= @enoughAdj[1] %>"><%= @enoughAdj[2] %></span></td>
          </tr>
       </table>
    </div>

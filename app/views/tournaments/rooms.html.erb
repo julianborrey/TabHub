@@ -22,9 +22,11 @@
          <% puts("here is room: " + @room.to_json ); %>
          <span>Room Name: <%= f.text_field(:name, style: "height:14px; margin-bottom:0px; width:250px; margin-right:20px;") %></span>
          <span>Location:  <%= f.text_field(:location,  style: "height:14px; margin-bottom:0px; width:250px;") %></span>
-         <p>(Each room needs a name and location.)</p> 
-         <div style="margin-top:20px;">
-            Remarks:    <%= f.text_area(:remarks,    style: "width:598px; margin-bottom:0px; margin-left: 21px;") %>
+         <p>(Each room needs a name and location.)</p>
+         <p>If extra information should be given about the room, use the remarks box. This information will be 
+         given to debaters that are assigned this room.</p>
+         <div>
+            Remarks: <%= f.text_area(:remarks, style: "height:60px; width:598px; margin-bottom:0px; margin-left: 21px;") %>
          </div>
          <%= hidden_field_tag 'institution_id', @tournament.institution.id %>
          <%= hidden_field_tag 'tournament_id', @tournament.id %>
@@ -38,7 +40,7 @@
       
    </div>
    
-   <table class="table attendeeTable">
+   <table class="table table-striped attendeeTable">
       <thead><tr>
          <td>Name</td>
          <td>Location</td>
@@ -47,8 +49,8 @@
       
       <% i = 1; #for deleting rows %>
       <% @tournament.rooms.each { |r_id| %>
-         <tr>
-            <% r = Room.find(r_id); %>
+         <% r = Room.find(r_id); %>
+         <tr id="<%= "rowFor" + r.id.to_s %>">
             <td><a href="<%= room_path(id: r.id, tournament_id: @tournament.id) %>"><%= r.name %></a></td>
             <td><%= r.location %></td>
             <td><%= link_to("Edit", edit_room_path(id: r.id, tournament_id: @tournament.id)) %></td>
@@ -60,7 +62,7 @@
                            url:     "<%= tournament_path(@tournament) + '/control/remove-room' %>",
                            data:    {room_id: <%= r.id.to_s %>}
                         }).done(function(){
-                           $(".attendeeTable").deleteRow(<%= i.to_s %>);
+                           $("<%= "#rowFor" + r.id.to_s %>").remove();
                         });
                      });
                   </script>

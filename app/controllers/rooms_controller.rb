@@ -2,8 +2,8 @@ class RoomsController < ApplicationController
    include TournamentHelper
    include RoomHelper
    
-   before_action :authorized_for_tournament, only: [:create];
-   before_action :authorized_for_room, only: [:show, :edit, :destroy, :update];
+   before_action :authorized_for_tournament, only: [:create, :edit, :update, :show];
+   #before_action :authorized_for_room, only: [:show, :update];
    #still a bit of a flaw with this room authorization thing...
 
    def show
@@ -20,10 +20,10 @@ class RoomsController < ApplicationController
    def update
       @room = Room.find(params[:id]);
       if @room.update_attributes(safe_params)
-         redirect_to(tournament_path(params[:tournament_id]) + '/control/rooms');
+         redirect_to(room_path(@room));
       else
          @tournament = Tournament.find(params[:tournament_id]);
-         render 'tournaments/rooms';
+         render 'rooms/edit';
       end
    end
 
@@ -55,17 +55,20 @@ class RoomsController < ApplicationController
       end
    end
    
-   def destroy
-      r = Room.find(params[:id]);
-      #must remove from tourament list
-      t = Tournament.find(params[:tournament_id]);
-      rooms = t.rooms;
-      rooms.reject! { |i| i == r.id }
-      t.update_attributes(rooms: rooms);
-
-      r.destroy();
-      redirect_to(tournament_path(params[:tournament_id]) + "/control/rooms")
-   end
+  ######## since we do not have a relational db between rooms and tournaments
+  ######## we will not have a delete...impossible to know if a room is used in
+  ######## a tournament or not...don't want to have broken db.
+  # def destroy
+  #    r = Room.find(params[:id]);
+  #    #must remove from tourament list if it is in the current one
+  #    t = Tournament.find(params[:tournament_id]);
+  #    rooms = t.rooms;
+  #    rooms.reject! { |i| i == r.id }
+  #    t.update_attributes(rooms: rooms);
+  #
+  #    r.destroy();
+  #    redirect_to(tournament_path(params[:tournament_id]) + "/control/rooms")
+  # end
    
    private
       def safe_params

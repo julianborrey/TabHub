@@ -125,7 +125,6 @@ class User < ActiveRecord::Base
          #assume it is the object
          t = t.id;
       end
-      puts("right now t is : " + t.to_s);
       
       attendee_list = self.tournament_attendees.to_a;
       attendee_list.each { |e|

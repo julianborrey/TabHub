@@ -80,6 +80,18 @@ class TournamentsController < ApplicationController
    #control panel page
    def control
       @tournament = Tournament.find(params[:id]);
+      @roomCheck = @tournament.enough_rooms;
+      @multiple4Check = @tournament.multiple4Check;
+      @enoughAdj = @tournament.enoughAdj;
+      @ballotCheck = @tournament.ballotCheck;
+      
+      @totalCheck = [@roomCheck[0], @multiple4Check[0], 
+                     @ballotCheck[0], @enoughAdj[0]].all?
+      if @totalCheck
+         @totalCheck = [@totalCheck, "#33cc33", "Ready"];
+      else
+         @totalCheck = [@totalCheck, "red", "Not Ready"];
+      end
    end
 
    #attendees page function
@@ -96,8 +108,7 @@ class TournamentsController < ApplicationController
    #tab_room page shows authorized users
    def tab_room
       @tournament = Tournament.find(params[:id]);
-      @tab_room_attendee_array = TournamentAttendee.where(tournament_id: @tournament.id, 
-                                 role: GlobalConstants::TOURNAMENT_ROLES[:tab_room]);
+      @tab_room_attendee_array = @tournament.tabbies;
       @temp_email = "";
    end
    
@@ -140,6 +151,16 @@ class TournamentsController < ApplicationController
       end
       
       render nothing: true;
+   end
+   
+   ### seriously one day I need to actually work hacks
+   #   can be done with params. Look at input for rounds()
+   #   and remove_room(). (one without safe and one with)
+   # also, should @t = T.find() be abstracted? (private foo?)
+   
+   def rounds
+      @tournament = Tournament.find(params[:id]);
+
    end
    
    private

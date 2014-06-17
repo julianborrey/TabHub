@@ -1,0 +1,48 @@
+<% provide(:title, "Institution Profile - " + @institution.short_name) %>
+
+<div class="row-fluid" id="profile-page">
+   <div class="span3" style="font-size:100px">
+      <!-- Institution Logo Here! -->
+      
+      <% if !current_user.nil? && current_user.president_of_institution?(@institution) %>
+         <%= link_to("Edit Institution", edit_institution_path(@institution), class: "btn"); %>
+      <% end %>
+   </div>
+   
+   <div class="span9">
+      <div class="institution-name">
+         <%= "#{@institution.full_name}" %>
+      </div>
+   </div>
+  
+  <br><br><br><br>
+   <div class="row">
+      <% if !@current_members.empty? %>
+         <h3>Current Members</h3>
+         
+         <table class="table table-striped">
+            <% @current_members.each { |m| %>
+               <tr class="last-row">
+                  <td><a href="<%= user_path(m) %>"><%= m.full_name %></a></td>
+                  <td><%= m.created_at     %></td>
+                  <td><%= m.society_role_str %></td>
+               </tr>
+            <% } %>
+         </table>
+      <% end %>
+
+      <% if !@alumni_members.empty? %>
+         <h3>Alumni</h3>
+         
+         <table class="table table-striped alumniTable">
+            <% @alumni_members.each { |m| %>
+               <tr class="last-row">
+                  <td><a href="<%= user_path(m) %>"><%= m.full_name %></a></td>
+                  <td><%= m.created_at     %></td>
+               </tr>
+            <% } %>
+         </table>
+      <% end %>
+   </div>
+   
+</div>
