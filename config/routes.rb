@@ -12,7 +12,7 @@ TabSite::Application.routes.draw do
    resources :rounds, except: [:index]
    resources :tournament_settings, only: [:create, :edit]
    resources :tournament_attendees, only: [:create, :destroy]
-   resources :rooms, only: [:show, :create, :destroy, :edit]
+   resources :rooms, except: [:index]
    
    ### Static Pages ###
    match '/about',    to: 'static_pages#about',    via: 'get'
@@ -35,5 +35,9 @@ TabSite::Application.routes.draw do
    match '/tournaments/:id/control/tab-room',  to: 'tournaments#tab_room',  via: 'get'
    match '/tournaments/:id/control/rooms',     to: 'tournaments#rooms',     via: 'get'
    
+   ### Rooms Custom Paths ###
+   #match '/tournaments/:id/control/rooms/:room_id', to: 'rooms#show', via: 'get'
+   #match '/tournaments/:id/control/rooms/:room_id/edit', to: 'rooms#edit', as: :edit_room, via: 'get'
+
    #match '/pastmotions', to: 'static_pages#pastmotions', via: 'get'
 end

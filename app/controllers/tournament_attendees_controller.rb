@@ -1,8 +1,8 @@
 class TournamentAttendeesController < ApplicationController
    include TournamentsHelper
-   
+
    before_action :authorized_for_tournament, only: [:destroy, :create];
-   
+
    def create
       #@temp_email = safe_params[:email]
       

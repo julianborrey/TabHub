@@ -1,15 +1,45 @@
 class RoomsController < ApplicationController
-   include TournamentsHelper
+   include TournamentHelper
+   include RoomHelper
    
-   before_action :authorized_for_tournament, only: [:destroy, :create];
-   
+   before_action :authorized_for_tournament, only: [:create];
+   before_action :authorized_for_room, only: [:show, :edit, :destroy, :update];
+   #still a bit of a flaw with this room authorization thing...
+
+   def show
+      #this is purely for viewing stats and stuff
+      #only for tab room officials
+      #the room info will be displayed for users in the draw/another page
+      @room = Room.find(params[:id]);
+   end
+
+   def edit
+      @room = Room.find(params[:id]);
+   end
+
+   def update
+      @room = Room.find(params[:id]);
+      if @room.update_attributes(safe_params)
+         redirect_to(tournament_path(params[:tournament_id]) + '/control/rooms');
+      else
+         @tournament = Tournament.find(params[:tournament_id]);
+         render 'tournaments/rooms';
+      end
+   end
+
    def create
       room_params = safe_params;
-      room_params[:institution_id] = safe_id[:institution_id].to_i;
       @room = Room.new(room_params);
       @room.place_id = 0; 
+      
       if @room.save();
-         redirect_to(tournament_path(safe_id[:tournament_id].to_i)  + '/control/rooms');
+         #must add this room to the tournament list
+         t = Tournament.find(params[:tournament_id]);
+         rooms = t.rooms; #overly safe this thread...is there a shortcut?
+         rooms.push(@room.id);
+         t.update_attributes(rooms: rooms);
+         
+         redirect_to(tournament_path(params[:tournament_id])  + '/control/rooms');
       else
          err = @room.errors.messages;
          @room = Room.new;
@@ -31,40 +61,27 @@ class RoomsController < ApplicationController
          end
          #even that failed
          
-         @tournament = Tournament.find(safe_id[:tournament_id].to_i);
+         @tournament = Tournament.find(params[:id].to_i);
          render('tournaments/rooms');
       end
    end
    
    def destroy
-      r = Room.find(safe_id[:id]);
+      r = Room.find(params[:id]);
+      #must remove from tourament list
+      t = Tournament.find(params[:tournament_id]);
+      rooms = t.rooms;
+      rooms.reject! { |i| i == r.id }
+      t.update_attributes(rooms: rooms);
 
-      #find the tournament this relates to by records
-      list_tourns = r.institution.tournaments.to_a; #all possible tournaments for this room
-      list_tourns.reject! { |t| t.id != safe_id[:tournament_id].to_i } #remove irrelevants
-      puts("our list is: " +list_tourns.to_s);
-      
-      if list_tourns.count != 1 #should only have one tournament now
-         puts("Hacker @ 002");
-         redirect_to root_path;
-      else #now check they have authority
-         if current_user.in_tab_room?(list_tourns.first)
-            r.destroy();
-            redirect_to(tournament_path(safe_id[:tournament_id].to_i) + '/control/rooms');
-         else
-            puts("Hacker @ 003");
-            redirect_to root_path;
-         end
-      end
+      r.destroy();
+      redirect_to(tournament_path(params[:tournament_id]) + "/control/rooms")
    end
    
    private
       def safe_params
-         params.require(:room).permit(:name, :location, :remarks, :id);
+         p = params.require(:room).permit(:name, :location, :remarks, :id);
+         p[:institution] = p[:institution_id].to_i;
       end
 
-      def safe_id
-         params.permit(:tournament_id, :institution_id, :id);
-      end
-   
 end

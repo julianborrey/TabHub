@@ -1,7 +1,9 @@
 class Tournament < ActiveRecord::Base
+   serialize :rooms, Array #we have an array of room_ids
+
    belongs_to(:user);        #host of the tournament online
    belongs_to(:institution); #uni host of the tournament
-
+   
    has_many(:tournament_attendees); #table matching users to tournaments
    has_many(:teams);
    has_many(:round);

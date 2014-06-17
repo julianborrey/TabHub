@@ -11,26 +11,6 @@ module InstitutionHelper
       image_tag(gravatar_url, alt: user.name, class: "gravatar")
    end
    
-   #true if the user is in a tournament right now
-   def in_tournament?(user)
-      if user.nil? #if not signed in
-         return false; #no user to be attending
-      end
-      
-      #get array of tournaments
-      tournament_list = TournamentAttendee.where(user_id: user[:id]).to_a;
-      
-      #get most current if exists
-      current = false; #assume no current tournament
-      tournament_list.each { |t| #check each tournament
-         if t.start_time <= DateTime.now <= t.end_time #if currently attneding one
-            current = true;
-         end
-      }
-      
-      return current;
-   end
-   
    ### WE SHOULD MOVE THIS TO THE TOURNAMENT HELPER ###
    def round_now?
       return true;

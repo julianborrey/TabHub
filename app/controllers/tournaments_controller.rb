@@ -1,9 +1,8 @@
 class TournamentsController < ApplicationController
-   include TournamentsHelper
+   include TournamentHelper
    
    before_action :signed_in_user, only: [:show, :new, :create];
-   before_action :authorized_for_tournament, only: [:destroy, :edit, :update, :control];
-   
+   before_action :authorized_for_tournament, only: [:destroy, :edit, :update, :control]; 
    
    def index
       #make a has of lists of tournaments by region
@@ -35,6 +34,7 @@ class TournamentsController < ApplicationController
       @tournament.user_id = u.id;
       @tournament.institution_id = u.institution_id;
       @tournament.status = GlobalConstants::TOURNAMENT_STATUS[:future]; #starts not begun (naturally)
+      @tournament.rooms = [];
       
       if @tournament.save()
          #need to set this person as authorized at least

@@ -118,9 +118,18 @@ class User < ActiveRecord::Base
 
    #returns true is user in tabroom of tournament t
    def in_tab_room?(t)
+      if t.is_a?(String)
+         #therefore we assume its a tournament object
+         t = t.to_i;
+      elsif !t.is_a?(Fixnum)
+         #assume it is the object
+         t = t.id;
+      end
+      puts("right now t is : " + t.to_s);
+      
       attendee_list = self.tournament_attendees.to_a;
       attendee_list.each { |e|
-         if (e.tournament_id == t.id) && (e.role == GlobalConstants::TOURNAMENT_ROLES[:tab_room])
+         if (e.tournament_id == t) && (e.role == GlobalConstants::TOURNAMENT_ROLES[:tab_room])
             return true;
          end
       }

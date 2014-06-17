@@ -16,11 +16,13 @@
          <td></td>
       </tr></thead>
       
-      <% @tournament.institution.rooms.each { |r| %>
+      <% @tournament.rooms.each { |r_id| %>
          <tr>
-            <td><%= r.name %></td>
+            <% r = Room.find(r_id); %>
+            <td><a href="<%= room_path(id: r.id, tournament_id: @tournament.id) %>"><%= r.name %></a></td>
             <td><%= r.location %></td>
-            <td><%= link_to("Remove", room_path(id: r.id, tournament_id: @tournament.id), 
+            <td><%= link_to("Edit", edit_room_path(id: r.id, tournament_id: @tournament.id)) %></td>
+            <td><%= link_to("Remove",    room_path(id: r.id, tournament_id: @tournament.id), 
                             confirm: ("Are you sure you want to remove " + r.name + " from this tournament?"), 
                             method: :delete) %></td>
          </tr>
@@ -28,6 +30,7 @@
       
       <tr>
          <td><p id="addUserBtn">Add Room</td>
+         <td></td>
          <td></td>
          <td></td>
       </tr>
