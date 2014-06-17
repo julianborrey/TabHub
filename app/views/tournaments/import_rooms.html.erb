@@ -1,0 +1,43 @@
+<% provide(:title,  @tournament.name + " - Import Rooms") %>
+
+<div class="row-fluid tournament-page">
+   
+   <div class="tourIndexTitle">
+      <h1>Import Rooms from Past Tournaments</h1><br>
+   </div>
+   
+   <% @list = get_past_rooms(@tournament.institution) %>
+   <% @list.each { |key,val| %>
+      <% if !(val.nil? || val.empty?) %>
+      <div class="tournByRegion">
+         <h3><%= key.to_s.titleize %></h3>
+         
+         <table class="table table-striped">
+            <thead><tr>
+               <td>Room</td>
+               <td>Location</td>
+               <td></td>
+            </tr></thead>
+
+            <% val.each { |r| %>
+               <tr>
+                  <td><a href="<%= room_path(r) %>"><%= r.name %></a></td>
+                  <td><%= r.location %></a></td>
+                  <td><p id="<%= "importRoom" + val.id.to_s %>" class="linkP">Import</p></td>
+                  <script>
+                     $("<%= "#importRoom" + val.id.to_s %>").on("click", function(){
+                        $.ajax({
+                           type: "POST"
+                           url: 
+
+                        });
+                     });
+                  </script>
+               </tr>
+            <% } %>
+         </table>
+      </div>
+      <% end %>
+   <% } %>
+    
+</div>

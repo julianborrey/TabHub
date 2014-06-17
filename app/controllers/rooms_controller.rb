@@ -31,7 +31,8 @@ class RoomsController < ApplicationController
       room_params = safe_params;
       @room = Room.new(room_params);
       @room.place_id = 0; 
-      
+      @flash = [];
+
       if @room.save();
          #must add this room to the tournament list
          t = Tournament.find(params[:tournament_id]);
@@ -41,27 +42,14 @@ class RoomsController < ApplicationController
          
          redirect_to(tournament_path(params[:tournament_id])  + '/control/rooms');
       else
-         err = @room.errors.messages;
-         @room = Room.new;
-         
-         #weird ass bug!!! have to remake @room for some fricken reason
-         @room.name = room_params[:name];
-         @room.location = room_params[:location];
-         @room.remarks  = room_params[:remarks];
-         @room.institution_id = room_params[:institution_id];
-         
-         err.each { |k,v|
-            #uncomment below, the bug appears
-            #@room.errors.add(k, v);
+         @room.errors.messages.each { |k,v|
+            v.each { |s|
+               @flash.push(k.to_s.capitalize + " " + s + ".");
+            }
          }
          
-         #manual errors for now ;(
-         if @room.name.empty?
-            #@room.errors.add(:name, "cannot not be blank.");
-         end
-         #even that failed
-         
-         @tournament = Tournament.find(params[:id].to_i);
+         @room.errors.clear; #comment this out, bug appears (WTF is this thing?)
+         @tournament = Tournament.find(params[:tournament_id].to_i);
          render('tournaments/rooms');
       end
    end
@@ -81,7 +69,8 @@ class RoomsController < ApplicationController
    private
       def safe_params
          p = params.require(:room).permit(:name, :location, :remarks, :id);
-         p[:institution] = p[:institution_id].to_i;
+         p[:institution_id] = p[:institution_id].to_i;
+         return p;
       end
 
 end

@@ -2,7 +2,9 @@ class TournamentsController < ApplicationController
    include TournamentHelper
    
    before_action :signed_in_user, only: [:show, :new, :create];
-   before_action :authorized_for_tournament, only: [:destroy, :edit, :update, :control]; 
+   before_action :authorized_for_tournament, only: [:destroy, :edit, :update, 
+                                             :control, :tab_room, :rooms, 
+                                             :import_rooms]; 
    
    def index
       #make a has of lists of tournaments by region
@@ -102,8 +104,12 @@ class TournamentsController < ApplicationController
    def rooms
       @tournament = Tournament.find(params[:id]);
       @room       = Room.new();
+      @flash = [];
    end
-
+   
+   def import_rooms
+   end
+   
    private
       def tournament_params
          params.require(:tournament).permit(:name, :institution_id, :location, 

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-   include TournamentsHelper
+   include TournamentHelper
    
    before_action :signed_in_user,  only: [:show, :destroy, :edit, :update] 
    before_action :correct_user,    only: [:edit, :update]
