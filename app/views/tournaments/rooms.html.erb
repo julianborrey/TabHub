@@ -13,17 +13,22 @@
       <thead><tr>
          <td>Name</td>
          <td>Location</td>
+         <td></td>
       </tr></thead>
       
       <% @tournament.institution.rooms.each { |r| %>
          <tr>
             <td><%= r.name %></td>
             <td><%= r.location %></td>
+            <td><%= link_to("Remove", room_path(id: r.id, tournament_id: @tournament.id), 
+                            confirm: ("Are you sure you want to remove " + r.name + " from this tournament?"), 
+                            method: :delete) %></td>
          </tr>
       <% } %>
       
       <tr>
          <td><p id="addUserBtn">Add Room</td>
+         <td></td>
          <td></td>
       </tr>
    </table>
@@ -38,7 +43,7 @@
          <% puts("here is room: " + @room.to_json ); %>
          <span>Room Name: <%= f.text_field(:name, style: "height:14px; margin-bottom:0px; width:250px; margin-right:20px;") %></span>
          <span>Location:  <%= f.text_field(:location,  style: "height:14px; margin-bottom:0px; width:250px;") %></span>
-         
+         <p>(Each room needs a name and location.)</p> 
          <div style="margin-top:20px;">
             Remarks:    <%= f.text_area(:remarks,    style: "width:598px; margin-bottom:0px; margin-left: 21px;") %>
          </div>

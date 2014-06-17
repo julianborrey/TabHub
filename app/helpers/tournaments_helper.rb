@@ -38,7 +38,7 @@ module TournamentsHelper
    
    #checks that the user is authorized to view ctrlPanel or edit tournament (tabRoom power)
    def authorized_for_tournament
-      id =  params[:id] || params[:tournament_id]
+      id =  params[:tournament_id] || params[:id]
       @t = Tournament.find(id);
       redirect_to tournament_path(@t) unless current_user.in_tab_room?(@t);
    end

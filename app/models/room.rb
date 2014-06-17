@@ -1,5 +1,5 @@
 class Room < ActiveRecord::Base
-   belongs_to(:instition);
+   belongs_to(:institution);
 
    validates(:name, presence: true, length: {maximum: 20});
    validates(:location, presence: true);

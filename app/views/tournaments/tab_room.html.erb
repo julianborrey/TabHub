@@ -13,6 +13,7 @@
       <thead><tr>
          <td>Name</td>
          <td>Institution</td>
+         <td><td>
       </tr></thead>
       
       <% @tab_room_attendee_array.each { |a| %>
@@ -20,11 +21,15 @@
             <% u = User.find(a.user_id); %>
             <td><a href="<%= user_path(u) %>"><%= u.full_name %></a></td>
             <td><a href="<%= institution_path(u.institution) %>"><%= u.institution.short_name %></a></td>
+            <td><%= link_to("Remove", tournament_attendee_path(id: a.id, tournament_id: @tournament.id), 
+                            confirm: ("Are you sure you want to remove " + 
+                            u.full_name + " from the tab room?"), method: :delete) %></td>
          </tr>
       <% } %>
 
       <tr>
          <td><p id="addUserBtn">Add user to Tab Room</td>
+         <td></td>
          <td></td>
       </tr>
    </table>
@@ -48,9 +53,15 @@
             $("#tabRoomForm").toggle();
          });
       </script>
+   </div>
 
+   <div class="newTabbieForm" 
+      <% if flash.nil? %>
+         style="display:none"
+      <% end %>
+   >
       <% flash.each do |key, val| %>
-         <%= content_tag(:div, val, class: "alert alert-#{key}"); %>
+         <%= content_tag(:div, val, class: "fadeSoon alert alert-#{key}", style: "margin-top:60px;"); %>
       <% end %>
    </div>
    

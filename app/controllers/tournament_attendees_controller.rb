@@ -16,12 +16,13 @@ class TournamentAttendeesController < ApplicationController
       if safe_params[:request_origin] == "tab_room"
          newTabbie = User.where(email: safe_params[:email]);
          
-         #just check they didn't do them self and duplicate their attendee entry
+         #just check they didn't duplicate their attendee entry
          ##### should probs make these unique
          if !newTabbie.empty?
             newTabbie = newTabbie.first;
             
-            if newTabbie.id != current_user.id
+            t = Tournament.find(safe_params[:tournament_id]);
+            if !newTabbie.in_tab_room?(t) #duplication check
                TournamentAttendee.new(tournament_id: safe_params[:tournament_id],
                                       user_id: newTabbie.id,
                                       role: GlobalConstants::TOURNAMENT_ROLES[:tab_room]).save;
@@ -42,6 +43,18 @@ class TournamentAttendeesController < ApplicationController
    end
    
    def destroy
+      #checking they are authorized for the tournament isn't enough
+      #need to also be sure they are part of the tab_room they are editing
+      a = TournamentAttendee.find(params[:id]);
+      t = Tournament.find(a.tournament_id); #get the tournament of interest
+      if current_user.in_tab_room?(t) #subtle
+         if TournamentAttendee.where(tournament_id: t.id).count > 1 #check not the last tabbie
+            a.destroy();
+         else
+            flash[:error] = "You must have at least one person in the tab room."
+         end
+      end
+      redirect_to(tournament_path(safe_params[:tournament_id]) + '/control/tab-room');
    end
    
    private
