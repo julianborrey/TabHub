@@ -167,6 +167,7 @@ class TournamentsController < ApplicationController
    end
    
    def adjudicators
+      flash.clear;
       @tournament = Tournament.find(params[:id]);
       @ta = TournamentAttendee.new();
       @temp_email = "";
@@ -174,22 +175,31 @@ class TournamentsController < ApplicationController
 
    #renders page to edit adj rating and conflicts
    def edit_adj
-      @tournament = Tournament.find(params[:id]);
-      @user       = TournamentAttendee.find(params[:ta_id]).user;
+      flash = {};
+      @tournament     = Tournament.find(params[:id]);
+      @ta             = TournamentAttendee.find(params[:ta_id]);
+      @user           = @ta.user;
+      @conflicts_list = @user.conflicts.to_a;
+      @conflict       = Conflict.new;
    end
    #two things could be updated here
    #1. TournamentAttendee.rating
    #2. Conflicts entries
-   #Let us user two forms on one page, redirect back to edit page.
+   #Let us use two forms on one page, redirect back to edit page.
    #Have a done button on the edit page to go back
-   #We will post directly to the normal RESOURCES paths
+   #We will post directly to the normal RESOURCES
+   #but the edit page will be hosted by tournaments
    
    #post will activate this method to remove adj from tournament
    #movet this? -- its probably fine here.
    def remove_adj
-      ta = TournamentAttendee.where(params[:ta_id]).first; #should already by role = adj
-      ta.destroy();
-      redirect_to(tournament_path(params[:id]) + '/control/adjudicators');
+      ta = TournamentAttendee.find(params[:ta_id].to_i); #should already by role = adj
+      puts(" helpopppppppppppppppp: " + ta.role.to_s + " sadas " + ta.id.to_s);
+      #check this is in fact an adj TA
+      #if ta.role == GlobalConstants::TOURNAMENT_ROLES[:adjudicator]
+         ta.destroy();
+      #end
+      redirect_to(tournament_path(params[:id].to_i) + '/control/adjudicators');
    end
    
    

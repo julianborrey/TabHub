@@ -1,6 +1,7 @@
 <span class="input-prepend" style="margin-left:18px">
    <span class="add-on">Institution</span>
       <% inst_array = Institution.all.map { |inst| [inst.full_name, inst.id]}       %>
+      <% inst_array.sort_by! { |i| i[0].downcase }                                  %>
       <% tmp = inst_array.delete_at(@user.institution_id || 0); #they are in order  %>
       <% inst_array.insert(0, tmp); #put chose uni at top so it is already selected %>
       <%= f.select(:institution_id, options_for_select(inst_array), {}, {class: "span2 uni-dropdown"}); %>

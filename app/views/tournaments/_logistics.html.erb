@@ -106,8 +106,9 @@
             <td>Multiple of 4?</td>
             <td><span style="color:<%= @multiple4Check[1] %>"><%= @multiple4Check[2] %></span></td>
          </tr>
+         
          <tr>
-            <td><%= link_to "Adjudicators", (tournament_path(@tournament) + "/judges") %>
+            <td><%= link_to "Adjudicators", (tournament_path(@tournament) + "/control/adjudicators") %>
             <i class="icon-question-sign qIcon" id="adjLogBtn"></i>
                <span id="adjLogInfo" class="pull-left infoBox logInfoBox"> 
                      This is a list of adjudicators, their conflicts and 
@@ -121,9 +122,31 @@
                   });
                </script>
             </td>
-            <td>211</td>
+            <td><%= @tournament.adjs.count(); %></td>
             <td>Enough adjudicators?</td>
             <td><span style="color:<%= @enoughAdj[1] %>"><%= @enoughAdj[2] %></span></td>
+         </tr>
+         
+         <tr>
+            <td><%= link_to "Institutions", (tournament_path(@tournament) + "/control/institutions") %>
+            <i class="icon-question-sign qIcon" id="instBtn"></i>
+               <span id="instInfo" class="pull-left infoBox logInfoBox"> 
+                     Here you can see which institutions are coming to the 
+                     tournament as well as how many teams and adjudicators 
+                     they are sending. You can also alocate institution 
+                     quotas if you have not selected open registration.
+               </span>
+               <script>
+                  $("#instBtn").mouseover(function() {
+                     $("#instInfo").show();
+                  }).mouseout(function() {
+                     $("#instInfo").hide();
+                  });
+               </script>
+            </td>
+            <td><%= @tournament.institutions.count(); %></td>
+            <td>-</td>
+            <td>-</td>
          </tr>
       </table>
    </div>

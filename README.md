@@ -5,6 +5,12 @@ There is a [blog](http://newtabware.blogspot.com/) for this project.
 Keeps non-techies upto speed with progress and allows full commenting 
 power so people can steer us in the right direction or suggest cool features.
 
+### NB ###
+There are many policy decisions that needed to be made in while 
+creating this site. Discussion on which practicies are best are 
+very welcome and when resolutions are made the system will be 
+updated accordingly.
+
 ### What's going on? ###
 The only software used to coordinate debating tournaments which is 
 entirely trusted is [Tournaman](http://tournaman.wikidot.com/)

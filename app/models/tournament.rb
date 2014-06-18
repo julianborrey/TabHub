@@ -175,4 +175,18 @@ class Tournament < ActiveRecord::Base
    def tabbies
       return TournamentAttendee.where(tournament_id: self.id, role: GlobalConstants::TOURNAMENT_ROLES[:tab_room]);
    end
+   
+   def adjs
+      return TournamentAttendee.where(tournament_id: self.id, role: GlobalConstants::TOURNAMENT_ROLES[:adjudicator]);
+   end
+   
+   #returns a list of all the institions that are coming (returns objects)
+   #to make this faster, we could go all the way to implementing another table
+   def institutions
+      insts = [];
+      self.tournament_attendees.each { |ta|
+         insts.push(ta.user.institution);
+      }
+      return insts.uniq!
+   end
 end

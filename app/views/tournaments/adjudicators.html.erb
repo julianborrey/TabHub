@@ -16,16 +16,18 @@
          <% if @temp_email.empty? %>
             style="display:none;"
          <% end %>
-      ">
+      "><td colspan="6">
       
       <%= form_tag(@ta) do %>
-         <td><span class="newTabbieField">User's E-mail: <%= email_field_tag(:email, @temp_email, 
+         <span class="newTabbieField">User's E-mail: <%= email_field_tag(:email, @temp_email, 
                                                          class: "addTabbieEmail", 
-                                                         style: "height:14px; margin-bottom:0px;") %></span></td>
-         <td></td>
-         <td><span class="ratingField">Rating: <%= number_field_tag(:rating, class="ratingNum", style: "height:14px;") %></span></td>
+                                                         style: "height:14px; margin-bottom:0px;") %></span>
+         
+         <span class="ratingField">Rating: <%= number_field_tag(:rating, nil, step: 0.01, 
+             class: "ratingNum", style: "height:14px; padding:1px 6px 6px 4px; font-size:12px") %></span>
          <%= hidden_field_tag 'tournament_id', @tournament.id %>
-         <td><%= submit_tag "Add", {class: "btn newTabbieBtn"} %></td>
+         <%= hidden_field_tag 'request_origin', "adjudicators" %>
+         <%= submit_tag "Add", {class: "btn newTabbieBtn"} %>
       <% end %>
 
          <script>
@@ -33,16 +35,28 @@
                $("#tabRoomForm").toggle();
             });
          </script>
-      </tr>
+      </td></tr>
+
+      <tr><td colspan="6">   
+         <div class="newTabbieForm" 
+            <% if flash.nil? %>
+               style="display:none"
+            <% end %>
+         >
+            <% flash.each do |key, val| %>
+               <%= content_tag(:div, val, class: "fadeSoon alert alert-#{key}", style: "margin-top:60px;"); %>
+            <% end %>
+         </div>
+      </td></tr>
    
-      <thead><tr>
+      <tr>
          <td>Name</td>
          <td>Institution</td>
          <td>Rating</td>
          <td>Conflicts</td>
          <td></td>
          <td></td>
-      </tr></thead>
+      </tr>
       
       <% TournamentAttendee.where(tournament_id: @tournament.id, role: GlobalConstants::TOURNAMENT_ROLES[:adjudicator]).each { |a| %>
          <tr>
@@ -60,48 +74,11 @@
             
             <td><%= link_to("Edit", (tournament_path(@tournament) + '/control/adjudicators/' + a.id.to_s + '/edit')) %></td>
             
-            <td><%= link_to("Remove", tournament_path(@tournament) + '/control/adjudicators/' + a.id.to_s + '/remove'), 
-                            confirm: ("Are you sure you want to remove " + 
-                            u.full_name + " from the tournament?"), method: :delete) %></td>
+            <td><%= link_to("Remove", (tournament_path(@tournament) + '/control/adjudicators/' + a.id.to_s + '/remove'), 
+                            confirm:  ("Are you sure you want to remove " + 
+                            u.full_name + " as an adjudicator from the tournament?"), method: :delete) %></td>
          </tr>
       <% } %>
-
-      <tr>
-         <td><p id="addUserBtn" class="linkP">Add user to Tab Room</td>
-         <td></td>
-         <td></td>
-      </tr>
    </table>
 
-   <div class="newTabbieForm" id="tabRoomForm" 
-      <% if @temp_email.empty? %>
-         style="display:none;"
-      <% end %>
-   >
-      <%= form_tag(tournament_attendees_path) do %>
-         <span class="newTabbieField">User's E-mail: <%= email_field_tag(:email, @temp_email, 
-                                                         class: "addTabbieEmail", 
-                                                         style: "height:14px; margin-bottom:0px;") %></span>
-         <%= hidden_field_tag 'request_origin', "tab_room" %>
-         <%= hidden_field_tag 'tournament_id', @tournament.id %>
-         <%= submit_tag "Add", {class: "btn newTabbieBtn"} %>
-      <% end %>
-
-      <script>
-         $("#addUserBtn").on("click", function() {
-            $("#tabRoomForm").toggle();
-         });
-      </script>
-   </div>
-
-   <div class="newTabbieForm" 
-      <% if flash.nil? %>
-         style="display:none"
-      <% end %>
-   >
-      <% flash.each do |key, val| %>
-         <%= content_tag(:div, val, class: "fadeSoon alert alert-#{key}", style: "margin-top:60px;"); %>
-      <% end %>
-   </div>
-   
 </div>

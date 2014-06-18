@@ -1,0 +1,129 @@
+<% provide(:title, "Edit Adjudicators - " + @user.full_name); %>
+
+<div class="info-page adjEditPage">
+   
+   <h2>Edit Adjudicator <%= @user.full_name %></h2>
+   <br>
+   <a href="<%= tournament_path(@tournament) + '/control/adjudicators'%>">back to list of adjudicators</a>
+   <br><br>
+   
+   <% flash.each do |key, val| %>
+         <%= content_tag(:div, val, class: "fadeSoon alert alert-#{key}"); %>
+   <% end %>
+   
+   <table class="table">
+      <tr>
+         <td><b>Rating:</b></td>
+         <td>
+            <%= form_for(@ta, :html => {style: "margin-bottom:-4px; margin-top:-16px"}) do |f| %>
+               <%= render('shared/error_messages', object: f.object); %>
+               <br>
+               <%= f.number_field(:rating, value: @ta.rating, step: 0.01); %></td>
+               <td><%= f.submit "Update Rating", {class: "btn"} %></td>
+            <% end %>
+         
+      </tr>
+      
+      <tr><td colspan="3"></td></tr>
+      
+      <tr>
+         <td><b>Conflicts:</b></td>
+         <td colspan="2">
+            <ul>
+               <li>
+                  <%= link_to(@conflicts_list.first.institution.short_name, institution_path(@conflicts_list.first.institution)) %>
+                  <span style="padding-left:30px; padding-right:30px">-</span>
+                  <% c = @conflicts_list.shift %>
+                  <% #link_to "Remove", @conflicts_list.shift, method: :delete %>
+                  <span id="removeConflict<%= c.id.to_s %>" style="color:gray">remove</span>
+                  
+                  <span id="removeMessage<%= c.id.to_s %>" class="pull-left infoBox logInfoBox"> 
+                     Removal of conflicts is currently dissable, if you think there is an error, 
+                     please E-mail help@tabhub.com with the issue.
+                  </span>
+                  
+                  <script>
+                     $("#removeConflict<%= c.id.to_s %>").mouseover(function() {
+                        $("#removeMessage<%= c.id.to_s %>").show();
+                     }).mouseout(function() {
+                        $("#removeMessage<%= c.id.to_s %>").hide();
+                     });
+                  </script>
+               </li>
+               
+               <% @conflicts_list.each { |c| %>
+                  <li>
+                     <%= link_to(c.institution.short_name, institution_path(c.institution)) %>
+                     <span style="padding-left:30px; padding-right:30px">-</span>
+                     <span id="removeConflict<%= c.id.to_s %>" style="color:gray">remove</span>
+                     <% #link_to "Remove", c, method: :delete %>
+                     
+                     <span id="removeMessage<%= c.id.to_s %>" class="pull-left infoBox logInfoBox"> 
+                        Removal of conflicts is currently dissable, if you think there is an error, 
+                        please E-mail help@tabhub.com with the issue.
+                     </span>
+                     
+                     <script>
+                        $("#removeConflict<%= c.id.to_s %>").mouseover(function() {
+                           $("#removeMessage<%= c.id.to_s %>").show();
+                        }).mouseout(function() {
+                           $("#removeMessage<%= c.id.to_s %>").hide();
+                        });
+                     </script>
+                  </li>
+               <% } %>
+         </td>
+      </tr>
+      
+      <tr>
+         <td><p id="addUserBtn" class="linkP">Add Conflict</p></td>
+         <td colspan="2">
+            <span id="tabRoomForm" 
+               <% if @conflict.institution.nil? %>
+                  style="display:none;"
+               <% end %>
+            >
+               
+               <%= form_for(@conflict) do |f| %>
+                  
+                  
+                        <span class="input-prepend" style="margin-left:18px">
+                           <span class="add-on">Institution</span>
+                              <% inst_array = Institution.all.map { |inst| [inst.full_name, inst.id]} %>
+                              <% inst_array.sort_by! { |i| i[0].downcase }%>
+                              <%= f.select(:institution_id, options_for_select(inst_array), {}, {class: "span2 uni-dropdown"}); %>
+                        </span>
+                        
+                        <i class="icon-question-sign" id="inst-info-btn"></i>
+                        <span id="inst-info-box" class="pull-left infoBox">
+                           The institution isn't listed?<br>
+                           <a href="<%= new_institution_path %>" target="_blank">Register the institution here.</a>
+                        </span>
+
+                        <script>
+                           $("#inst-info-btn").click(function() {
+                              $("#inst-info-box").toggle();
+                           });
+                        </script>
+                        
+                        
+                  <%= hidden_field_tag "request_origin", (tournament_path(@tournament) + 
+                                                          "/control/adjudicators/" + @ta.id.to_s + "/edit") %>
+                  <%= hidden_field_tag "user_id", @user.id %>
+                  <%= submit_tag "Add", {class: "btn", style: "margin-left:87px"} %>
+               <% end %>
+               
+               <p>(Note that adding a conflict is permanent.)</p>
+               
+               <script>
+                  $("#addUserBtn").on("click", function() {
+                     $("#tabRoomForm").toggle();
+                  });
+               </script>
+            </span>
+            
+         </td>
+      </tr>
+   </table>
+   
+</div>

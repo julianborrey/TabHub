@@ -61,10 +61,19 @@ class UsersController < ApplicationController
    end
    
    def update
+      #save this to compare if updated
+      oldInst_id = User.find(params[:id]).institution_id;
+      
       #@user = User.find(params[:id])
       if @user.update_attributes(user_params)
-         #handle a successful update
-         flash[:success] = "Profile updated"
+         
+         #if they updated institution, take it as they moved
+         if @user.institution_id != oldInst_id;
+            Conflict.new(user_id: params[:id], institution_id: @user.institution_id).save;
+            flash[:success] = "Profile updated. Note that you now have your previous conflicts plus one for your new institution."
+         else
+            flash[:success] = "Profile update."
+         end
          sign_in @user
          redirect_to @user
       else

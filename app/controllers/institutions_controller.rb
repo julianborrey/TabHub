@@ -1,6 +1,5 @@
 class InstitutionsController < ApplicationController
    before_action :authorised_user, only: [:edit, :update]
-   before_action :signed_out_user, only: [:new, :create]
 
    def show
       #if the institution doesn't exist ... what happens?

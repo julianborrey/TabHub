@@ -84,21 +84,31 @@ class User < ActiveRecord::Base
       return (self.institution_id == inst.id && self.status == GlobalConstants::SOCIETY_ROLES[:president]);
    end
    
+   #returns true if the user is an adjudicator in the given tournament
+   def adj?(t)
+      self.tournament_attendees.each { |ta|
+         if ta.tournament_id == t.id && ta.role == GlobalConstants::TOURNAMENT_ROLES[:adjudicator]
+            return true;
+         end
+      }
+      return false; #made it here, no adj
+   end
+
    #true if the user is in a tournament right now
    def in_tournament?
-      return !current_tournaments.empty?
+      return !self.get_tournaments(:present).empty?
    end
    
-   def current_tournaments
+   def get_tournaments(status)
       list = self.tournament_attendees.to_a(); #record of user attedance
       
       current_tourns = [];
       list.each { |ta|
          if Tournament.exists?(ta.tournament_id)
             t = Tournament.find(ta.tournament_id);
-            if !t.nil? && t.status == GlobalConstants::TOURNAMENT_STATUS[:present]
+            if !t.nil? && t.status == GlobalConstants::TOURNAMENT_STATUS[status]
                #if ### SHould have something here about someone leaving a tournament
-               current_tourns.push(t.name);
+               current_tourns.push(t);
                #end
             end
          end
@@ -116,7 +126,19 @@ class User < ActiveRecord::Base
       #something like the above, but also goes into finding the tournament and then cheking if any rounds are active.
       return false;
    end
+   
+   #returns true if THIS user is in the tab room of a tournament for the GIVEN user
+   def in_tab_room_of?(u)
+      tournaments_not_past = u.get_tournaments(:present) + u.get_tournaments(:future);
 
+      tournaments_not_past.each { |t|
+         if self.in_tab_room?(t)
+            return true;
+         end
+      }
+      return false;
+   end
+   
    #returns true is user in tabroom of tournament t
    def in_tab_room?(t)
       if t.is_a?(String)

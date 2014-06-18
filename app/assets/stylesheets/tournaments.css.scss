@@ -278,3 +278,27 @@
 
 /* _tournament_user_stats.html.erb */
 
+
+
+
+/* adjudicators edit page */
+
+.adjEditPage {
+   .add-on {
+      font-size: 15px;
+      text-align: center;
+      background-color: white;
+      
+      padding-left: 5px;
+      padding-right: 5px;
+      padding-top: 4px; //to make same height as input field
+      height: 20px;     //this too
+      width: 80px;
+   }
+   
+   .span2 {
+      width: 200px;
+      text-align: center;
+   }
+   
+}
