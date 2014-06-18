@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-   include TournamentHelper
+   include TournamentsHelper
    
    before_action :signed_in_user,  only: [:show, :destroy, :edit, :update] 
    before_action :correct_user,    only: [:edit, :update]
@@ -38,6 +38,10 @@ class UsersController < ApplicationController
       
       if @user.save #if save successful (doesn't return false/nil)
          sign_in @user
+
+         #we will also set up their default conflict
+         Conflict.new(user_id: @user.id, institution_id: @user.institution_id).save;
+
          flash[:success] = "Welcome to TabHub!";
          redirect_to(user_path(@user.id)) #not even using "user_url"
       else

@@ -38,6 +38,12 @@ TabSite::Application.routes.draw do
    match '/tournaments/:id/control/import-room',  to: 'tournaments#import_room',  via: 'post'
    match '/tournaments/:id/control/remove-room',  to: 'tournaments#remove_room',  via: 'post'
    match '/tournaments/:id/control/rounds',       to: 'tournaments#rounds',       via: 'get'
+   match '/tournaments/:id/control/adjudicators', to: 'tournaments#rounds',       via: 'get'
 
+   #tournament adj control
+   match '/tournaments/:id/control/adjudicators/:ta_id/edit',             to: 'tournaments#edit_adj',             via: 'get'
+   match '/tournaments/:id/control/adjudicators/:ta_id/edit-rating',      to: 'tournaments#update_adj_rating',    via: 'post'
+   match '/tournaments/:id/control/adjudicators/:ta_id/remove',           to: 'tournaments#remove_adj',           via: 'post'
+   
    #match '/pastmotions', to: 'static_pages#pastmotions', via: 'get'
 end

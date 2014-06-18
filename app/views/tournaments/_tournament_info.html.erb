@@ -8,7 +8,7 @@
       <thead><tr>
          <td class="info-name">Hosted by:</td>
          <td class="info-value midCol">
-            <a href="<%= institutions_path(@tournament.institution.id)%>">
+            <a href="<%= institution_path(@tournament.institution)%>">
             <%= @tournament.get_host_name %></a>
          </td>
 

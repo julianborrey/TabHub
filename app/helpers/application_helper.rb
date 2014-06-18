@@ -24,7 +24,6 @@ module ApplicationHelper
       rounds= []; #return value
 
       i = 0;
-      numRounds = Round.count;
       potentials = Round.order(created_at: :desc).limit(100).to_a;
       potentials.shuffle!;
       #surely in 100 rounds we can find what we want

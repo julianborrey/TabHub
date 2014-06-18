@@ -1,11 +1,13 @@
 class TournamentsController < ApplicationController
    include TournamentsHelper
    
-   before_action :signed_in_user, only: [:show, :new, :create];
+   before_action :signed_in_user, only: [:new, :create];
    before_action :authorized_for_tournament, only: [:destroy, :edit, :update, 
                                              :control, :tab_room, :rooms, 
                                              :import_rooms, :import_room,
-                                             :remove_room, :rounds];
+                                             :remove_room, :rounds,
+                                             :adjudicators,
+                                             :edit_adj, :remove_adj];
 
    def index
       #make a has of lists of tournaments by region
@@ -163,6 +165,33 @@ class TournamentsController < ApplicationController
       @round = Round.new();
       @round.motion = Motion.new();
    end
+   
+   def adjudicators
+      @tournament = Tournament.find(params[:id]);
+      @ta = TournamentAttendee.new();
+      @temp_email = "";
+   end
+
+   #renders page to edit adj rating and conflicts
+   def edit_adj
+      @tournament = Tournament.find(params[:id]);
+      @user       = TournamentAttendee.find(params[:ta_id]).user;
+   end
+   #two things could be updated here
+   #1. TournamentAttendee.rating
+   #2. Conflicts entries
+   #Let us user two forms on one page, redirect back to edit page.
+   #Have a done button on the edit page to go back
+   #We will post directly to the normal RESOURCES paths
+   
+   #post will activate this method to remove adj from tournament
+   #movet this? -- its probably fine here.
+   def remove_adj
+      ta = TournamentAttendee.where(params[:ta_id]).first; #should already by role = adj
+      ta.destroy();
+      redirect_to(tournament_path(params[:id]) + '/control/adjudicators');
+   end
+   
    
    private
       def tournament_params

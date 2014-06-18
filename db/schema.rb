@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140617113556) do
+ActiveRecord::Schema.define(version: 20140618074548) do
 
   create_table "adjudicators", force: true do |t|
     t.integer  "user_id"
@@ -23,6 +23,13 @@ ActiveRecord::Schema.define(version: 20140617113556) do
 
   create_table "cities", force: true do |t|
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "conflicts", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "institution_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -110,6 +117,7 @@ ActiveRecord::Schema.define(version: 20140617113556) do
     t.integer  "role"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "rating"
   end
 
   create_table "tournament_settings", force: true do |t|

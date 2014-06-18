@@ -1,0 +1,107 @@
+<% provide(:title,  @tournament.name + " -  Adjudicators") %>
+
+<div class="row-fluid tournament-page">
+   
+   <%= render('tournaments/title_shim'); %>
+   
+    <div class="tableTitle">
+      <h3>Adjudicators</h3>
+      <a href="<%= tournament_path(@tournament) + '/control'%>">back to control panel</a>
+      <br><br>
+      <p id="addUserBtn" class="linkP" style="display:inline; margin-right:30px;">Add Adjudicator</p>
+   </div>
+   
+   <table class="table attendeeTable">
+      <tr class="newAdjRow" id="tabRoomForm" 
+         <% if @temp_email.empty? %>
+            style="display:none;"
+         <% end %>
+      ">
+      
+      <%= form_tag(@ta) do %>
+         <td><span class="newTabbieField">User's E-mail: <%= email_field_tag(:email, @temp_email, 
+                                                         class: "addTabbieEmail", 
+                                                         style: "height:14px; margin-bottom:0px;") %></span></td>
+         <td></td>
+         <td><span class="ratingField">Rating: <%= number_field_tag(:rating, class="ratingNum", style: "height:14px;") %></span></td>
+         <%= hidden_field_tag 'tournament_id', @tournament.id %>
+         <td><%= submit_tag "Add", {class: "btn newTabbieBtn"} %></td>
+      <% end %>
+
+         <script>
+            $("#addUserBtn").on("click", function() {
+               $("#tabRoomForm").toggle();
+            });
+         </script>
+      </tr>
+   
+      <thead><tr>
+         <td>Name</td>
+         <td>Institution</td>
+         <td>Rating</td>
+         <td>Conflicts</td>
+         <td></td>
+         <td></td>
+      </tr></thead>
+      
+      <% TournamentAttendee.where(tournament_id: @tournament.id, role: GlobalConstants::TOURNAMENT_ROLES[:adjudicator]).each { |a| %>
+         <tr>
+            <% u = User.find(a.user_id); %>
+            <td><a href="<%= user_path(u) %>"><%= u.full_name %></a></td>
+            <td><a href="<%= institution_path(u.institution) %>"><%= u.institution.short_name %></a></td>
+            <td><%= a.rating %></td>
+            <td>
+               <ul>
+               <% a.user.conflicts.to_a.each { |c| %>
+                  <li><%= c.institution.short_name %></li>
+               <% } %>
+               </ul>
+            </td>
+            
+            <td><%= link_to("Edit", (tournament_path(@tournament) + '/control/adjudicators/' + a.id.to_s + '/edit')) %></td>
+            
+            <td><%= link_to("Remove", tournament_path(@tournament) + '/control/adjudicators/' + a.id.to_s + '/remove'), 
+                            confirm: ("Are you sure you want to remove " + 
+                            u.full_name + " from the tournament?"), method: :delete) %></td>
+         </tr>
+      <% } %>
+
+      <tr>
+         <td><p id="addUserBtn" class="linkP">Add user to Tab Room</td>
+         <td></td>
+         <td></td>
+      </tr>
+   </table>
+
+   <div class="newTabbieForm" id="tabRoomForm" 
+      <% if @temp_email.empty? %>
+         style="display:none;"
+      <% end %>
+   >
+      <%= form_tag(tournament_attendees_path) do %>
+         <span class="newTabbieField">User's E-mail: <%= email_field_tag(:email, @temp_email, 
+                                                         class: "addTabbieEmail", 
+                                                         style: "height:14px; margin-bottom:0px;") %></span>
+         <%= hidden_field_tag 'request_origin', "tab_room" %>
+         <%= hidden_field_tag 'tournament_id', @tournament.id %>
+         <%= submit_tag "Add", {class: "btn newTabbieBtn"} %>
+      <% end %>
+
+      <script>
+         $("#addUserBtn").on("click", function() {
+            $("#tabRoomForm").toggle();
+         });
+      </script>
+   </div>
+
+   <div class="newTabbieForm" 
+      <% if flash.nil? %>
+         style="display:none"
+      <% end %>
+   >
+      <% flash.each do |key, val| %>
+         <%= content_tag(:div, val, class: "fadeSoon alert alert-#{key}", style: "margin-top:60px;"); %>
+      <% end %>
+   </div>
+   
+</div>

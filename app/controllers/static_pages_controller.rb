@@ -6,7 +6,7 @@
 # The controller to serve the static pages.
 
 class StaticPagesController < ApplicationController
-   include TournamentHelper
+   include TournamentsHelper
 
    def home
       @user = nil;

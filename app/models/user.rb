@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
       return team_1 + team_2;
    end
    
+   has_many(:conflicts);
    has_many(:tournaments);
    has_many(:tournament_attendees); #which tournaments the user attended
 

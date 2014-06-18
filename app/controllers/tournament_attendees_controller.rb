@@ -1,5 +1,5 @@
 class TournamentAttendeesController < ApplicationController
-   include TournamentHelper
+   include TournamentsHelper
 
    before_action :authorized_for_tournament, only: [:destroy, :create];
 

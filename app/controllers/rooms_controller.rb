@@ -1,6 +1,6 @@
 class RoomsController < ApplicationController
-   include TournamentHelper
-   include RoomHelper
+   include TournamentsHelper
+   include RoomsHelper
    
    before_action :authorized_for_tournament, only: [:create, :edit, :update, :show];
    #before_action :authorized_for_room, only: [:show, :update];

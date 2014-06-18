@@ -4,7 +4,7 @@
    
    <%= render('tournaments/title_shim'); %>
    
-   <% if @user.in_tab_room?(@tournament) %>  
+   <% if !@user.nil? && @user.in_tab_room?(@tournament) %>  
       <div class="row-fluid ctrlBtnRow">
          <% flash.each do |key, val| %>
             <%= content_tag(:div, val, class: "alert alert-#{key}"); %>

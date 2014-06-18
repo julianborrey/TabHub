@@ -5,7 +5,7 @@
          <% @recent_rounds.each { |r| %>
             <tr>
                <td>
-                  <span class="motion"><%= r.motion.first.wording %></span><br>
+                  <span class="motion"><%= r.motion.wording %></span><br>
                   <span class="institution"><%= "- " + r.tournament.name %></span>
                </td>
             </tr>
