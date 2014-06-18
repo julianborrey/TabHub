@@ -1,6 +1,8 @@
 class Round < ActiveRecord::Base
    belongs_to(:tournament);
-   has_many(:motion);
+   
+   has_one(:motion);
+   accepts_nested_attributes_for(:motion);
    
    validates(:tournament_id, presence: true);
    validates(:round_num, presence: true);
@@ -20,5 +22,17 @@ class Round < ActiveRecord::Base
    #returns time of prep time end
    def prep_time_end
       return "1545";
+   end
+   
+   #returns the round number of this round
+   def get_rank
+      list = self.tournament.rounds.to_a;
+      #this list will be chronological already
+
+      i = 0;
+      while list[i].id != self.id
+         i = i + 1;
+      end
+      return (i + 1);
    end
 end

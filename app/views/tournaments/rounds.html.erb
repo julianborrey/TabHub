@@ -1,10 +1,10 @@
-<% provide(:title, (@tournament.name + " - Add/Edit Rounds")); %>
+<% provide(:title, (@tournament.name + " - Rounds")); %>
 
 <div class="info-page signup-page">
    
-   <h2>Add Round <%= (@tournament.num_rounds + 1).to_s %> to Tournament </h2>
+   <h1>Tournament Rounds</h2>
    <div class="tableTitle">
-      <a href="<%= tournament_path(@tournament) + '/control'%>">back to control panel</a>
+      <a href="<%= tournament_path(@tournament) + '/control' %>">back to control panel</a>
    </div>
    
    <table class="table attendeeTable">
@@ -18,34 +18,36 @@
       <% i = 1 %>
       <% @tournament.rounds.each { |r| %>
          <tr>
-            <td><%= 1 %></td>
-            <td><a href="<%= round_path(r) %>"><%= wording %></a></td>
+            <td><%= i %></td>
+            <td><a href="<%= round_path(r) %>"><%= r.motion.wording %></a></td>
             <td><%= link_to("Edit", edit_round_path(r)) %></td>
             <td><%= link_to("Delete", round_path(r), 
-                            confirm: ("Are you sure you want to delete round " + <%= i %>), method: :delete) %></td>
+                            confirm: ("Are you sure you want to delete round " + i.to_s ), method: :delete) %></td>
          </tr>
+         <% i = i + 1; %>
       <% } %>
       
       <tr>
          <td><p id="addUserBtn" class="linkP">Add Round</td>
          <td></td>
          <td></td>
+         <td></td>
       </tr>
    </table>
    
    <div class="newTabbieForm" id="tabRoomForm" 
-      <% if @wording.empty? %>
+      <% if @round.motion.wording.nil? || @round.motion.wording.empty? %>
          style="display:none;"
       <% end %>
    >
       <%= form_for(@round) do |f| %>
          <%= render('shared/error_messages', object: f.object); %>
          <br>
-         <%= render('institutions/fields', f: f); %>
+         <%= render('rounds/fields', f: f); %>
          
          <br><br>
          
-         <%= f.submit "Create Institution", {class: "btn btn-primary create-account-btn"} %>
+         <%= f.submit "Add Round", {class: "btn btn-primary"} %>
       <% end %>
    
       <script>

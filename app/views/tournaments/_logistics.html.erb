@@ -1,6 +1,6 @@
 <div class="row-fluid">
    <div class= "settingsBox" style="margin-bottom:60px">
-      <p><b>Logistics</b> - click lists below to edit.</p>
+      <p><b>Logistics</b> - click lists below to edit or add.</p>
       
       <table class="table">
          <thead><tr>
@@ -11,38 +11,116 @@
          </tr><thead>
          
          <tr>
-            <td><%= link_to "Tab Room", (tournament_path(@tournament) + "/control/tab-room") %><i class="icon-question-sign qIcon"></i></td>
+            <td><%= link_to "Tab Room", (tournament_path(@tournament) + "/control/tab-room") %>
+               <i class="icon-question-sign qIcon" id="tabRoomLogBtn"></i>
+               <span id="tabRoomLogInfo" class="pull-left infoBox logInfoBox"> 
+                     This is a list of users who are authorized to edit the 
+                     tournament.
+               </span>
+               <script>
+                  $("#tabRoomLogBtn").mouseover(function() {
+                     $("#tabRoomLogInfo").show();
+                  }).mouseout(function() {
+                     $("#tabRoomLogInfo").hide();
+                  });
+               </script>
+            </td>
             <td><%= @tournament.tabbies.count %></td>
             <td>-</td>
             <td>-</td>
          </tr>
          <tr>
-            <td><%= link_to "Rounds", (tournament_path(@tournament) + "/control/rounds") %><i class="icon-question-sign qIcon"></i></td>
-            <td>9</td>
+            <td><%= link_to "Rounds", (tournament_path(@tournament) + "/control/rounds") %>
+            <i class="icon-question-sign qIcon" id="roundsLogBtn"></i>
+               <span id="roundsLogInfo" class="pull-left infoBox logInfoBox"> 
+                     This is where you can add rounds to the tournaments 
+                     and write in the motions.
+               </span>
+               <script>
+                  $("#roundsLogBtn").mouseover(function() {
+                     $("#roundsLogInfo").show();
+                  }).mouseout(function() {
+                     $("#roundsLogInfo").hide();
+                  });
+               </script>
+            </td>
+            <td><%= @tournament.rounds.count %></td>
             <td>-</td>
             <td>-</td>
          </tr>
           <tr>
-            <td><%= link_to "Rooms", (tournament_path(@tournament) + "/control/rooms") %><i class="icon-question-sign qIcon"></i></td>
+            <td><%= link_to "Rooms", (tournament_path(@tournament) + "/control/rooms") %>
+            <i class="icon-question-sign qIcon" id="roomsLogBtn"></i>
+               <span id="roomsLogInfo" class="pull-left infoBox logInfoBox"> 
+                     This is a list of all the rooms that can be allocated 
+                     for debates. You can also specify which rooms have 
+                     special priorities.
+               </span>
+               <script>
+                  $("#roomsLogBtn").mouseover(function() {
+                     $("#roomsLogInfo").show();
+                  }).mouseout(function() {
+                     $("#roomsLogInfo").hide();
+                  });
+               </script>
+            </td>
             <td><%= @tournament.rooms.count %></td>
             <td>Enough rooms?</td>
             <td><span style="color:<%= @roomCheck[1] %>"><%= @roomCheck[2] %></span></td>
          </tr>
          <tr>
             <td><%= link_to "Current Round Ballots", (tournament_path(@tournament) + "/control/ballots") %>
-               <i class="icon-question-sign qIcon"></i></td>
+            <i class="icon-question-sign qIcon" id="ballotLogBtn"></i>
+               <span id="ballotLogInfo" class="pull-left infoBox logInfoBox"> 
+                     Here you can view all the ballots that have been input 
+                     from each round as well as input ballots directly.
+               </span>
+               <script>
+                  $("#ballotLogBtn").mouseover(function() {
+                     $("#ballotLogInfo").show();
+                  }).mouseout(function() {
+                     $("#ballotLogInfo").hide();
+                  });
+               </script>
+            </td>
             <td>78</td>
             <td>All Submitted?</td>
             <td><span style="color:<%= @ballotCheck[1] %>"><%= @ballotCheck[2] %></span></td>
          </tr>
          <tr>
-            <td><%= link_to "Teams", (tournament_path(@tournament) + "/teams") %><i class="icon-question-sign qIcon"></i></td>
+            <td><%= link_to "Teams", (tournament_path(@tournament) + "/teams") %>
+            <i class="icon-question-sign qIcon" id="teamsLogBtn"></i>
+               <span id="teamsLogInfo" class="pull-left infoBox logInfoBox"> 
+                     This is a list of all the teams in the 
+                     tournament as well as their rank and current score.
+               </span>
+               <script>
+                  $("#teamsLogBtn").mouseover(function() {
+                     $("#teamsLogInfo").show();
+                  }).mouseout(function() {
+                     $("#teamsLogInfo").hide();
+                  });
+               </script>
+            </td>
             <td>358</td>
             <td>Multiple of 4?</td>
             <td><span style="color:<%= @multiple4Check[1] %>"><%= @multiple4Check[2] %></span></td>
          </tr>
          <tr>
-            <td><%= link_to "Adjudicators", (tournament_path(@tournament) + "/judges") %><i class="icon-question-sign qIcon"></i></td>
+            <td><%= link_to "Adjudicators", (tournament_path(@tournament) + "/judges") %>
+            <i class="icon-question-sign qIcon" id="adjLogBtn"></i>
+               <span id="adjLogInfo" class="pull-left infoBox logInfoBox"> 
+                     This is a list of adjudicators, their conflicts and 
+                     ratings.
+               </span>
+               <script>
+                  $("#adjLogBtn").mouseover(function() {
+                     $("#adjLogInfo").show();
+                  }).mouseout(function() {
+                     $("#adjLogInfo").hide();
+                  });
+               </script>
+            </td>
             <td>211</td>
             <td>Enough adjudicators?</td>
             <td><span style="color:<%= @enoughAdj[1] %>"><%= @enoughAdj[2] %></span></td>

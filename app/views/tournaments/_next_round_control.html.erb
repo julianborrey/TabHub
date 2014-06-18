@@ -3,7 +3,7 @@
       <% @next_round = @tournament.next_round %>
       <p><b><a href="<%= round_path(@next_round) %>">Next Round</a></b> - Status: 
          <span style="color:<%= @totalCheck[1] %>"><%= @totalCheck[2] %></span><p>
-      <p><b>Motion:</b><%= " " + @next_round.motion.first.wording %></p>
+      <p><b>Motion:</b><%= " " + @next_round.motion.wording %></p>
       
       <table class="table", style="margin-bottom:0px">
          <thead><tr>

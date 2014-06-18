@@ -1,11 +1,11 @@
 class TournamentsController < ApplicationController
-   include TournamentHelper
+   include TournamentsHelper
    
    before_action :signed_in_user, only: [:show, :new, :create];
    before_action :authorized_for_tournament, only: [:destroy, :edit, :update, 
                                              :control, :tab_room, :rooms, 
                                              :import_rooms, :import_room,
-                                             :remove_room];
+                                             :remove_room, :rounds];
 
    def index
       #make a has of lists of tournaments by region
@@ -160,7 +160,8 @@ class TournamentsController < ApplicationController
    
    def rounds
       @tournament = Tournament.find(params[:id]);
-
+      @round = Round.new();
+      @round.motion = Motion.new();
    end
    
    private

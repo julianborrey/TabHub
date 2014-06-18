@@ -37,7 +37,7 @@ TabSite::Application.routes.draw do
    match '/tournaments/:id/control/import-rooms', to: 'tournaments#import_rooms', via: 'get'
    match '/tournaments/:id/control/import-room',  to: 'tournaments#import_room',  via: 'post'
    match '/tournaments/:id/control/remove-room',  to: 'tournaments#remove_room',  via: 'post'
-   match '/tournaments/:id/control/rounds',       to: 'tournaments#rounds',       via: 'post'
+   match '/tournaments/:id/control/rounds',       to: 'tournaments#rounds',       via: 'get'
 
    #match '/pastmotions', to: 'static_pages#pastmotions', via: 'get'
 end

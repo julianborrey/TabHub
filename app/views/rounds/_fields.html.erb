@@ -1,7 +1,8 @@
 <div class="input-prepend">
    <span class="add-on">Motion</span>
    <%= f.fields_for(:motion) do |g| %>
-      <%= g.text_field(:wording, {class: "span2", value: "#{@round.motion.wording}"}); %>
+      <%= g.text_field(:wording, {class: "span2", value: "#{@round.motion.wording}",
+                                  style: "width:572px;"}); %>
    <% end %>
 </div>
 

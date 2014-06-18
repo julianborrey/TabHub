@@ -4,7 +4,7 @@
    <div class="settingsBox">
       <% @current_round = @tournament.current_round %>
       <p><b><a href="<%= round_path(@current_round) %>">Current Round</a></b><p>
-      <p><b>Motion:</b><%= " " + @current_round.motion.first.wording %></p>
+      <p><b>Motion:</b><%= " " + @current_round.motion.wording %></p>
       
       <table class="table", style="margin-bottom:0px">
          <thead><tr>

@@ -1,25 +1,19 @@
-<% provide(:title, "Edit - " + @institution.short_name); %>
-
-
-      <a href="<%= tournament_path(@tournament) + '/control'%>">back to control panel</a>
-
+<% provide(:title, @round.tournament.name + " - Edit Round " + @round.get_rank.to_s); %>
 
 <div class="info-page signup-page">
    
-   <h1>Edit Institution</h1>
+   <h2>Edit the Motion of Round <%= @round.get_rank %></h2>
+   <a href="<%= tournament_path(@round.tournament  ) + '/control/rounds'%>">back to rounds</a>   
    
-   <% flash.each do |key, val| %>
-      <%= content_tag(:div, val, class: "alert alert-#{key}"); %>
-   <% end %>
-   
-   <%= form_for(@institution) do |f| %>
+   <% @tournament = @round.tournament %>
+   <%= form_for(@round) do |f| %>
       <%= render('shared/error_messages', object: f.object); %>
-      <br>
-      <%= render('institutions/fields', f: f); %>
-      
-      <br>
-      
-      <%= f.submit "Update Institution", {class: "btn btn-primary create-account-btn"} %>
+         <br>
+         <%= render('rounds/fields', f: f); %>
+         
+         <br><br>
+         
+         <%= f.submit "Add Round", {class: "btn btn-primary"} %>
    <% end %>
    
 </div>
