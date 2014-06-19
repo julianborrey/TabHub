@@ -40,15 +40,25 @@ class TournamentAttendeesController < ApplicationController
             @temp_email = safe_params[:email];
             render('tournaments/tab_room');
          end
-      
+         
       elsif safe_params[:request_origin] == "adjudicators" #if adding an adj
          newAdj = User.where(email: safe_params[:email]);
-
+         
          #check that the user was found, if not error
          if !newAdj.empty?
             newAdj = newAdj.first;
             
             if !newAdj.adj?(t) #duplicate check
+               newAdj.teams.each { |t| #check to make sure they are also not a debater
+                  if t.tournament_id == t.id
+                     flash[:error] = "User not found."
+                     @temp_email = safe_params[:email];
+                     @tournament = t;
+                     @ta = TournamentAttendee.new;
+                     render('tournaments/adjudicators');
+                  end
+               }
+
                TournamentAttendee.new(tournament_id: t.id,
                                       user_id: newAdj.id,
                                       rating: safe_params[:rating],

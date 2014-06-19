@@ -158,6 +158,17 @@ class User < ActiveRecord::Base
       return false;
    end
 
+   #returns true if the user is curretly a tabbie at any tournament
+   def is_a_tabbie?
+      self.tournament_attendees.each { |ta|
+         if (ta.role == GlobalConstants::TOURNAMENT_ROLES[:tab_room]) && 
+            (ta.tournament.status != GlobalConstants::TOURNAMENT_STATUS[:past])
+            return true;
+         end
+      }
+      return false; #getting here is a fail
+   end
+
    #returns the current Team of the user
    def current_team
       self.teams.each { |t|

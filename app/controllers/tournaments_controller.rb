@@ -6,7 +6,7 @@ class TournamentsController < ApplicationController
                                              :control, :tab_room, :rooms, 
                                              :import_rooms, :import_room,
                                              :remove_room, :rounds,
-                                             :adjudicators,
+                                             :adjudicators, :teams,
                                              :edit_adj, :remove_adj];
 
    def index
@@ -200,6 +200,27 @@ class TournamentsController < ApplicationController
          ta.destroy();
       #end
       redirect_to(tournament_path(params[:id].to_i) + '/control/adjudicators');
+   end
+
+   #shows the teams
+   #tabbie can add/remove teams here --> edit on another page
+   def teams
+      @tournament = Tournament.find(params[:id]);
+      flash = {};
+
+      ### for the new form ###
+      @n = GlobalConstants::FORMAT[:bp][:num_speakers_per_team];
+      @name   = "";
+      @emails = [];
+      (1..@n).each { |i|
+         @emails.push("");
+      } #start off with correct number of blank emails
+      
+      ### for the table of teams ###
+      #build a list of institutionally (alphabetical) ordered teams
+      # *** will be interesting to try this with 100 teams (small tournament)
+      # 400 (WUDC) and 1000 (wtf...)
+      @list = @tournament.get_sorted_teams;
    end
    
    

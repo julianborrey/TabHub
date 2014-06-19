@@ -1,0 +1,28 @@
+<tr>
+   
+   <td>New Team:</td>
+   <%= form_tag do %>
+      
+      <td><%= text_field_tag(:name, @name, {placeholder: "Team name", style: "height:20px;"}); %></td>
+      
+      <% (1..@n).each { |i| %>
+         <td><input class="emails" name="emails[]" type="email" value="<%= @emails[i-1] %>" 
+                    placeholder="<%= "E-mail of member #{i}" %>"></td>
+      <% } %>
+      
+      <td colspan="2"><%= submit_tag "Add Team", {class: "btn"} %></td>
+   <% end %>
+   
+</tr>
+
+<% if !flash.empty? %>
+   <tr>
+      <td colspan="6">
+         <% flash.each do |key,val| %>
+         <% if !val.empty? %>
+               <%= content_tag(:div, val , class: "fadeSoon alert alert-#{key}"); %>
+         <% end %>
+         <% end %>
+      </td>
+   </tr>
+<% end %>

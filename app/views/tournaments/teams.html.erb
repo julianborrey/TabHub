@@ -1,0 +1,28 @@
+<% provide(:title,  @tournament.name + " - Teams") %>
+
+<div class="row-fluid tournament-page">
+   
+   <%= render('tournaments/title_shim'); %>
+   
+    <div class="tableTitle">
+      <h1>Teams</h1>
+      <a href="<%= tournament_path(@tournament) + '/control'%>">back to control panel</a>
+      <span style="margin-left:50px"># Teams: <%= @tournament.teams.count %></span>
+      <br><br>
+   </div>
+   
+   <table class="table attendeeTable teamsTable">
+      <%= render('tournaments/team_form_rows'); %>
+      
+      <tr class="titlesRow">
+         <td>Institution</td>
+         <td>Name</td>
+         <td>Member 1</td>
+         <td>Member 2</td>
+         <td><!--  edit  --></td>
+         <td><!-- remove --></td>
+      </tr>
+      
+      <%= render('tournaments/team_rows'); %>
+   </table>
+</div>

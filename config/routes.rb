@@ -46,5 +46,9 @@ TabSite::Application.routes.draw do
    match '/tournaments/:id/control/adjudicators/:ta_id/edit-rating',      to: 'tournaments#update_adj_rating',    via: 'post'
    match '/tournaments/:id/control/adjudicators/:ta_id/remove',           to: 'tournaments#remove_adj',           via: 'delete'
    
-   #match '/pastmotions', to: 'static_pages#pastmotions', via: 'get'
+   #teams control
+   match '/tournaments/:id/control/teams', to: 'tournaments#teams', via: 'get'
+   match '/tournaments/:id/control/teams', to: 'teams#create_by_tabbie', via: 'post'
+   match '/tournaments/:id/control/teams/:team_id/', to: 'teams#destroy_by_tabbie', via: 'delete'
+
 end

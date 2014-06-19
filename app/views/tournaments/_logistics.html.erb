@@ -88,7 +88,7 @@
             <td><span style="color:<%= @ballotCheck[1] %>"><%= @ballotCheck[2] %></span></td>
          </tr>
          <tr>
-            <td><%= link_to "Teams", (tournament_path(@tournament) + "/teams") %>
+            <td><%= link_to "Teams", (tournament_path(@tournament) + "/control/teams") %>
             <i class="icon-question-sign qIcon" id="teamsLogBtn"></i>
                <span id="teamsLogInfo" class="pull-left infoBox logInfoBox"> 
                      This is a list of all the teams in the 
@@ -102,7 +102,7 @@
                   });
                </script>
             </td>
-            <td>358</td>
+            <td><%= @tournament.teams.count %></td>
             <td>Multiple of 4?</td>
             <td><span style="color:<%= @multiple4Check[1] %>"><%= @multiple4Check[2] %></span></td>
          </tr>

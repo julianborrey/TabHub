@@ -13,12 +13,12 @@ module GlobalConstants
    #the privilidges code                                                         
    PRIVILEGES     = {general: 0, site_admin: 1}.freeze();                        
    PRIVILEGES_STR = PRIVILEGES.invert().freeze(); #swaps all key-value pairs     
-
+   
    #the roles that people may act in a society, 
    #these previliages will allow for registration ...
    SOCIETY_ROLES = {member: 0, president: 1, externals: 2}.freeze();
    SOCIETY_ROLES_STR = SOCIETY_ROLES.invert().freeze();
-
+   
    #during a trounament these constants help keep track of who has what powers
    #and what information they should be prompted with
    TOURNAMENT_ROLES = {debater: 0, adjudicator: 1, tab_room: 2, ca: 3, dca: 4}.freeze();
@@ -33,6 +33,10 @@ module GlobalConstants
                          middle_east: 5, europe: 6, north_america: 7, 
                          south_america: 8}.freeze();
    TOURNAMENT_REGIONS_STR = TOURNAMENT_REGIONS.invert().freeze();
+   
+   #tournament formats
+   FORMAT = {bp:  {num_speakers_per_team: 2}, 
+             v3v: {num_speakers_per_team: 3}}.freeze();
    
    #used for the tournament settings
    SETTINGS_TITLES     = {registration: "Registration", motion: "Motion", tab: "Tab",

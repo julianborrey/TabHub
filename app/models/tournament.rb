@@ -189,4 +189,9 @@ class Tournament < ActiveRecord::Base
       }
       return insts.uniq!
    end
+
+   #returns a list of teams sorted by alphabetical institution
+   def get_sorted_teams
+      return self.teams.to_a.sort { |x,y| x.institution.full_name.downcase <=>  y.institution.full_name.downcase };
+   end
 end

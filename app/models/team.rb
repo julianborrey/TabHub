@@ -8,8 +8,15 @@ class Team < ActiveRecord::Base
    def users
       return [member_1, member_2];
    end
+
+   def users_ids
+      return [member_1_id, member_2_id];
+   end
    
-   validates(:name, presence: true, length: {maximum: 50});
+   validates(:name, presence: true, length: {maximum: 50},
+                    uniqueness: {case_sensitive: false});
+   #decided to be !caseSensitive on names, lowers possible confusion
+   
    validates(:institution_id, presence: true); #if = 0, open team
    validates(:tournament_id, presence: true);
    validates(:total_speaks, presence: true);
