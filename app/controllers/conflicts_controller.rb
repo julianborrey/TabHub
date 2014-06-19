@@ -1,18 +1,26 @@
 class ConflictsController < ApplicationController
+   include ApplicationHelper
+   
    #but through other pages the conflicts may be edited
    before_action :authorized_for_conflicts, only: [:create]
 
-   def create
-      puts("safe_p: " + safe_params.to_s);
-      @conflict = Conflict.new(user_id: safe_params[:user_id],
+   def create_by_tabbie
+      @ta       = TournamentAttendee.find(params[:ta_id]);
+      @tournament     = Tournament.find(params[:id]);   
+      @conflict = Conflict.new(user_id: @ta.user_id,
                                institution_id: safe_params[:conflict][:institution_id]);
+               
       
-      @conflict.save #if save successful (doesn't return false/nil)
-      #since this is hard coded input, not error things
-      #even if there was an error, what will we tell the user???
-      
-      #need to go back to the origin
-      redirect_to(params[:request_origin]); #is this dangerous?
+      if @conflict.save
+         flash[:success] = "Conflict added."
+         redirect_to(tournament_path(@tournament) + '/control/adjudicators/' + @ta.id.to_s + '/edit');
+      else
+         @user           = @ta.user;
+         @conflicts_list = @user.conflicts.to_a;
+         @msg            = SmallNotice.new;
+         load_errors(@conflict);
+         render('tournament_attendees/edit_adj_by_tabbie');
+      end
    end
    
    #you know, I think no destroys for now...
@@ -38,7 +46,7 @@ class ConflictsController < ApplicationController
       end
       
       def safe_params
-         params.permit(:user_id, conflict: [:institution_id]);
+         params.permit(conflict: [:institution_id]);
       end
    
 end

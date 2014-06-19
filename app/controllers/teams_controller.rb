@@ -1,4 +1,5 @@
 class TeamsController < ApplicationController
+   include ApplicationHelper
    include TournamentsHelper
    
    before_action :signed_in_user, only: [:show, :new]
@@ -110,9 +111,7 @@ class TeamsController < ApplicationController
          #lets fluralize the flash and then port over the error messages
          #while keeping an eye on what the 'shared/_error_messages' does
          
-         @team.errors.full_messages.each { |m|
-            @msg.add(:error, m);
-         }
+         load_errors(@team);
          render 'tournaments/teams';
          return;
       end

@@ -55,5 +55,9 @@ en:
                attributes:
                   user_id: 
                      taken: "is already in this role."
+            conflict:
+               attributes:
+                  institution_id: 
+                     taken: "is already listed as a conflict."
                
             

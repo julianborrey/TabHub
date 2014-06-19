@@ -4,6 +4,7 @@ class Conflict < ActiveRecord::Base
    
    validates(:user_id, presence: true);
    validates(:institution_id, presence: true);
+   validates(:institution_id, uniqueness: {scope: :user_id});
    
    #Note: when a user updates their institution (as in they move to another
    #university, we will add in the new conflict but not delete the old one.)

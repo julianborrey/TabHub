@@ -1,0 +1,14 @@
+<tr>
+   <%= form_tag do %>
+      <td><b>Rating:</b></td>
+      <td><%= number_field(:tournament_attendee, :rating, {value: @ta.rating, step: 0.01}); %></td>
+      <td><%= submit_tag "Update Rating", {class: "btn"} %></td>
+   <% end %>
+</tr>
+
+<tr>
+   <td colspan="6">
+      <%= render(:partial => 'shared/small_notice', :locals => {small_notice: @msg}); %>
+   </td>
+</tr>
+      

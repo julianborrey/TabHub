@@ -1,0 +1,15 @@
+<% provide(:title, "Edit Adjudicators - " + @user.full_name); %>
+
+<div class="info-page adjEditPage">
+   
+   <h2>Edit Adjudicator <%= @user.full_name %></h2>
+   <br>
+   <a href="<%= tournament_path(@tournament) + '/control/adjudicators'%>">back to list of adjudicators</a>
+   <br><br>
+   
+   <table class="table">
+      <%= render('tournaments/adjudicators/edit_adj_rating'); %>
+      <%= render('tournaments/adjudicators/edit_adj_conflicts'); %>   
+   </table>
+   
+</div>

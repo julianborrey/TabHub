@@ -39,6 +39,8 @@ TabSite::Application.routes.draw do
    match '/tournaments/:id/control/remove-room',  to: 'tournaments#remove_room',  via: 'post'
    match '/tournaments/:id/control/rounds',       to: 'tournaments#rounds',       via: 'get'
    
+   #room control
+   
    #tabbie control
    match '/tournaments/:id/control/tab-room',        to: 'tournaments#tab_room',                          via: 'get'
    match '/tournaments/:id/control/tab-room',        to: 'tournament_attendees#create_tabbie_by_tabbie',  via: 'post'
@@ -50,6 +52,10 @@ TabSite::Application.routes.draw do
    match '/tournaments/:id/control/adjudicators/:ta_id/edit', to: 'tournament_attendees#edit_adj_by_tabbie',    via: 'get'
    match '/tournaments/:id/control/adjudicators/:ta_id/edit', to: 'tournament_attendees#update_adj_by_tabbie',  via: 'post'
    match '/tournaments/:id/control/adjudicators/:ta_id/edit', to: 'tournament_attendees#destroy_adj_by_tabbie', via: 'delete'
+
+   #conflicts control
+   match '/tournaments/:id/control/adjudicators/:ta_id/conflicts', to: 'conflicts#create_by_tabbie', via: 'post'
+   #no delete as of now
    
    #teams control
    match '/tournaments/:id/control/teams',          to: 'tournaments#teams',       via: 'get'

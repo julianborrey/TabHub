@@ -39,4 +39,11 @@ module ApplicationHelper
 
       return rounds;
    end
+   
+   #function to put all object errors into the message object
+   def load_errors(obj)
+         obj.errors.full_messages.each { |m|
+            @msg.add(:error, m);
+         }
+   end
 end

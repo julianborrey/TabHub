@@ -1,4 +1,5 @@
 class TournamentAttendeesController < ApplicationController
+   include ApplicationHelper
    include TournamentsHelper
 
    before_action :authorized_for_tournament, only: [:destroy, :create];
@@ -75,7 +76,6 @@ class TournamentAttendeesController < ApplicationController
          flash[:success] = "Adjudicator added."
          redirect_to(tournament_path(@tournament) + '/control/adjudicators');
       else
-         puts("AND HERERERERE");
          load_errors(@ta);
          render('tournaments/adjudicators');
       end
@@ -87,7 +87,6 @@ class TournamentAttendeesController < ApplicationController
       @ta             = TournamentAttendee.find(params[:ta_id]);
       @user           = @ta.user;
       @conflicts_list = @user.conflicts.to_a;
-      @conflict       = Conflict.new;
    end
    #two things could be updated here
    #1. TournamentAttendee.rating
@@ -100,10 +99,19 @@ class TournamentAttendeesController < ApplicationController
    #so far, update is purely for adj ratings and the only place 
    #this can happen is from the edit of an adj on the control panel
    def update_adj_by_tabbie
-      ta = TournamentAttendee.find(params[:id]);
-      ta.update_attributes(rating: params[:tournament_attendee][:rating].to_f);
-      flash[:success] = "Updated adjudicator's rating successfully."
-      redirect_to(tournament_path(ta.tournament_id) + '/control/adjudicators/' + ta.id.to_s + '/edit');
+      @ta = TournamentAttendee.find(params[:ta_id]);
+      
+      if @ta.update_attributes(rating: params[:tournament_attendee][:rating].to_f);
+         flash[:success] = "Updated adjudicator's rating successfully."
+         redirect_to(tournament_path(@ta.tournament_id) + '/control/adjudicators/' + @ta.id.to_s + '/edit');
+      else
+         @tournament     = Tournament.find(params[:id]);
+         @user           = @ta.user;
+         @conflicts_list = @user.conflicts.to_a;
+         @msg            = SmallNotice.new;
+         load_errors(@ta);
+         render(tournament_path(@tournament) + 'control/adjudicators/' + @ta.id + '/edit');
+      end
    end
 
    #no check on how many adjs
@@ -127,13 +135,6 @@ class TournamentAttendeesController < ApplicationController
             return false;
          end
          return true;
-      end
-      
-      def load_errors(obj)
-         puts("CHECKEKECKECE");
-         obj.errors.full_messages.each { |m|
-            @msg.add(:error, m);
-         }
       end
       
 end
