@@ -1,0 +1,83 @@
+<% provide(:title,  @tournament.name + " | Rooms List") %>
+
+<div class="row-fluid tournament-page">
+   
+   <%= render('tournaments/title_shim'); %>
+   
+   <div class="tableTitle">
+      <h3>Debate Rooms List</h3>
+      <a href="<%= tournament_path(@tournament) + '/control'%>">back to control panel</a>
+      <br><br>
+      <p id="addUserBtn" class="linkP" style="display:inline; margin-right:30px;">Add Room</p>
+      <b><%= link_to("Import rooms from previous tournament", (tournament_path(@tournament) + '/control/import-rooms')) %></b>
+   </div>
+   
+   <div class="newTabbieForm" id="tabRoomForm" style="margin-top: 25px; 
+      <% if @flash.empty? %>
+         display:none;
+      <% end %>
+   ">  
+      
+      <%= form_for(@room) do |f| %>
+         <% puts("here is room: " + @room.to_json ); %>
+         <span>Room Name: <%= f.text_field(:name, style: "height:14px; margin-bottom:0px; width:250px; margin-right:20px;") %></span>
+         <span>Location:  <%= f.text_field(:location,  style: "height:14px; margin-bottom:0px; width:250px;") %></span>
+         <p>(Each room needs a name and location.)</p>
+         <p>If extra information should be given about the room, use the remarks box. This information will be 
+         given to debaters that are assigned this room.</p>
+         <div>
+            Remarks: <%= f.text_area(:remarks, style: "height:60px; width:598px; margin-bottom:0px; margin-left: 21px;") %>
+         </div>
+         <%= hidden_field_tag 'institution_id', @tournament.institution.id %>
+         <%= hidden_field_tag 'tournament_id', @tournament.id %>
+         <%= f.submit "Add", {class: "btn newTabbieBtn", style: "margin-top: -39px; float: right"} %>
+         <%= render('shared/error_messages', object: f.object); %>
+      <% end %>
+      
+      <% @flash.each do |s| %>
+         <%= content_tag(:div, s, class: "fadeSoon alert alert-error"); %>
+      <% end %>
+      
+   </div>
+   
+   <table class="table table-striped attendeeTable">
+      <thead><tr>
+         <td>Name</td>
+         <td>Location</td>
+         <td></td>
+      </tr></thead>
+      
+      <% i = 1; #for deleting rows %>
+      <% @tournament.rooms.each { |r_id| %>
+         <% r = Room.find(r_id); %>
+         <tr id="<%= "rowFor" + r.id.to_s %>">
+            <td><a href="<%= room_path(id: r.id, tournament_id: @tournament.id) %>"><%= r.name %></a></td>
+            <td><%= r.location %></td>
+            <td><%= link_to("Edit", edit_room_path(id: r.id, tournament_id: @tournament.id)) %></td>
+            <td><p id="<%= "removeRoom" + r.id.to_s %>" class="linkP">Remove</p></td>
+                  <script>
+                     $("<%= "#removeRoom" + r.id.to_s %>").on("click", function(){
+                        $.ajax({
+                           type:    "POST",
+                           url:     "<%= tournament_path(@tournament) + '/control/remove-room' %>",
+                           data:    {room_id: <%= r.id.to_s %>}
+                        }).done(function(){
+                           $("<%= "#rowFor" + r.id.to_s %>").remove();
+                        });
+                     });
+                  </script>
+         </tr>
+         <% i = i + 1; %>
+      <% } %>
+   </table>
+   
+   <div style="margin-bottom:80px;">
+   </div>
+
+   <script>
+      $("#addUserBtn").on("click", function() {
+         $("#tabRoomForm").toggle();
+      });
+   </script>
+   
+</div>

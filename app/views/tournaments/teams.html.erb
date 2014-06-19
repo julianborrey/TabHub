@@ -4,15 +4,15 @@
    
    <%= render('tournaments/title_shim'); %>
    
-    <div class="tableTitle">
+   <div class="tableTitle">
       <h1>Teams</h1>
       <a href="<%= tournament_path(@tournament) + '/control'%>">back to control panel</a>
       <span style="margin-left:50px"># Teams: <%= @tournament.teams.count %></span>
       <br><br>
    </div>
    
-   <table class="table attendeeTable teamsTable">
-      <%= render('tournaments/team_form_rows'); %>
+   <table class="table attendeeTable">
+      <%= render('tournaments/teams/team_form_row'); %>
       
       <tr class="titlesRow">
          <td>Institution</td>
@@ -23,6 +23,6 @@
          <td><!-- remove --></td>
       </tr>
       
-      <%= render('tournaments/team_rows'); %>
+      <%= render('tournaments/teams/team_rows'); %>
    </table>
 </div>

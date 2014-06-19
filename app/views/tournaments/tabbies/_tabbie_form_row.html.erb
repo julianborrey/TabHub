@@ -1,0 +1,13 @@
+<tr>
+   <td>New Tab Room Official</td>
+   <%= form_tag do %>
+      <td><%= email_field_tag(:email, @temp_email, {placeholder: "User's E-mail", style: "height:20px;"}); %></td>
+      <td><%= submit_tag "Add", {class: "btn newTabbieBtn"} %></td>
+   <% end %>
+</tr>
+
+<tr>
+   <td colspan="3">
+      <%= render(:partial => 'shared/small_notice', :locals => {small_notice: @msg}); %>
+   </td>
+</tr>

@@ -51,5 +51,9 @@ en:
                      confirmation: "must match."
                   institution_id:
                      greater_than: "must be selected."
+            tournament_attendee:
+               attributes:
+                  user_id: 
+                     taken: "is already in this role."
                
             

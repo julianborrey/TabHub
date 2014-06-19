@@ -33,22 +33,27 @@ TabSite::Application.routes.draw do
    match '/tournaments/:id/control',              to: 'tournaments#control',      via: 'get'
    match '/tournaments/:id/attendees',            to: 'tournaments#attendees',    via: 'get' 
    match '/tournaments/:id/stats',                to: 'tournaments#stats',        via: 'get'
-   match '/tournaments/:id/control/tab-room',     to: 'tournaments#tab_room',     via: 'get'
    match '/tournaments/:id/control/rooms',        to: 'tournaments#rooms',        via: 'get'
    match '/tournaments/:id/control/import-rooms', to: 'tournaments#import_rooms', via: 'get'
    match '/tournaments/:id/control/import-room',  to: 'tournaments#import_room',  via: 'post'
    match '/tournaments/:id/control/remove-room',  to: 'tournaments#remove_room',  via: 'post'
    match '/tournaments/:id/control/rounds',       to: 'tournaments#rounds',       via: 'get'
+   
+   #tabbie control
+   match '/tournaments/:id/control/tab-room',        to: 'tournaments#tab_room',                          via: 'get'
+   match '/tournaments/:id/control/tab-room',        to: 'tournament_attendees#create_tabbie_by_tabbie',  via: 'post'
+   match '/tournaments/:id/control/tab-room/:ta_id', to: 'tournament_attendees#destroy_by_tabbie',        via: 'delete'
 
    #tournament adj control
-   match '/tournaments/:id/control/adjudicators', to: 'tournaments#adjudicators', via: 'get'
-   match '/tournaments/:id/control/adjudicators/:ta_id/edit',             to: 'tournaments#edit_adj',             via: 'get'
-   match '/tournaments/:id/control/adjudicators/:ta_id/edit-rating',      to: 'tournaments#update_adj_rating',    via: 'post'
-   match '/tournaments/:id/control/adjudicators/:ta_id/remove',           to: 'tournaments#remove_adj',           via: 'delete'
+   match '/tournaments/:id/control/adjudicators',                    to: 'tournaments#adjudicators',                  via: 'get'
+   match '/tournaments/:id/control/adjudicators',                    to: 'tournament_attendees#create_adj_by_tabbie', via: 'post'
+   match '/tournaments/:id/control/adjudicators/:ta_id/edit',        to: 'tournament_attendees#edit_adj_by_tabbie',   via: 'get'
+   match '/tournaments/:id/control/adjudicators/:ta_id/edit-rating', to: 'tournament_attendees#update_adj_by_tabbie', via: 'post'
+   match '/tournaments/:id/control/adjudicators/:ta_id',             to: 'tournament_attendees#remove_adj_by_tabbie', via: 'delete'
    
    #teams control
-   match '/tournaments/:id/control/teams', to: 'tournaments#teams', via: 'get'
-   match '/tournaments/:id/control/teams', to: 'teams#create_by_tabbie', via: 'post'
-   match '/tournaments/:id/control/teams/:team_id/', to: 'teams#destroy_by_tabbie', via: 'delete'
+   match '/tournaments/:id/control/teams',          to: 'tournaments#teams',       via: 'get'
+   match '/tournaments/:id/control/teams',          to: 'teams#create_by_tabbie',  via: 'post'
+   match '/tournaments/:id/control/teams/:team_id', to: 'teams#destroy_by_tabbie', via: 'delete'
 
 end

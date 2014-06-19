@@ -2,7 +2,47 @@ class TournamentAttendeesController < ApplicationController
    include TournamentsHelper
 
    before_action :authorized_for_tournament, only: [:destroy, :create];
+   
+   def create_tabbie_by_tabbie
+      newTabbie = User.where(email: safe_params[:email]).first;
+      
+      @tournament = Tournament.find(params[:id]);
+      @temp_email = safe_params[:email]; #need this incase we render
+      @tab_room_attendee_array = TournamentAttendee.where(tournament_id: @tournament.id,
+                                       role: GlobalConstants::TOURNAMENT_ROLES[:tab_room]);
+      @msg                     = SmallNotice.new;
+      
+      #if we couldn't find the user
+      if newTabbie.nil?
+         @msg.add(:error, "Counld not find the user.");
+         render('tournaments/tab_room');
+         return;
+      end
+      
+      
+      @ta = TournamentAttendee.new(tournament_id: params[:id], user_id: newTabbie.id,
+                                   role: GlobalConstants::TOURNAMENT_ROLES[:tab_room]);
+      
+      if @ta.save                       
+         #complete; if user same, just redirect anyway. no point putting error message
+         flash[:success] = "User added to tab room."
+         redirect_to(tournament_path(@tournament) + '/control/tab-room');
+      else
+         @ta.errors.full_messages.each { |m|
+            @msg.add(:error, m);
+         }
+         render 'tournaments/tab_room';
+         return;
+      end
+   end
+   
+   def destroy_by_tabbie
+      @ta = TournamentAttendee.find(params[:ta_id]);
+      @ta.destroy();
+      redirect_to(tournament_path(params[:id]) + '/control/tab-room');
+   end
 
+=begin   
    def create
       #@temp_email = safe_params[:email]
       
@@ -16,30 +56,6 @@ class TournamentAttendeesController < ApplicationController
       t = Tournament.find(safe_params[:tournament_id].to_i);
 
       if safe_params[:request_origin] == "tab_room"
-         newTabbie = User.where(email: safe_params[:email]);
-         
-         #just check they didn't duplicate their attendee entry
-         ##### should probs make these unique
-         if !newTabbie.empty?
-            newTabbie = newTabbie.first;
-            
-            if !newTabbie.in_tab_room?(t) #duplication check
-               TournamentAttendee.new(tournament_id: t.id,
-                                      user_id: newTabbie.id,
-                                      role: GlobalConstants::TOURNAMENT_ROLES[:tab_room]).save;
-            end
-            
-            #complete; if user same, just redirect anyway. no point putting error message
-            redirect_to(tournament_path(t) + '/control/tab-room');
-         else
-            puts("user not found");
-            flash[:error] = "User not found.";
-            @tournament = t;
-            @tab_room_attendee_array = TournamentAttendee.where(tournament_id: @tournament.id,
-                                       role: GlobalConstants::TOURNAMENT_ROLES[:tab_room]);
-            @temp_email = safe_params[:email];
-            render('tournaments/tab_room');
-         end
          
       elsif safe_params[:request_origin] == "adjudicators" #if adding an adj
          newAdj = User.where(email: safe_params[:email]);
@@ -74,7 +90,8 @@ class TournamentAttendeesController < ApplicationController
          end
       end
    end
-   
+=end
+
    #so far, update is purely for adj ratings and the only place 
    #this can happen is from the edit of an adj on the control panel
    def update
@@ -101,7 +118,7 @@ class TournamentAttendeesController < ApplicationController
    
    private
       def safe_params
-         params.permit(:email, :tournament_id, :request_origin, :rating);
+         params.permit(:email, :rating);
       end
    
 end
