@@ -29,17 +29,20 @@ TabSite::Application.routes.draw do
    match '/signup',    to: 'users#new',            via: 'get'
    #^ this is just an additional path to it
    
+   match 'users/:id/tournaments', to: 'users#tournaments', via: 'get'
+
    ### Tournament Offshoots ###
-   match '/tournaments/:id/control',              to: 'tournaments#control',      via: 'get'
-   match '/tournaments/:id/attendees',            to: 'tournaments#attendees',    via: 'get' 
-   match '/tournaments/:id/stats',                to: 'tournaments#stats',        via: 'get'
+   match '/tournaments/:id/control',        to: 'tournaments#control',            via: 'get'
+   match '/tournaments/:id/attendees',      to: 'tournaments#attendees',          via: 'get' 
+   match '/tournaments/:id/stats',          to: 'tournaments#stats',              via: 'get'
+   match '/tournaments/:id/control/rounds', to: 'tournaments#rounds',             via: 'get'
+   match '/tournaments/:id/control/institutions', to: 'tournaments#institutions', via: 'get'
+   
+   #room control
    match '/tournaments/:id/control/rooms',        to: 'tournaments#rooms',        via: 'get'
    match '/tournaments/:id/control/import-rooms', to: 'tournaments#import_rooms', via: 'get'
    match '/tournaments/:id/control/import-room',  to: 'tournaments#import_room',  via: 'post'
    match '/tournaments/:id/control/remove-room',  to: 'tournaments#remove_room',  via: 'post'
-   match '/tournaments/:id/control/rounds',       to: 'tournaments#rounds',       via: 'get'
-   
-   #room control
    
    #tabbie control
    match '/tournaments/:id/control/tab-room',        to: 'tournaments#tab_room',                          via: 'get'

@@ -4,11 +4,11 @@
    
    <%= render('tournaments/title_shim'); %>
    
-    <div class="tableTitle">
-      <h3>Adjudicators</h3>
-      <a href="<%= tournament_path(@tournament) + '/control'%>">back to control panel</a>
-      <span style="margin-left:50px"># Adjudciators: <%= @tournament.adjs.count %></span>
-      <br><br>
+   <div class="tableTitle">
+     <h3>Adjudicators</h3>
+     <a href="<%= tournament_path(@tournament) + '/control'%>">back to control panel</a>
+     <span style="margin-left:50px"># Adjudciators: <%= @tournament.adjs.count %></span>
+     <br><br>
    </div>
    
    <table class="table attendeeTable">

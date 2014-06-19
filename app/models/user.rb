@@ -120,6 +120,13 @@ class User < ActiveRecord::Base
    #could for see a situation where someone is somehow in 2 tournaments
    #at the same time and isn't given access to the one they need.
    #have a page to view my current tournaments, button to be able to leave
+   
+   def get_tournament_attendees(status)
+      list = self.tournament_attendees.to_a(); #record of user attedance
+      list.reject! { |i| i.tournament.status != GlobalConstants::TOURNAMENT_STATUS[status] }
+      return list;
+   end
+   
       
    #true if the user is currently in a round
    def round_now?

@@ -1,0 +1,34 @@
+<%= form_for(@room) do |f| %>
+   <tr>
+      <td><b>Add Room</b></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><%= f.submit "Add", {class: "btn"} %></td>
+   </tr>  
+   
+   <tr>
+      <td>Room Name:</td>
+      <td><%= f.text_field(:name) %></td>
+      <td rowspan="2" colspan="3">
+         Remarks: <%= f.text_area(:remarks) %>
+         <p>If extra information should be given about the room, use the remarks box. This information will be 
+            given to debaters that are assigned this room.</p>
+      <td>
+   </tr>
+   
+   <tr>
+      <td>Location:</td>
+      <td><%= f.text_field(:location) %></td>
+   </tr>
+   
+   <%= hidden_field_tag 'institution_id', @tournament.institution.id %>
+   <%= hidden_field_tag 'tournament_id', @tournament.id %>
+               
+<% end %>
+
+<tr>
+   <td colspan="5">
+      <%= render(:partial => 'shared/small_notice', :locals => {small_notice: @msg}); %>
+   </td>
+</tr>

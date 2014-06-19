@@ -21,7 +21,8 @@ module GlobalConstants
    
    #during a trounament these constants help keep track of who has what powers
    #and what information they should be prompted with
-   TOURNAMENT_ROLES = {debater: 0, adjudicator: 1, tab_room: 2, ca: 3, dca: 4}.freeze();
+   #not that these actually have an order (importance)
+   TOURNAMENT_ROLES = {adjudicator: 1, tab_room: 2, ca: 4, dca: 3}.freeze();
    TOURNAMENT_ROLES_STR = TOURNAMENT_ROLES.invert().freeze();
    
    #these keep track of tournaments activity
@@ -42,7 +43,7 @@ module GlobalConstants
    SETTINGS_TITLES     = {registration: "Registration", motion: "Motion", tab: "Tab",
                           privacy:      "Tournament Privacy", attendees: "Attendees List",
                           teams:        "Teams List"}.freeze();
-   SETTINGS_VALUES     = {registration: {"Manual" => 1, "Open to authorized institutions" => 2,
+   SETTINGS_VALUES     = {registration: {"Manual" => 1, "Quota for selected institutions" => 2,
                                          "Open to selected institutions" => 3, "Completely open" => 4},
                           motion:       {"Mass release" => 1, "Single release" => 2},
                           tab:          {"Constatnly visible" => 1, "Release on command" => 2},
@@ -68,14 +69,15 @@ module GlobalConstants
    SETTINGS_INFO = {registration: "Registration can be done in many ways with TabHub. 
                                   <b>Manual</b> registration means that only authorized people 
                                   (the tab room) can register teams. 
-                                  <b>Open to authorized institutions</b> can make the workload 
-                                  lighter for you by having institutions input their teams 
-                                  and adjudicators once you have allocated them their spots.
-                                  <b>Open to selected institutions</b> means that anyone from 
-                                  institutions selected by you can enrol.
+                                  <b>Quota for selected institutions</b> means that institutions 
+                                  you select will have be able to submit teams and adjudicators 
+                                  for the positions you allocate them. <b>Open to selected institutions
+                                  </b> means that anyone from institutions selected by you can enrol.
                                   <b>Completely open</b> registration will allow anyone to 
-                                  sign up for this tournament. (You will always have the ability 
-                                  to check, remove, add and modify the teams.)",
+                                  sign up for this tournament. Allowing options other than 
+                                  manual registration will significantly reduce your administrative 
+                                  work by removing the need to input into the system. 
+                                  (You will always have the ability to check, remove, add and modify the teams.)",
                     
                     motion:       "Motions can be release in two ways. <b>Mass release</b> 
                                   makes the motion public to the tournament when you start the 

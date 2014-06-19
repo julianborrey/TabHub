@@ -2,7 +2,7 @@ class UsersController < ApplicationController
    include TournamentsHelper
    
    before_action :signed_in_user,  only: [:show, :destroy, :edit, :update] 
-   before_action :correct_user,    only: [:edit, :update]
+   before_action :correct_user,    only: [:edit, :update, :tournaments]
    before_action :signed_out_user, only: [:new, :create]
    
    #def index
@@ -79,6 +79,30 @@ class UsersController < ApplicationController
       else
          render 'edit';
       end
+   end
+   
+   def tournaments
+      @user = current_user
+      
+      #make a lists of TA with the following priotities
+      #live tournament in tab room
+      #live tournament elsewise
+      #upcoming tab room
+      #upcoming elsewise
+      #pure chronological
+      
+      live_ta = @user.get_tournament_attendees(:present).to_a;
+      live_ta.sort! { |x,y| y.role <=> x.role };
+      #since ca/dca > tabRoom > debater/adj, it works
+      
+      futu_ta = @user.get_tournament_attendees(:future).to_a;
+      futu_ta.sort! { |x,y| y.role <=> x.role };
+      
+      past_ta = @user.get_tournament_attendees(:past).to_a;
+      past_ta.sort! { |x,y| y.role <=> x.role };
+      
+      @list = {current: live_ta, future: futu_ta, past: past_ta};
+      return @list;
    end
    
    private

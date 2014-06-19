@@ -5,28 +5,28 @@ class RoomsController < ApplicationController
    before_action :authorized_for_tournament, only: [:create, :edit, :update, :show];
    #before_action :authorized_for_room, only: [:show, :update];
    #still a bit of a flaw with this room authorization thing...
-
+   
    def show
       #this is purely for viewing stats and stuff
       #only for tab room officials
       #the room info will be displayed for users in the draw/another page
       @room = Room.find(params[:id]);
    end
-
+   
    def edit
       @room = Room.find(params[:id]);
    end
-
+   
    def update
       @room = Room.find(params[:id]);
       if @room.update_attributes(safe_params)
+         flash[:success] = "Room updated.";
          redirect_to(room_path(@room));
       else
-         @tournament = Tournament.find(params[:tournament_id]);
          render 'rooms/edit';
       end
    end
-
+   
    def create
       room_params = safe_params;
       puts("room para s: " + room_params.to_s);
@@ -76,5 +76,5 @@ class RoomsController < ApplicationController
          p["institution_id"] = params["institution_id"].to_i; #hole?
          return p;
       end
-
+      
 end

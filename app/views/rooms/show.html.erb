@@ -4,6 +4,14 @@
    
    <h2><span style="color:gray">Room:</span> <%= @room.name %></h2>
    <h3><span style="color:gray">Location:</span> <%= @room.location %></h2>
+
+
+   <p><%= link_to("back to my tournaments list", (user_path(current_user) + '/tournaments')); %></p>
+
+
+   <% flash.each do |key, val| %>
+      <%= content_tag(:div, val, class: "alert alert-#{key}"); %>
+   <% end %>
    
    <br>
    <div class="row-fluid settingsBox remarksBox" style="width:500px; height:260px">

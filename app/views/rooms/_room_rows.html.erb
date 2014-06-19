@@ -1,0 +1,24 @@
+<% i = 1; #for deleting rows %>
+<% @tournament.rooms.each { |r_id| %>
+   <% r = Room.find(r_id); %>
+   <tr id="<%= "rowFor" + r.id.to_s %>">
+      <td><a href="<%= room_path(id: r.id, tournament_id: @tournament.id) %>"><%= r.name %></a></td>
+      <td><%= r.location %></td>
+      <td> - </td>
+      <td><%= link_to("Edit", edit_room_path(id: r.id, tournament_id: @tournament.id)) %></td>
+      <td><p id="<%= "removeRoom" + r.id.to_s %>" class="linkP">Remove</p></td>
+            
+            <script>
+               $("<%= "#removeRoom" + r.id.to_s %>").on("click", function(){
+                  $.ajax({
+                     type:    "POST",
+                     url:     "<%= tournament_path(@tournament) + '/control/remove-room' %>",
+                     data:    {room_id: <%= r.id.to_s %>}
+                  }).done(function(){
+                     $("<%= "#rowFor" + r.id.to_s %>").remove();
+                  });
+               });
+            </script>
+   </tr>
+   <% i = i + 1; %>
+<% } %>

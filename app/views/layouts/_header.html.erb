@@ -20,7 +20,7 @@
             <% end %>
             
             <% if signed_in? %>
-               <li><%= link_to "My Tournaments", user_path(current_user) %></li>
+               <li><%= link_to "My Tournaments", (user_path(current_user) + '/tournaments') %></li>
             <% end %>
             <li><%= link_to "All Tournaments Schedule", tournaments_path %></li>
             <li><%= link_to "Create Tournament", new_tournament_path %></li>

@@ -191,6 +191,50 @@ class TournamentsController < ApplicationController
       @list = @tournament.get_sorted_teams;
    end
    
+   #rendering what all institutions are bring with just numbers
+   def institutions
+      @tournament = Tournament.find(params[:id]);
+      
+      #make a hash of ellements of the following:
+      #{id: integer, num_teams: integer, 
+      # num_adjs: integer, num_tabbies: integer}
+      #with inst_short name as keys
+      
+      @list = {};
+      
+      #home that short name is sanitized!
+      #O(n) time --> yay!
+         
+      @tournament.tournament_attendees.each { |ta|
+         #check if and array for this institution even exists yet
+         if @list[ta.user.institution.short_name.to_sym].nil?   #nope
+            @list[ta.user.institution.short_name.to_sym] = {id: ta.user.institution.id, 
+                                                            num_teams: 0, adjudicator: 0, tab_room: 0};  #make array
+         end
+         
+         #do the counting
+         GlobalConstants::TOURNAMENT_ROLES.each { |role,val|
+            if ta.role == GlobalConstants::TOURNAMENT_ROLES[role]
+               @list[ta.user.institution.short_name.to_sym][role] = @list[ta.user.institution.short_name.to_sym][role] + 1; #add to array
+            end
+         }  
+      }
+      
+      #now count the teams
+      @tournament.teams.each { |t|
+         if @list[t.institution.short_name.to_sym].nil?   #nope
+            @list[t.institution.short_name.to_sym] = {id: 0, num_teams: 0, num_adjs: 0, num_tabbies: 0};  #make array
+         end
+         
+         @list[t.institution.short_name.to_sym][:num_teams] = @list[t.institution.short_name.to_sym][:num_teams] + 1;
+      }
+       
+      #that should be it...
+   end
+   
+   #rendering what a single institution is bring with full detail
+   def institution
+   end
    
    private
       def tournament_params

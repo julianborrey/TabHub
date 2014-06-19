@@ -6,6 +6,8 @@ class Institution < ActiveRecord::Base
    
    validates(:short_name, presence: true);
    validates(:full_name, presence: true);
+   validates_uniqueness_of(:short_name);
+   validates_uniqueness_of(:full_name);
    
    #returns array of current members
    #ranked exec at the top

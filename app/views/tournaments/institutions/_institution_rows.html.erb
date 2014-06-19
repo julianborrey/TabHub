@@ -1,0 +1,12 @@
+<% @list.each { |key,val| %>
+   <tr>
+      <td><%= link_to(key, institution_path(val[:id])) %></td>
+      <td><%= val[:num_teams]   %></td>
+      <td><%= val[:adjudicator] %></td>
+      <td><%= val[:tab_room]     %></td>
+      
+      <td><%= link_to("Edit",   "#") %></td>
+      <td><%= link_to("Remove", "#", {method: :delete, 
+                       confirm: ("Are you sure you want to completely remove #{key} from the tournament?")}) %></td>
+   </tr>
+<% } %>
