@@ -1,0 +1,26 @@
+<% TournamentAttendee.where(tournament_id: @tournament.id, role: GlobalConstants::TOURNAMENT_ROLES[:adjudicator]).each { |a| %>
+   <tr>
+      <% u = User.find(a.user_id); %>
+      <td><%= link_to(u.full_name, user_path(u)); %></td>
+      <td><%= link_to(u.institution.short_name, institution_path(u.institution)); %></td>
+      <td><%= a.rating %></td>
+      <td>
+         <ul>
+         <% a.user.conflicts.to_a.each { |c| %>
+            <li><%= c.institution.short_name %></li>
+         <% } %>
+         </ul>
+      </td>
+      
+      <td><%= link_to("Edit",   (tournament_path(@tournament) + '/control/adjudicators/' + a.id.to_s + '/edit')) %></td>
+      
+      <td><%= link_to("Remove", (tournament_path(@tournament) + '/control/adjudicators/' + a.id.to_s + '/edit'), 
+                      confirm:  ("Are you sure you want to remove " + 
+                      u.full_name + " as an adjudicator from the tournament?"), method: :delete) %></td>
+   </tr>
+<% } %>
+
+        
+
+
+

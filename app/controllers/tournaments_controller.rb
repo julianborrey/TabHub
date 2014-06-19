@@ -167,46 +167,14 @@ class TournamentsController < ApplicationController
    end
    
    def adjudicators
-      flash.clear;
       @tournament = Tournament.find(params[:id]);
-      @ta = TournamentAttendee.new();
       @temp_email = "";
    end
-
-   #renders page to edit adj rating and conflicts
-   def edit_adj
-      flash = {};
-      @tournament     = Tournament.find(params[:id]);
-      @ta             = TournamentAttendee.find(params[:ta_id]);
-      @user           = @ta.user;
-      @conflicts_list = @user.conflicts.to_a;
-      @conflict       = Conflict.new;
-   end
-   #two things could be updated here
-   #1. TournamentAttendee.rating
-   #2. Conflicts entries
-   #Let us use two forms on one page, redirect back to edit page.
-   #Have a done button on the edit page to go back
-   #We will post directly to the normal RESOURCES
-   #but the edit page will be hosted by tournaments
    
-   #post will activate this method to remove adj from tournament
-   #movet this? -- its probably fine here.
-   def remove_adj
-      ta = TournamentAttendee.find(params[:ta_id].to_i); #should already by role = adj
-      puts(" helpopppppppppppppppp: " + ta.role.to_s + " sadas " + ta.id.to_s);
-      #check this is in fact an adj TA
-      #if ta.role == GlobalConstants::TOURNAMENT_ROLES[:adjudicator]
-         ta.destroy();
-      #end
-      redirect_to(tournament_path(params[:id].to_i) + '/control/adjudicators');
-   end
-
    #shows the teams
    #tabbie can add/remove teams here --> edit on another page
    def teams
       @tournament = Tournament.find(params[:id]);
-      flash = {};
 
       ### for the new form ###
       @n = GlobalConstants::FORMAT[:bp][:num_speakers_per_team];

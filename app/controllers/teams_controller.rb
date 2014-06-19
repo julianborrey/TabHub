@@ -29,12 +29,8 @@ class TeamsController < ApplicationController
       #n will determine how many speakers we are building the team out of
       @n = GlobalConstants::FORMAT[:bp][:num_speakers_per_team];
       
-      #check name not already taken
-      #lets just get the flash going
-      
-      #now check to see if the players existed
-      #we have also generalized this
-      
+      #check to see if the players existed
+      #we have also generalized this accross debating formats
       users = [];
       (1..@n).each { |i|
          users.push(User.where(email: @emails[i-1]).first);
