@@ -15,14 +15,8 @@
    
 </tr>
 
-<% if !flash.empty? %>
-   <tr>
-      <td colspan="6">
-         <% flash.each do |key,val| %>
-         <% if !val.empty? %>
-               <%= content_tag(:div, val , class: "fadeSoon alert alert-#{key}"); %>
-         <% end %>
-         <% end %>
-      </td>
-   </tr>
-<% end %>
+<tr>
+   <td colspan="6">
+      <%= render(:partial => 'shared/small_notice', :locals => {small_notice: @msg}); %>
+   </td>
+</tr>

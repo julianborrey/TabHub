@@ -24,7 +24,7 @@ class TeamsController < ApplicationController
       @emails     = safe_params[:emails]; #need this incase we render
       @name       = safe_params[:name];
       @list       = @tournament.get_sorted_teams;
-      flash[:error] = "";
+      @msg        = SmallNotice.new;
       
       #n will determine how many speakers we are building the team out of
       @n = GlobalConstants::FORMAT[:bp][:num_speakers_per_team];
@@ -42,7 +42,7 @@ class TeamsController < ApplicationController
 
          #might as well do error checking immediatley
          if users[i-1].nil?
-            flash[:error] << "Could not find member #{i}."
+            @msg.add(:error, "Could not find member #{i}.");
             render('tournaments/teams');
             return;
          end
@@ -57,7 +57,7 @@ class TeamsController < ApplicationController
       
       #should only be one unique id
       if institution_ids.uniq.count != 1
-         flash[:error] << "Teams members are not from the same institution."
+         @msg.add(:error, "Teams members are not from the same institution.");
          render('tournaments/teams');
          return;
       end
@@ -68,7 +68,7 @@ class TeamsController < ApplicationController
       users.each { |u|
          u.teams.each { |w|
             if w.tournament_id == @tournament.id
-               flash[:error] << "Member #{i} is already competing in another team.";
+               @msg.add(:error, "Member #{i} is already competing in another team.");
                render('tournaments/teams');
                return;
             end
@@ -81,7 +81,7 @@ class TeamsController < ApplicationController
       users.each { |u|
          u.tournament_attendees.each { |w|
             if (w.tournament_id == @tournament.id) && (w.role == GlobalConstants::TOURNAMENT_ROLES[:adjudicator])
-               flash[:error] << "Member #{i} is already an adjudicator.";
+               @msg.add(:error, "Member #{i} is already an adjudicator.");
                render('tournaments/teams');
                return;
             end
@@ -105,7 +105,9 @@ class TeamsController < ApplicationController
          #in this case, we must update the attendees table
          #actually, for now I don't think we need to ...
          
-         flash[:success] = "Team Created!"; #make sure the flash is below the form
+         #@msg.add(:success, "Team Created!"); #make sure the flash is below the form
+         #redirect needs to use flash
+         flash[:success] = "Team Created."
          redirect_to(tournament_path(@tournament) + '/control/teams');
       else
          #so we need both flash and normal error rendering thing
@@ -113,7 +115,7 @@ class TeamsController < ApplicationController
          #while keeping an eye on what the 'shared/_error_messages' does
          
          @team.errors.full_messages.each { |m|
-            flash[:error] << m;
+            @msg.add(:error, m);
          }
          render 'tournaments/teams';
          return;

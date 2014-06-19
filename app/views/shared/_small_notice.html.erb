@@ -1,0 +1,21 @@
+<% if !small_notice.nil? %>
+   <% small_notice.messages.each { |key,val| %>
+      <% if !val.empty? %>
+         <div class="alert alert-<%= key %>">
+            <ul>
+               <% val.each { |m| %>
+                 <li><%= m %></li>
+               <% } %>
+            <ul>
+         </div>
+      <% end %>
+   <% } %>
+<% end %>
+
+<!-- in the event of redirect, we have to user flash -->
+
+<% if !flash.nil? %>
+   <% flash.each do |key,val| %>
+      <%= content_tag(:div, val , class: "fadeSoon alert alert-#{key}"); %>
+   <% end %>
+<% end %>
