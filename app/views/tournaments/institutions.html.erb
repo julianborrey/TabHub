@@ -22,9 +22,27 @@
       <%= render('tournaments/institutions/institution_form_row'); %>
       
       <tr class="titlesRow">
-         <td>Institution         </td>
-         <td># Teams             </td>
-         <td># Adjudicators      </td>
+         <td>
+            Institution<br>
+            (click for more detail)
+         </td>
+         
+         <td>
+            # Teams Submitted
+            <% if @tournament.tournament_setting.registration == 
+                     GlobalConstants::SETTINGS_VALUES[:registration]["Quota for selected institutions"] %>
+                  <br>(# Allocated)
+            <% end %>
+         </td>
+         
+         <td>
+            # Adjudicators Submitted
+            <% if @tournament.tournament_setting.registration == 
+                  GlobalConstants::SETTINGS_VALUES[:registration]["Quota for selected institutions"] %>
+               <br>(# Allocated)
+            <% end %>
+         </td>
+         
          <td># Tab Room Officials</td>
          <td><!--  edit  --></td>
          <td><!-- remove --></td>

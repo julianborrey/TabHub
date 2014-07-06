@@ -4,14 +4,14 @@
    
    <%= render('tournaments/title_shim'); %>
    
-   <% if !@user.nil? && @user.in_tab_room?(@tournament) %>  
+   <% if !@user.nil? && @user.is_in_roles?([:tab_room, :ca, :dca], @tournament) %>  
       <div class="row-fluid ctrlBtnRow">
          <% flash.each do |key, val| %>
             <%= content_tag(:div, val, class: "alert alert-#{key}"); %>
          <% end %>
          
          <span><%= link_to "Tournament Control Panel", (tournament_path(@tournament) + "/control"),
-             class: "btn btn-warning" %></span>
+             class: "btn btn-danger" %></span>
          <span>
             <b> | <%= link_to "Edit Tournament", edit_tournament_path(@tournament) %></b>
          </span>

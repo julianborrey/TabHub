@@ -145,9 +145,21 @@ class User < ActiveRecord::Base
       }
       return false;
    end
+
+   #returns true if the user is *curretly* a tabbie at any tournament
+   def is_a_tabbie?
+      self.tournament_attendees.each { |ta|
+         if (ta.role == GlobalConstants::TOURNAMENT_ROLES[:tab_room]) && 
+            (ta.tournament.status != GlobalConstants::TOURNAMENT_STATUS[:past])
+            return true;
+         end
+      }
+      return false; #getting here is a fail
+   end
    
-   #returns true is user in tabroom of tournament t
-   def in_tab_room?(t)
+   #returns true if THIS user is in ANY of the GIVEN roles for the GIVEN tournament
+   #roles is an array of symboles
+   def is_in_roles?(roles, t)
       if t.is_a?(String)
          #therefore we assume its a tournament object
          t = t.to_i;
@@ -158,24 +170,24 @@ class User < ActiveRecord::Base
       
       attendee_list = self.tournament_attendees.to_a;
       attendee_list.each { |e|
-         if (e.tournament_id == t) && (e.role == GlobalConstants::TOURNAMENT_ROLES[:tab_room])
-            return true;
+         if (e.tournament_id == t)
+            
+            #now check for a role match
+            result = false;  #assume false - no match
+            roles.each { |r| #go through each role
+               if e.role == GlobalConstants::TOURNAMENT_ROLES[r] #if match
+                  result = true; #set to true
+               end
+            }
+            
+            if result #now we can evaluate on the result
+               return true;
+            end
          end
       }
       return false;
    end
-
-   #returns true if the user is curretly a tabbie at any tournament
-   def is_a_tabbie?
-      self.tournament_attendees.each { |ta|
-         if (ta.role == GlobalConstants::TOURNAMENT_ROLES[:tab_room]) && 
-            (ta.tournament.status != GlobalConstants::TOURNAMENT_STATUS[:past])
-            return true;
-         end
-      }
-      return false; #getting here is a fail
-   end
-
+   
    #returns the current Team of the user
    def current_team
       self.teams.each { |t|

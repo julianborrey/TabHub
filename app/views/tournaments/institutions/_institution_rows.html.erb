@@ -1,9 +1,25 @@
 <% @list.each { |key,val| %>
    <tr>
-      <td><%= link_to(key, institution_path(val[:id])) %></td>
-      <td><%= val[:num_teams]   %></td>
-      <td><%= val[:adjudicator] %></td>
-      <td><%= val[:tab_room]     %></td>
+      <td><%= link_to(key, tournament_path(@tournament) + '/control/institution/' + val[:id].to_s) %></td>
+      <td>
+         <%= val[:num_teams] %> 
+         <% if @tournament.tournament_setting.registration == 
+                  GlobalConstants::SETTINGS_VALUES[:registration]["Quota for selected institutions"] %>
+               (<%= val[:allocated_teams] %>)
+         <% end %>
+      </td>
+      
+      <td>
+         <%= val[:adjudicator] %> 
+         <% if @tournament.tournament_setting.registration == 
+                  GlobalConstants::SETTINGS_VALUES[:registration]["Quota for selected institutions"] %>
+               (<%= val[:allocated_adjs] %>)
+         <% end %>
+      </td>
+      
+      <td><%= val[:tab_room] %></td>
+      <td><%= val[:dca] %></td>
+      <td><%= val[:ca] %></td>
       
       <td><%= link_to("Edit",   "#") %></td>
       <td><%= link_to("Remove", "#", {method: :delete, 

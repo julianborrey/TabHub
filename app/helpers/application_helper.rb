@@ -46,4 +46,14 @@ module ApplicationHelper
             @msg.add(:error, m);
          }
    end
+   
+   #returns a nicely rendered role (for ca, dca or tabbie)
+   def nice_role(role_id)
+      if role_id != GlobalConstants::TOURNAMENT_ROLES[:tab_room]
+         return GlobalConstants::TOURNAMENT_ROLES_STR[role_id].to_s.upcase;
+      else
+         return GlobalConstants::TOURNAMENT_ROLES_STR[role_id].to_s.titleize;
+      end
+      return nil;
+   end
 end

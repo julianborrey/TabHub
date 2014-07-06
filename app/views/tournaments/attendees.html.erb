@@ -8,15 +8,23 @@
       <thead><tr>
          <td>Attendee</td>
          <td>Institution</td>
-         <td>Role</td>
+         <td>Team / Role</td>
       </tr></thead>
       
-      <% @tournament.tournament_attendees.to_a.each { |a| %>
+      <% @list.to_a.each { |key,val| %>
+         for the insitution --> key, for the ta[]=- --> val
          <tr>
-            <% u = User.find(a.user_id); %>
+            <% u = User.find(ta.user_id); %>
             <td><a href="<%= user_path(u) %>"><%= u.full_name %></a></td>
             <td><a href="<%= institution_path(u.institution) %>"><%= u.institution.short_name %></a></td>
-            <td><%= a.get_role %></td>
+            <td>  
+               <% u_team = u.team_at(@tournament) %>
+               <% if !u_team.nil? %>
+                  <%= u_team.name %>
+               <% else %>
+                  <%= nice_role(ta.role); %>
+               <% end %>
+            </td>
          </tr>
       <% } %>
    </table>

@@ -1,0 +1,28 @@
+<% @list.each { |ta| %>
+   
+   <tr>
+      
+      <td><%= ta[:team].name %></a></td>
+      <td><%= ta[:room_draw].room.name %> (<%= ta[:room_draw].room.location %>)</a></td>
+      <td><%= ta[:room_draw].og.name %></td>
+      <td><%= ta[:room_draw].oo.name %></td>
+      <td><%= ta[:room_draw].cg.name %></td>
+      <td><%= ta[:room_draw].co.name %></td>
+      
+      <td>
+         <ul>
+         <% ta[:room_draw].adjs.each { |a| %>
+            <li>
+               <%= a[:name] %> 
+               <% if a[:chair] %>
+                  (c)
+               <% end %>
+            </li>
+         <% } %>
+         </ul>
+      </td>
+      
+      <td><%= link_to("Edit", '#'); %></td>
+   </tr>
+   
+<% } %>

@@ -28,6 +28,9 @@ module GlobalConstants
    #these keep track of tournaments activity
    TOURNAMENT_STATUS = {past: -1, present: 0, future: 1}.freeze();
    TOURNAMENT_STATUS_STR = TOURNAMENT_STATUS.invert().freeze();
+
+   #reeps track of open/closed registration and current round
+   TOURNAMENT_PHASE = {closed: -1, open_rego: 0}
    
    #tournament reigons
    TOURNAMENT_REGIONS = {international: 1, australasia: 2, asia: 3, africa: 4, 

@@ -4,6 +4,8 @@ class Round < ActiveRecord::Base
    has_one(:motion);
    accepts_nested_attributes_for(:motion);
    
+   has_many(:room_draws);
+   
    validates(:tournament_id, presence: true);
    validates(:round_num, presence: true);
    validates(:status, presence: true);

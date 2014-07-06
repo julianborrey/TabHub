@@ -40,6 +40,7 @@ class TournamentsController < ApplicationController
       @tournament.institution_id = u.institution_id;
       @tournament.status = GlobalConstants::TOURNAMENT_STATUS[:future]; #starts not begun (naturally)
       @tournament.rooms = [];
+      @tournament.round_counter = -1; #start in the pre-rego stage
       
       if @tournament.save()
          #need to set this person as authorized at least
@@ -110,7 +111,6 @@ class TournamentsController < ApplicationController
    #tab_room page shows authorized users
    def tab_room
       @tournament = Tournament.find(params[:id]);
-      @tab_room_attendee_array = @tournament.tabbies;
       @temp_email = "";
    end
    
@@ -208,34 +208,81 @@ class TournamentsController < ApplicationController
       @tournament.tournament_attendees.each { |ta|
          #check if and array for this institution even exists yet
          if @list[ta.user.institution.short_name.to_sym].nil?   #nope
-            @list[ta.user.institution.short_name.to_sym] = {id: ta.user.institution.id, 
-                                                            num_teams: 0, adjudicator: 0, tab_room: 0};  #make array
+            @list[ta.user.institution.short_name.to_sym] = {id: ta.user.institution.id, allocated_teams: 0,
+                                                            allocated_adjs: 0, num_teams: 0, 
+                                                            adjudicator: 0, tab_room: 0, dca: 0, ca: 0};  #make array
          end
          
          #do the counting
          GlobalConstants::TOURNAMENT_ROLES.each { |role,val|
             if ta.role == GlobalConstants::TOURNAMENT_ROLES[role]
-               @list[ta.user.institution.short_name.to_sym][role] = @list[ta.user.institution.short_name.to_sym][role] + 1; #add to array
+               @list[ta.user.institution.short_name.to_sym][role] = 
+                  @list[ta.user.institution.short_name.to_sym][role] + 1; #add to array
             end
-         }  
+         }
       }
       
       #now count the teams
       @tournament.teams.each { |t|
          if @list[t.institution.short_name.to_sym].nil?   #nope
-            @list[t.institution.short_name.to_sym] = {id: 0, num_teams: 0, num_adjs: 0, num_tabbies: 0};  #make array
+            @list[t.institution.short_name.to_sym] = {id: t.institution.id, allocated_teams: 0,
+                                                            allocated_adjs: 0, num_teams: 0, 
+                                                            adjudicator: 0, tab_room: 0, dca: 0, ca: 0};  #make array
          end
          
-         @list[t.institution.short_name.to_sym][:num_teams] = @list[t.institution.short_name.to_sym][:num_teams] + 1;
+         @list[t.institution.short_name.to_sym][:num_teams] = 
+            @list[t.institution.short_name.to_sym][:num_teams] + 1;
       }
-       
+      
+      #now we check for allocations
+      @tournament.allocations.each { |a|
+         if @list[a.institution.short_name.to_sym].nil?   #nope
+            @list[a.institution.short_name.to_sym] = {id: a.institution.id, allocated_teams: 0,
+                                                            allocated_adjs: 0, num_teams: 0, 
+                                                            adjudicator: 0, tab_room: 0, dca: 0, ca: 0};  #make array
+         end
+         
+         @list[a.institution.short_name.to_sym][:allocated_adjs] = a.num_adjs;
+         @list[a.institution.short_name.to_sym][:allocated_teams] = a.num_teams;
+      }
       #that should be it...
    end
    
-   #rendering what a single institution is bring with full detail
-   def institution
+   def draw
+      @tournament = Tournament.find(params[:id]);
+      
+      #need to make a list where there is one entry for each team
+      #[... {team, draw} ...]
+      @list = [];
+      
+      @tournament.next_round.room_draws { |rd|
+         rd.teams.each { |t|
+            arr = rd.adjudicators.to_a;
+            
+            adjs_arr = [];
+            arr.each { |a|
+               adjs_arr.push({name: a.user.full_name, chair: a[:chair] });
+            }
+            
+            @list.push({team: t, room_draw: rd, adjs: adjs_arr});
+         }
+      }
+      
+      @list.sort_by! { |i| i[:team].name.downcase; } #makes alphabetical
    end
    
+   #post to this will allow for users to register
+   def open_rego
+      @tournament = Tournaments.find(params[:id]);
+      @tournament.update_attributes(round_counter: GlobalConstants::TOURNAMENT_PHASE[:open_rego]);
+   end
+   
+   #post to this will close registration for users
+   def close_rego
+      @tournament = Tournaments.find(params[:id]);
+      @tournament.update_attributes(round_counter: GlobalConstants::TOURNAMENT_PHASE[:closed]);
+   end
+
    private
       def tournament_params
          params.require(:tournament).permit(:name, :institution_id, :location, 

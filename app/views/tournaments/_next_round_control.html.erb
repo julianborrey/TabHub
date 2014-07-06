@@ -3,8 +3,20 @@
       <% @next_round = @tournament.next_round %>
       <p><b><a href="<%= round_path(@next_round) %>">Next Round</a></b> - Status: 
          <span style="color:<%= @totalCheck[1] %>"><%= @totalCheck[2] %></span><p>
-      <p><b>Motion:</b><%= " " + @next_round.motion.wording %></p>
-      
+         <p class="linkP" style="display:inline;" id="motionLink"><b>Motion</b><p>
+         
+         <span id="motionText" class="pull-left infoBox logInfoBox" style="margin-left:60px;">
+            <%= @next_round.motion.wording %>
+         </span>
+
+         <script>
+            $("#motionLink").mouseover(function(){
+               $("#motionText").show();
+            }).mouseout(function(){
+               $("#motionText").hide();
+            });
+         </script>
+
       <table class="table", style="margin-bottom:0px">
          <thead><tr>
             <td><%= button_to "Make Draw", (tournament_path(@tournament) + "/control/make-draw"), 

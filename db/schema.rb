@@ -11,12 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140618074548) do
+ActiveRecord::Schema.define(version: 20140625052225) do
 
   create_table "adjudicators", force: true do |t|
     t.integer  "user_id"
     t.integer  "room_draw_id"
     t.boolean  "chair"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "tournament_id"
+  end
+
+  create_table "allocations", force: true do |t|
+    t.integer  "tournament_id"
+    t.integer  "institution_id"
+    t.integer  "num_teams"
+    t.integer  "num_adjs"
+    t.boolean  "live"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -65,14 +76,14 @@ ActiveRecord::Schema.define(version: 20140618074548) do
     t.integer  "tournament_id"
     t.integer  "round_id"
     t.integer  "room_id"
-    t.integer  "og"
-    t.integer  "oo"
-    t.integer  "cg"
-    t.integer  "co"
-    t.integer  "first"
-    t.integer  "second"
-    t.integer  "third"
-    t.integer  "fourth"
+    t.integer  "og_id"
+    t.integer  "oo_id"
+    t.integer  "cg_id"
+    t.integer  "co_id"
+    t.integer  "first_id"
+    t.integer  "second_id"
+    t.integer  "third_id"
+    t.integer  "fourth_id"
     t.integer  "status"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -95,6 +106,16 @@ ActiveRecord::Schema.define(version: 20140618074548) do
     t.string   "end_prep_time"
     t.integer  "status"
     t.integer  "round_num"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "scores", force: true do |t|
+    t.integer  "tournament_id"
+    t.integer  "round_id"
+    t.integer  "user_id"
+    t.float    "speaks"
+    t.integer  "points"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -147,6 +168,7 @@ ActiveRecord::Schema.define(version: 20140618074548) do
     t.integer  "tournament_setting_id"
     t.integer  "region"
     t.text     "rooms"
+    t.integer  "round_counter"
   end
 
   create_table "users", force: true do |t|

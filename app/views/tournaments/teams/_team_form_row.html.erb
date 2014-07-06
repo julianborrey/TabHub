@@ -3,7 +3,7 @@
    <td>New Team:</td>
    <%= form_tag do %>
       
-      <td><%= text_field_tag(:name, @name, {placeholder: "Team name", style: "height:20px;"}); %></td>
+      <td colspan="3"><%= text_field_tag(:name, @name, {placeholder: "Team name", style: "height:20px;"}); %></td>
       
       <% (1..@n).each { |i| %>
          <td><input class="emails" name="emails[]" type="email" value="<%= @emails[i-1] %>" 
@@ -16,7 +16,7 @@
 </tr>
 
 <tr>
-   <td colspan="6">
+   <td colspan="8">
       <%= render(:partial => 'shared/small_notice', :locals => {small_notice: @msg}); %>
    </td>
 </tr>

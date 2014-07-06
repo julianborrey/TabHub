@@ -8,6 +8,8 @@ class Tournament < ActiveRecord::Base
    has_many(:teams);
    has_many(:rounds);
    has_many(:motions);
+   has_many(:allocations);
+   has_many(:room_draws);
    
    has_one(:tournament_setting);
    accepts_nested_attributes_for(:tournament_setting);
@@ -66,10 +68,19 @@ class Tournament < ActiveRecord::Base
    end
    
    #true if tournament is currently happening
+   #def live?
+   #   return self.status == GlobalConstants::TOURNAMENT_STATUS[:present];
+   #end
+   ### depricated with the deprication of status col in Tournament
+   
+   #true if tournament is currently happening
    def live?
-      return self.status == GlobalConstants::TOURNAMENT_STATUS[:present];
+      if self.round_counter > 0
+          return true;
+      end
+      return false;
    end
-
+   
    #returns hash of string-string pairs for color-status of the tournament'sstatus
    def get_status
       status = {}; #return val
@@ -88,11 +99,13 @@ class Tournament < ActiveRecord::Base
    end
    
    def current_round
-      return Round.first;
+      r = self.rounds.reject { |i| i.round_num != self.round_counter }.first
+      return r;
    end
    
    def next_round
-      return Round.find(2);
+      r = self.rounds.reject { |i| i.round_num != (self.round_counter + 1) }.first
+      return r;
    end
    
    #return current topic or "" if there is none

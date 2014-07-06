@@ -43,7 +43,7 @@ module TournamentsHelper
          id = id.to_i;
       end
       @t = Tournament.find(id);
-      redirect_to tournament_path(@t) unless current_user.in_tab_room?(@t);
+      redirect_to tournament_path(@t) unless current_user.is_in_roles?([:tab_room, :ca, :dca], @t);
    end
    
    #true if the user is in a tournament right now

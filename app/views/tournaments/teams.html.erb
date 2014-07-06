@@ -17,8 +17,14 @@
       <tr class="titlesRow">
          <td>Institution</td>
          <td>Name</td>
-         <td>Member 1</td>
-         <td>Member 2</td>
+         
+         <% @n ||= GlobalConstants::FORMAT[:bp][:num_speakers_per_team]; %>
+         <% (1..@n).each { |i| %>
+            <td>Member <%= i %></td>
+         <% } %>
+         
+         <td>Points</td>
+         <td>Total Speaker Points</td>
          <td><!--  edit  --></td>
          <td><!-- remove --></td>
       </tr>

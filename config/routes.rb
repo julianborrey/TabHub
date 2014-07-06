@@ -3,6 +3,7 @@ TabSite::Application.routes.draw do
    #home page
    root 'static_pages#home'
    
+   ######## Need to minimalize these! ######
    #resources for objects
    resources :sessions, only: [:new, :create, :destroy]
    resources :users, except: [:index] #allows URL reflected user   
@@ -36,7 +37,17 @@ TabSite::Application.routes.draw do
    match '/tournaments/:id/attendees',      to: 'tournaments#attendees',          via: 'get' 
    match '/tournaments/:id/stats',          to: 'tournaments#stats',              via: 'get'
    match '/tournaments/:id/control/rounds', to: 'tournaments#rounds',             via: 'get'
-   match '/tournaments/:id/control/institutions', to: 'tournaments#institutions', via: 'get'
+   match '/tournaments/:id/control/draw',   to: 'tournaments#draw',               via: 'get'
+   match '/tournaments/:id/control/registration/open',  to: 'tournaments#open_rego',    via: 'post'
+   match '/tournaments/:id/control/registration/close', to: 'tournaments#close_rego',  via: 'post'
+   
+   #institution control
+   match '/tournaments/:id/control/institutions',              to: 'tournaments#institutions',        via: 'get'
+   match '/tournaments/:id/control/institutions',              to: 'allocations#allocate_by_tabbie',  via: 'post'
+   match '/tournaments/:id/control/institution/:inst_id',      to: 'institutions#show_for_tabbie',     via: 'get'
+   match '/tournaments/:id/control/institution/:inst_id/edit', to: 'allocations#edit_by_tabbite',     via: 'get'
+   match '/tournaments/:id/control/institution/:inst_id/edit', to: 'allocations#update_by_tabbie',    via: 'post'
+   match '/tournaments/:id/control/institution/:inst_id',      to: 'tournament#kick_from_tournament', via: 'delete'
    
    #room control
    match '/tournaments/:id/control/rooms',        to: 'tournaments#rooms',        via: 'get'
@@ -64,5 +75,8 @@ TabSite::Application.routes.draw do
    match '/tournaments/:id/control/teams',          to: 'tournaments#teams',       via: 'get'
    match '/tournaments/:id/control/teams',          to: 'teams#create_by_tabbie',  via: 'post'
    match '/tournaments/:id/control/teams/:team_id', to: 'teams#destroy_by_tabbie', via: 'delete'
-
+   
+   #custom error pages
+   match '/404' => "errors#not_found",    via: 'get'
+   match '/500' => "errors#server_error", via: 'get'
 end

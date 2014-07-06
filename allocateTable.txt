@@ -1,0 +1,48 @@
+
+So at the moment, what needs to be filled out is the rest of the detailed 
+institution pages.
+Also need to complete the pages to show teams.
+Also (!important!) need to find a way to shift rounds up and down.
+
+Pretty much all the things from the user side needs to be set up.
+In those page we need to have pages acting differently depending on what people/tournaments/institions have set:
+
+Pages will display for:
+Not signed in request -> almost all models
+signed in request:
+   part of institution
+   not part of insitution
+   alumni of institution
+   
+   tournament participant
+   not tournament participant   
+
+A cool use page would be: "Previous Oponents"
+Chronologically show all teams debated against, Their score+position and your score in the round.+position
+What the roud was (tournament + round #)
+Link to topic, click and box shows.
+Number of lifetime debates total under title.
+Past motions. Score on that motion with position and percentages won from different positions.
+   So a table which shows on this motion, CO won 34% rounds, and so on for each team
+
+
+I can see it now:
+1 stats page ==> side bar of bootstrap tabs which shows:
+   past life time adversaries
+   past tournaments list + speaker score and average of that tournament
+   speaker point stats graph raw (diff strand for each format)
+   can select strands for recurrecing tournaments
+   also a strand of speaker points as a percentage of the average
+   and as a percentage of the highest speaker -----> use D3.
+   also something about success/failure as particular team
+   and do these stats for regions and world wide!
+
+Round_counter in Tournament:
+Protocol.
+< 0, tournament made, rego not open
+0, rego open
+(might go back to < -1 to close registration)
+> 0, ( = i), we are in round i.
+
+
+

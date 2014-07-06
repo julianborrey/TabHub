@@ -4,6 +4,18 @@ class Team < ActiveRecord::Base
    
    belongs_to(:member_1, class_name: 'User');
    belongs_to(:member_2, class_name: 'User');
+   
+   has_many(:og, class_name: 'RoomDraw', foreign_key: 'og');
+   has_many(:oo, class_name: 'RoomDraw', foreign_key: 'oo');
+   has_many(:cg, class_name: 'RoomDraw', foreign_key: 'cg');
+   has_many(:co, class_name: 'RoomDraw', foreign_key: 'co');
+   
+   #getting all roomDraw for this team
+   ##(it would include all tournaments)
+   def room_draws
+      return og + oo + cg + co;
+   end
+   
    #make this function to get both members in one
    def users
       return [member_1, member_2];
@@ -14,7 +26,7 @@ class Team < ActiveRecord::Base
    end
    
    validates(:name, presence: true, length: {maximum: 50},
-                    uniqueness: {case_sensitive: false});
+                    uniqueness: {scope: :tournament_id, case_sensitive: false});
    #decided to be !caseSensitive on names, lowers possible confusion
    
    validates(:institution_id, presence: true); #if = 0, open team

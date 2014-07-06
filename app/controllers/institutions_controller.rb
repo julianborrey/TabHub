@@ -61,12 +61,21 @@ class InstitutionsController < ApplicationController
          render 'edit';
       end
    end
-
-
+   
+   #rendering what a single institution is bring with full detail
+   def show_for_tabbie
+      @tournament  = Tournament.find(params[:id]);
+      @institution = Institution.find(params[:inst_id]);
+   end
+   
    private
       
       def institution_params #permit only said inputs
          params.require(:institution).permit(:full_name, :short_name);
+      end
+      
+      def safe_params
+         params.permit(:num_teams, :num_adjs, allocation: [:institution_id]);
       end
 
       #mine!

@@ -1,0 +1,23 @@
+<table class="table attendeeTable">
+
+   <thead><tr>
+      <td>#</td>
+      <td>Team Name</td>
+      
+      <% @n ||= GlobalConstants::FORMAT[:bp][:num_speakers_per_team]; %>
+      <% (1..@n).each { |i| %>
+            <td>Member <%= i %></td>
+      <% } %>
+         
+      <td>Points</td>
+      <td>Total Speaker Points</td>
+      <td><!--  edit  --></td>
+      <td><!-- remove --></td>
+      
+   </thead></tr>
+      
+   <% @list = @institution.teams_at(@tournament) %>
+   <% @count = true %>
+   <%= render('tournaments/teams/team_rows') %>
+   
+</table>

@@ -1,0 +1,19 @@
+<% provide(:title, @institution.short_name + " at " + @tournament.name) %>
+
+<div class="row-fluid tournament-page">
+   
+   <div style="text-align:center;">
+      <h2><%= @institution.full_name %> <span style="color:gray">at <%= @tournament.name %></span></h2>
+      <p>
+         <%= link_to("back to control panel", (tournament_path(@tournament) + '/control')); %> |
+         <%= link_to("back to institutions list", (tournament_path(@tournament) + '/control/institutions')); %>
+      </p>
+   </div>
+   
+   <h3>Teams<h3>
+   <%= render('tournaments/institutions/teams_list'); %>
+   <% #render('institutions/adjs_list'); %>
+   <% #render('institutions/tabbies_list'); %>
+   
+   <!-- one day, put in links to editing everything about the inst. and kicking -->
+</div>

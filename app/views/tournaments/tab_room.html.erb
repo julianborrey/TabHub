@@ -5,7 +5,7 @@
    <%= render('tournaments/title_shim'); %>
 
    <div class="tableTitle">
-      <h1>Tab Room Officials</h1>
+      <h2>Tab Room Officials and Chief Adjudicators</h2>
       <a href="<%= tournament_path(@tournament) + '/control'%>">back to control panel</a>
       <span style="margin-left:50px"># Officials: <%= @tournament.tabbies.count %></span>
       <br><br>
@@ -17,7 +17,8 @@
       <tr class="titlesRow">
          <td>Name</td>
          <td>Institution</td>
-         <td><td>
+         <td>Authority</td>
+         <td><!-- remove --><td>
       </tr>
       
       <%= render('tournaments/tabbies/tabbie_rows'); %>

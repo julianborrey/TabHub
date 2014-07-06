@@ -4,14 +4,14 @@ class CreateRoomDraws < ActiveRecord::Migration
       t.integer :tournament_id
       t.integer :round_id
       t.integer :room_id
-      t.integer :og
-      t.integer :oo
-      t.integer :cg
-      t.integer :co
-      t.integer :first
-      t.integer :second
-      t.integer :third
-      t.integer :fourth
+      t.integer :og_id
+      t.integer :oo_id
+      t.integer :cg_id
+      t.integer :co_id
+      t.integer :first_id
+      t.integer :second_id
+      t.integer :third_id
+      t.integer :fourth_id
       t.integer :status
 
       t.timestamps

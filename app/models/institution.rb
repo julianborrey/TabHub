@@ -3,6 +3,7 @@ class Institution < ActiveRecord::Base
    has_many(:tournaments);
    has_many(:rooms);
    has_many(:conflicts);
+   has_many(:allocations);
    
    validates(:short_name, presence: true);
    validates(:full_name, presence: true);
@@ -39,4 +40,13 @@ class Institution < ActiveRecord::Base
       users_array.reject! { |u| u.active };
       return users_array;
    end
+   
+   #returns all the teams from THIS institution at the GIVEN tournament
+   def teams_at(tournament)
+      #definitely want to come from tournament side
+      list = tournament.teams.reject { |t| t.tournament_id != tournament.id }
+      puts("list is: " + list.to_s);
+      return list;
+   end
+   
 end

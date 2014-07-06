@@ -2,12 +2,16 @@
    <td>New Tab Room Official</td>
    <%= form_tag do %>
       <td><%= email_field_tag(:email, @temp_email, {placeholder: "User's E-mail", style: "height:20px;"}); %></td>
+      <% roles_array = [["Tab Room", 2], ["DCA", 3], ["CA", 4]]; %>
+      <td><%= select(:role, :role_id, options_for_select(roles_array), {}, 
+                       {style: "width:200px;"}); %></td>
+            
       <td><%= submit_tag "Add", {class: "btn newTabbieBtn"} %></td>
    <% end %>
 </tr>
 
 <tr>
-   <td colspan="3">
+   <td colspan="4">
       <%= render(:partial => 'shared/small_notice', :locals => {small_notice: @msg}); %>
    </td>
 </tr>

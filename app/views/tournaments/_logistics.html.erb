@@ -15,7 +15,8 @@
                <i class="icon-question-sign qIcon" id="tabRoomLogBtn"></i>
                <span id="tabRoomLogInfo" class="pull-left infoBox logInfoBox"> 
                      This is a list of users who are authorized to edit the 
-                     tournament.
+                     tournament. You can add people to the tab room to help with 
+                     data checking/input as well as adding CA's and DCA's.
                </span>
                <script>
                   $("#tabRoomLogBtn").mouseover(function() {
@@ -48,7 +49,8 @@
             <td>-</td>
             <td>-</td>
          </tr>
-          <tr>
+         
+         <tr>
             <td><%= link_to "Rooms", (tournament_path(@tournament) + "/control/rooms") %>
             <i class="icon-question-sign qIcon" id="roomsLogBtn"></i>
                <span id="roomsLogInfo" class="pull-left infoBox logInfoBox"> 
@@ -68,12 +70,34 @@
             <td>Enough rooms?</td>
             <td><span style="color:<%= @roomCheck[1] %>"><%= @roomCheck[2] %></span></td>
          </tr>
+         
+         <tr>
+            <td><%= link_to "Current Draw", (tournament_path(@tournament) + "/control/draw") %>
+            <i class="icon-question-sign qIcon" id="drawBtn"></i>
+               <span id="drawInfo" class="pull-left infoBox logInfoBox"> 
+                     This the draw which shows in which room each team and adjudicator will be.
+                     (The number refers to the the number of debates taking place.)
+               </span>
+               <script>
+                  $("#drawBtn").mouseover(function() {
+                     $("#drawInfo").show();
+                  }).mouseout(function() {
+                     $("#drawInfo").hide();
+                  });
+               </script>
+            </td>
+            <td><%= @tournament.next_round.room_draws.count %></td>
+            <td>Enough rooms?</td>
+            <td><span style="color:<%= @roomCheck[1] %>"><%= @roomCheck[2] %></span></td>
+         </tr>
+         
          <tr>
             <td><%= link_to "Current Round Ballots", (tournament_path(@tournament) + "/control/ballots") %>
             <i class="icon-question-sign qIcon" id="ballotLogBtn"></i>
                <span id="ballotLogInfo" class="pull-left infoBox logInfoBox"> 
                      Here you can view all the ballots that have been input 
                      from each round as well as input ballots directly.
+                     (The number refers to how many ballots have been submitted.)
                </span>
                <script>
                   $("#ballotLogBtn").mouseover(function() {

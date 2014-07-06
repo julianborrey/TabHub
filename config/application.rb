@@ -34,5 +34,8 @@ module TabSite
       #"#{html_tag}".html_safe
       html_tag.html_safe
     }
-  end
+  
+    config.exceptions_app = self.routes;
+   end
+  
 end

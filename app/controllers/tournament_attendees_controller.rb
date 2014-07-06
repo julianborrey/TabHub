@@ -8,8 +8,6 @@ class TournamentAttendeesController < ApplicationController
       @temp_email = safe_params[:email]; #need this incase we render
       newTabbie   = User.where(email: @temp_email).first;
       @tournament = Tournament.find(params[:id]);
-      @tab_room_attendee_array = TournamentAttendee.where(tournament_id: @tournament.id,
-                                       role: GlobalConstants::TOURNAMENT_ROLES[:tab_room]);
       @msg                     = SmallNotice.new;
       
       #if we couldn't find the user
@@ -18,7 +16,7 @@ class TournamentAttendeesController < ApplicationController
       end
       
       @ta = TournamentAttendee.new(tournament_id: params[:id], user_id: newTabbie.id,
-                                   role: GlobalConstants::TOURNAMENT_ROLES[:tab_room]);
+                                   role: safe_params[:role][:role_id]);
       
       if @ta.save                       
          #complete; if user same, just redirect anyway. no point putting error message
@@ -124,7 +122,7 @@ class TournamentAttendeesController < ApplicationController
    
    private
       def safe_params
-         params.permit(:email, :rating);
+         params.permit(:email, :rating, role: [:role_id]);
       end
       
       #if we couldn't find user we render

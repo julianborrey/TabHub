@@ -9,7 +9,7 @@
          <td colspan="3">
             <% inst_array = Institution.all.map { |inst| [inst.full_name, inst.id]} %>
             <% inst_array.sort_by! { |i| i[0].downcase } %>
-            <%= select(:conflict, :institution_id, options_for_select(inst_array), {}, 
+            <%= select(:allocation, :institution_id, options_for_select(inst_array), {}, 
                        {style: "width:300px;"}); %>
             
             <i class="icon-question-sign" id="inst-info-btn">&nbsp&nbsp&nbsp&nbsp(click)</i>
@@ -27,14 +27,14 @@
             </script>   
          </td>
          
-         <td><%= number_field_tag(:num_teams, nil, {placeholder: "# Teams"       , style: "width:80px;"}) %></td>
-         <td><%= number_field_tag(:num_adjs,  nil, {placeholder: "# Adjudicators", style: "width:110px;"}) %></td>   
+         <td colspan="2"><%= number_field_tag(:num_teams, nil, {placeholder: "# Teams"       , style: "width:110px;"}) %></td>
+         <td colspan="2"><%= number_field_tag(:num_adjs,  nil, {placeholder: "# Adjudicators", style: "width:110px;"}) %></td>   
          <td><%= submit_tag("Allocate Spots", {class: "btn"});                                             %></td>
       <% end %>
    </tr>
 
    <tr>
-      <td colspan="6">
+      <td colspan="8">
          <%= render(:partial => 'shared/small_notice', :locals => {small_notice: @msg}); %>
       </td>
    </tr>
