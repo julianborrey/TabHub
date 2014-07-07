@@ -75,9 +75,15 @@ class Tournament < ActiveRecord::Base
    
    #true if tournament is currently happening
    def live?
-      if self.round_counter > 0
-          return true;
-      end
+      puts("We have :   " + self.round_counter.to_s)
+      puts("we have )))))))))))))))))) " + self.name.to_s);
+      
+      val = self.round_counter;
+      puts("here is the val " + val.to_s);
+
+      #if true #self.round_counter > 0
+      #    return true;
+      #end
       return false;
    end
    
@@ -89,7 +95,7 @@ class Tournament < ActiveRecord::Base
       status = {"gray" => GlobalConstants::TOURNAMENT_STATUS_STR[self.status].capitalize};
       
       #but we want to use "Live!" for :current and "Coming up" for :future
-      if self.status == GlobalConstants::TOURNAMENT_STATUS[:present]
+      if self.live?
          status = {"#33cc33" => "Live!"};
       elsif self.status == GlobalConstants::TOURNAMENT_STATUS[:future]
          status = {"blue" => "Coming Up"};
@@ -206,5 +212,34 @@ class Tournament < ActiveRecord::Base
    #returns a list of teams sorted by alphabetical institution
    def get_sorted_teams
       return self.teams.to_a.sort { |x,y| x.institution.full_name.downcase <=>  y.institution.full_name.downcase };
+   end
+
+   #returns list of teams in this tournament given an institution
+   def get_teams_from_institution(inst)
+      return self.teams.where(institution_id: inst[:id]).to_a;
+   end
+
+   #returns list of adjs in this tournament given an institution
+   def get_adjs_from_institution(inst)
+      tas = self.tournament_attendees.where(institution_id: inst[:id], 
+                                            role: GlobalConstants::TOURNAMENT_ROLES[:adjudicator]);
+      adj_list = [];
+      tas.each { |ta|
+         adj_list.push(ta.user);
+      }
+
+      return adj_list;
+   end
+
+   #returns true if team cap is reached in this tournament for given institution
+   def has_maxed_out_teams(inst)
+      return (get_teams_from_institution(inst).count >= 
+             self.allocations.where(institution_id: inst[:id]).first.num_teams);
+   end
+
+   #returns true if adj cap is reached in this tournament for given institution
+   def has_maxed_out_teams(inst)
+      return (get_adjs_from_institution(inst).count >= 
+             self.allocations.where(institution_id: inst[:id]).first.num_adjs);
    end
 end

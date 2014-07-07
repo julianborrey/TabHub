@@ -73,7 +73,7 @@ module GlobalConstants
                                   <b>Manual</b> registration means that only authorized people 
                                   (the tab room) can register teams. 
                                   <b>Quota for selected institutions</b> means that institutions 
-                                  you select will have be able to submit teams and adjudicators 
+                                  you select will be able to submit teams and adjudicators 
                                   for the positions you allocate them. <b>Open to selected institutions
                                   </b> means that anyone from institutions selected by you can enrol.
                                   <b>Completely open</b> registration will allow anyone to 

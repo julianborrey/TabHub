@@ -2,10 +2,13 @@ class TeamsController < ApplicationController
    include ApplicationHelper
    include TournamentsHelper
    
-   before_action :signed_in_user, only: [:show, :new]
+   before_action :signed_in_user, only: [:show, :new, :authorized_for_make_team]
+   #check to see if we can chain these before actions like I have tried here
+   #create_by... will call authorized_for... which callse :signed_in_user.
+
    before_action :edit_before_tournament_starts, only: [:edit, :destroy]
-   before_action :authorized_for_make_team, only: [:create_by_tabbie]
-   before_action :authorized_for_tournament, only: [:destroy_by_tabbie]
+   before_action :authorized_for_make_team, only: [:create_by_tabbie_or_user, 
+                                                   :destroy_by_tabbie_or_user]
    #before_action :authorized_for_team, only: [:destroy, :edit, :update]
    
    #only from the user's end
@@ -20,13 +23,16 @@ class TeamsController < ApplicationController
    #that all users are not also involved in another team or are adjs,
    #name is not a duplicate --> really can do this with normal rails though
    #we allow members to be the same person ==> iron man
-   def create_by_tabbie
+   def create_by_tabbie_or_user
+      #we may call this from /control/teams or /registration/individual
+      
       @tournament = Tournament.find(safe_params[:id]);
       @emails     = safe_params[:emails]; #need this incase we render
       @name       = safe_params[:name];
       @list       = @tournament.get_sorted_teams;
       @msg        = SmallNotice.new;
-      
+      @user       = current_user;
+
       #n will determine how many speakers we are building the team out of
       @n = GlobalConstants::FORMAT[:bp][:num_speakers_per_team];
       
@@ -40,7 +46,7 @@ class TeamsController < ApplicationController
          #might as well do error checking immediatley
          if users[i-1].nil?
             @msg.add(:error, "Could not find member #{i}.");
-            render('tournaments/teams');
+            render(render_place());
             return;
          end
       }
@@ -48,14 +54,43 @@ class TeamsController < ApplicationController
       #check memebrs are from same institution (in IF one day)
       #first get institution ids
       institution_ids = []
-      users.each { |u| 
+      users.each { |u|
          institution_ids.push(u.institution.id);
       }
-      
-      #should only be one unique id
+
+      #if this is not from tabbie, 
+      #if this is a capped/restricted tournament, the members have to be from the user's institution
+      #if open, at least one member needs to be the current_user
+      if render_place().split('/').last == "individual"
+         if @tournament.tournament_setting[:registration] != 
+            GlobalConstants::SETTINGS_VALUES[:registration]["Completely open"]
+            institution_ids.each { |i|
+               if i != @user.institution_id
+                  @msg.add(:error, "You can only make teams for people in your institution.")
+                  render(render_place());
+                  return;
+               end
+            }
+         else #completely open
+            foundSelf = false; #assume self not in the list
+            users.each { |u|
+               if u == current_user
+                  foundSelf = true;
+               end
+            }
+            if !foundSelf
+               @msg.add(:error, "You must be in the team you register")
+               render(render_place());
+               return;
+            end
+         end
+      end
+
+      #should only be one unique id if not an open tournament...
+      #NEED TO INCORPORATE THE ABILITY TO HAVE PEOPLE FROM DIFF INST IF MANUAL REGO BUT STILL AND OPEN
       if institution_ids.uniq.count != 1
          @msg.add(:error, "Teams members are not from the same institution.");
-         render('tournaments/teams');
+         render(render_place());
          return;
       end
 
@@ -66,7 +101,7 @@ class TeamsController < ApplicationController
          u.teams.each { |w|
             if w.tournament_id == @tournament.id
                @msg.add(:error, "Member #{i} is already competing in another team.");
-               render('tournaments/teams');
+               render(render_place());
                return;
             end
          }
@@ -77,9 +112,11 @@ class TeamsController < ApplicationController
       i = 1;
       users.each { |u|
          u.tournament_attendees.each { |w|
-            if (w.tournament_id == @tournament.id) && (w.role == GlobalConstants::TOURNAMENT_ROLES[:adjudicator])
+            if (w.tournament_id == @tournament.id) && 
+               (w.role == GlobalConstants::TOURNAMENT_ROLES[:adjudicator])
+               
                @msg.add(:error, "Member #{i} is already an adjudicator.");
-               render('tournaments/teams');
+               render(render_place());
                return;
             end
          }
@@ -105,14 +142,14 @@ class TeamsController < ApplicationController
          #@msg.add(:success, "Team Created!"); #make sure the flash is below the form
          #redirect needs to use flash
          flash[:success] = "Team Created."
-         redirect_to(tournament_path(@tournament) + '/control/teams');
+         redirect_to(redirect_place());
       else
          #so we need both flash and normal error rendering thing
          #lets fluralize the flash and then port over the error messages
          #while keeping an eye on what the 'shared/_error_messages' does
          
          load_errors(@team);
-         render 'tournaments/teams';
+         render render_place();
          return;
       end
    end
@@ -149,40 +186,78 @@ class TeamsController < ApplicationController
       redirect_to(user_path(current_user) + '/teams');
    end
 
-   def destroy_by_tabbie
+   ### APPLY ALL SAME CHECKS FOR CREATE THAT APPLY
+   def destroy_by_tabbie_or_user
       @team = Team.find(params[:team_id]);
       @team.destroy();
-      redirect_to(tournament_path(params[:id]) + '/control/teams');
+      redirect_to(redirect_place());
+      return;
    end
 
    private
       #only a tabbie or member should be authorized for the team
       def authorized_for_team
          team = Team.find(params[:id]);
-         redirect_to root_path unless team.users_ids.include?(current_user.id) || current_user.in_tab_room?(team.tournament);
+         redirect_to root_path unless team.users_ids.include?(current_user.id) || 
+                                      current_user.in_tab_room?(team.tournament);
       end
 
-      #super lax security here, just require them to be a tabbie
-      #I mean what ever, they still need to knwo the email...
       def authorized_for_make_team
-         redirect_to root_path unless current_user.is_a_tabbie?
+         @tournament = Tournament.find(params[:id]);
+         hasAuthority = (current_user.is_a_tabbie?(@tournament) ||
+                         
+                         (@tournament.tournament_setting[:registration] == 
+                          GlobalConstants::SETTINGS_VALUES[:registration]["Completely open"]) ||
+                         
+                         (current_user.has_exec_position?([:president, :externals]) &&
+                          (@tournament.tournament_setting[:registration] != 
+                          GlobalConstants::SETTINGS_VALUES[:registration]["Manual"]) &&
+                          !@tournament.has_maxed_out_teams(current_user.institution)));
+         redirect_to root_path unless hasAuthority;
       end
 
       #this is true, if it is a member of the team and tournament hasn't started yet
       def edit_before_tournament_starts
          team = Team.find(params[:id])
          redirect_to root_path unless 
-            (team.users_ids.include?(current_user.id) && (team.tournament.status == GlobalConstants::TOURNAMENT_STATUS[:future]))
+            (team.users_ids.include?(current_user.id) && 
+               (team.tournament.status == GlobalConstants::TOURNAMENT_STATUS[:future]))
       end
       
       def team_params
-         params.require(:team).permit(:name, :institution_id, :member_1, :member_2);
+         params.require(:team).permit(:name, :institution_id, :member_1, :member_2, :origin);
          #the :institution_id may come from selecting from a list (convenor does this) or by the users :id
       end
       
       #the other params not for Team
       def safe_params
-         params.permit(:id, :name, :emails => []); #emails is an array
+         params.permit(:id, :name, :origin, :emails => []); #emails is an array
+      end
+
+      #we may call this from /control/teams or /registration/individual
+      def render_place #returns the place to render based on origin
+         if safe_params[:origin] == "individual"
+            return 'tournaments/individual';
+         elsif safe_params[:origin] == "teams"
+            return 'tournaments/teams';
+         else
+            puts("Hack ###");
+            redirect_to root_path;
+            return;
+         end
+      end
+
+      #we may call this from /control/teams or /registration/individual
+      def redirect_place #returns the place to redirect to based on origin
+         if safe_params[:origin] == "individual"
+            return (tournament_path(@tournament) + '/registration/individual');
+         elsif safe_params[:origin] == "teams"
+            return (tournament_path(@tournament) + '/control/teams');
+         else
+            puts("Hack ###");
+            redirect_to root_path;
+            return;
+         end
       end
    
 end

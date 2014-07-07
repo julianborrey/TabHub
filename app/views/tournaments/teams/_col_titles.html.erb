@@ -1,0 +1,20 @@
+<tr class="titlesRow">
+   <td>Institution</td>
+   <td>Name</td>
+   
+   <% @n ||= GlobalConstants::FORMAT[:bp][:num_speakers_per_team]; %>
+   <% (1..@n).each { |i| %>
+      <td>Member <%= i %></td>
+   <% } %>
+   
+   <td>Points</td>
+
+   <% if show_speaker_points %>
+      <td>Total Speaker Points</td>
+   <% else %>
+      <td></td>
+   <% end %>
+
+   <td><!--  edit  --></td>
+   <td><!-- remove --></td>
+</tr>

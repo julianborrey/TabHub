@@ -1,11 +1,18 @@
+
 <tr>
    
    <td>New Adjudicator:</td>
-   <%= form_tag do %>
+   <%= form_tag(tournament_path(@tournament) + '/control/adjudicators') do %>
       
       <td colspan="2"><%= email_field_tag(:email, @temp_email, {placeholder: "Adjudicator's E-mail", style: "height:20px;"}); %></td>
-      <td colspan="2"><%= number_field_tag(:rating, nil, {placeholder: "Adjudicator's rating", step: 0.01}) %></td>
-      
+
+      <% if with_rating %>
+      	<td colspan="2"><%= number_field_tag(:rating, nil, {placeholder: "Adjudicator's rating", step: 0.01}) %></td>
+      <% else %>
+      	<td></td>
+      <% end %>
+
+      <%= hidden_field_tag('origin', origin_place) %> 
       <td><%= submit_tag "Add Adjudicator", {class: "btn"} %></td>
    <% end %>
    

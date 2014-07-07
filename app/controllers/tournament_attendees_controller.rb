@@ -2,13 +2,16 @@ class TournamentAttendeesController < ApplicationController
    include ApplicationHelper
    include TournamentsHelper
 
-   before_action :authorized_for_tournament, only: [:destroy, :create];
+   before_action :signed_in_user
+   before_action :authorized_for_tournament, only: [:destroy_tabbie_by_tabbie, :create_tabbie_by_tabbie];
+   before_action :authorized_for_making_adj, only: [:create_adj_by_tabbie_or_user,
+                                                     :destroy_adj_by_tabbie_or_user];
    
    def create_tabbie_by_tabbie
       @temp_email = safe_params[:email]; #need this incase we render
       newTabbie   = User.where(email: @temp_email).first;
       @tournament = Tournament.find(params[:id]);
-      @msg                     = SmallNotice.new;
+      @msg        = SmallNotice.new;
       
       #if we couldn't find the user
       if !check_found_user(newTabbie, 'tournaments/tab_room');
@@ -46,7 +49,8 @@ class TournamentAttendeesController < ApplicationController
       end
    end
    
-   def create_adj_by_tabbie
+   def create_adj_by_tabbie_or_user
+      @user = current_user;
       @temp_email = safe_params[:email]; #need this incase we render
       newAdj = User.where(email: @temp_email).first;
       @tournament = Tournament.find(params[:id]); 
@@ -54,28 +58,41 @@ class TournamentAttendeesController < ApplicationController
                                        role: GlobalConstants::TOURNAMENT_ROLES[:tab_room]);
       @msg                     = SmallNotice.new;
       
-      if !check_found_user(newAdj, 'tournaments/adjudicators');
+      if !check_found_user(newAdj, render_place());
          return;
       end
       
-      newAdj.teams.each { |t| #check to make sure they are also not a debater
-         if t.tournament_id == @tournament.id
+      #check to make sure the person they have submitted is in their institution
+      if newAdj.institution_id != current_user.institution_id
+         @msg.add(:error, "You can only submit someone from your own institution.");
+         render(render_place());
+         return;
+      end
+
+      #check to make sure they are also not a debater
+      newAdj.teams.each { |t|
+         if t[:tournament_id] == @tournament[:id]
             @msg.add(:error, "This user is already a debater in this tournament.");
-            render('tournaments/adjudicators');
+            render(render_place());
             return;
          end
       }
       
+      maybeGivenRating = 0;
+      if current_user.is_a_tabbie?(@tournament) #if a tabbie submitting
+         maybeGivenRating ||= safe_params[:rating]; #if they gave it
+      end
+
       @ta = TournamentAttendee.new(tournament_id: @tournament.id,
                                    user_id: newAdj.id,
-                                   rating: safe_params[:rating],
+                                   rating: maybeGivenRating,
                                    role: GlobalConstants::TOURNAMENT_ROLES[:adjudicator]);
       if @ta.save
          flash[:success] = "Adjudicator added."
-         redirect_to(tournament_path(@tournament) + '/control/adjudicators');
+         redirect_to(redirect_place());
       else
          load_errors(@ta);
-         render('tournaments/adjudicators');
+         render(render_place());
       end
    end
    
@@ -112,17 +129,19 @@ class TournamentAttendeesController < ApplicationController
       end
    end
 
+   ### APPLY ALL SAME CHECKS FOR CREATE THAT APPLY
    #no check on how many adjs
-   def destroy_adj_by_tabbie
+   def destroy_adj_by_tabbie_or_user
+      @user = current_user;
       @ta = TournamentAttendee.find(params[:ta_id]);
       @ta.destroy();
       flash[:success] = "Adjudicator removed from tournament.";
-      redirect_to(tournament_path(params[:id]) + '/control/adjudicators');
+      redirect_to(redirect_place);
    end
    
    private
       def safe_params
-         params.permit(:email, :rating, role: [:role_id]);
+         params.permit(:email, :rating, :origin, role: [:role_id]);
       end
       
       #if we couldn't find user we render
@@ -135,4 +154,49 @@ class TournamentAttendeesController < ApplicationController
          return true;
       end
       
+      #we may call this from /control/teams or /registration/individual
+      def render_place #returns the place to render based on origin
+         if safe_params[:origin] == "individual"
+            return 'tournaments/individual';
+         elsif safe_params[:origin] == "tab_room"
+            return 'tournaments/adjudicators';
+         else
+            puts("Hack ###");
+            redirect_to root_path;
+            return;
+         end
+      end
+      
+      #we may call this from /control/teams or /registration/individual
+      def redirect_place #returns the place to redirect to based on origin
+         if safe_params[:origin] == "individual"
+            return (tournament_path(@tournament) + '/registration/individual');
+         elsif safe_params[:origin] == "tab_room"
+            return (tournament_path(params[:id]) + '/control/adjudicators');
+         else
+            puts("Hack ###");
+            redirect_to root_path;
+            return;
+         end
+      end
+
+      #this function has to check mutliple cases
+      #if tabbie, just go ahead
+      #if open rego, need to check they are registering them selves
+      #if user, check they are within the cap and they are submitting an adj,
+      #no other role
+      def authorized_for_making_adj
+         @tournament = Tournament.find(params[:id]);
+         hasAuthority = (current_user.is_a_tabbie?(@tournament) ||
+                         
+                         ((@tournament.tournament_setting[:registration] == 
+                          GlobalConstants::SETTINGS_VALUES[:registration]["Completely open"]) &&
+                          (safe_params[:email] == current_user.email)) ||
+                         
+                         (current_user.has_exec_position?([:president, :externals]) &&
+                          (@tournament.tournament_setting[:registration] != 
+                          GlobalConstants::SETTINGS_VALUES[:registration]["Manual"]) &&
+                          !@tournament.has_maxed_out_adjs(current_user.institution)));
+         redirect_to root_path unless hasAuthority;
+      end
 end

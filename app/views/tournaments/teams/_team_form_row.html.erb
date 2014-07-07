@@ -1,7 +1,7 @@
 <tr>
    
    <td>New Team:</td>
-   <%= form_tag do %>
+   <%= form_tag(tournament_path(@tournament) + '/control/teams') do %>
       
       <td colspan="3"><%= text_field_tag(:name, @name, {placeholder: "Team name", style: "height:20px;"}); %></td>
       
@@ -10,6 +10,7 @@
                     placeholder="<%= "E-mail of member #{i}" %>"></td>
       <% } %>
       
+      <%= hidden_field_tag('origin', origin_place) %> 
       <td colspan="2"><%= submit_tag "Add Team", {class: "btn"} %></td>
    <% end %>
    

@@ -1,0 +1,107 @@
+<% provide(:title,  @tournament.name + " - Team") %>
+
+<%
+   #to keep it to one view file, not multiple files and redirects
+   #we will just have some control flags
+   @openTournament = (@tournament.tournament_setting.registration == 
+                      GlobalConstants::SETTINGS_VALUES[:registration]["Completely open"]);
+   @mustMakeTeam = false; #if use has not team and open tournament
+   @cappedTournament = false;
+
+   #if open - do they have a team
+   if @openTournament
+   
+      users_team = @user.get_team_in?(@tournaemnt);
+      if users_team.nil?
+         @mustMakeTeam = true;
+      end
+      
+   else #if capped/selected rego
+      @teamCap = @tournament.allocations.where(institution_id: @user.institution_id).first.num_teams;
+      @adjCap  = @tournament.allocations.where(institution_id: @user.institution_id).first.num_adjs;
+      @cappedTournament = (@tournament.tournament_setting.registration == 
+                           GlobalConstants::SETTINGS_VALUES[:registration]["Quota for selected institutions"]);
+
+      #get list of teams for this institution and check if reached limit
+      @list = @tournament.get_teams_from_institution(@user.institution);
+      @hasNotFilledTeamCap = ((@teamCap > @list.count) || !@cappedTournament);
+
+      #get list of adjs for this institution and check if reached limit
+      @adj_list = @tournament.get_adjs_from_institution(@user.institution);
+      puts("we has _-------------- " + @adj_list.count.to_s)
+      @hasNotFilledAdjCap = ((@adjCap > @adj_list.count) || !@cappedTournament);
+
+      #this is needed for the form - just make anyway...(for now)
+      @n = GlobalConstants::FORMAT[:bp][:num_speakers_per_team];
+      @name   = "";
+      @emails = [];
+      (1..@n).each { |i|
+         @emails.push("");
+      }
+   end
+%>
+
+
+
+<div class="row-fluid tournament-page">
+   
+   <%= render('tournaments/title_shim'); %>
+
+   <div class="tableTitle">
+      <h2>Teams for <%= @user.institution.full_name %></h2>
+      <br><br>
+   </div>
+
+   <% if @openTournament %>
+      
+      <table class="table attendeeTable">
+         <%= render("tournaments/teams/col_titles"); %>
+         <% if @mustMakeTeam %>
+            <%= render("tournaments/teams/team_form_row"); %>
+         <% else %>
+            <%= render("tournaments/teams/team_rows"); %>
+         <% end %>
+      <table>
+
+   <% else #this is capped/selected intitution tournament %>
+
+      <div class="row-fluid" style="text-align:center;">
+         <% if @cappedTournament %>
+            <span>Your Team Cap is: 
+               <b>
+                  <%= @teamCap %>
+               </b>
+            </span>
+            <span> | Your Adjudicator Cap is: 
+               <b>
+                  <%= @adjCap %>
+               </b>
+            </span>
+         <% end %>
+      </div>
+
+      <div class="tournByRegion">
+         <h3>Teams</h3>
+         <table class="table attendeeTable">
+            <%= render("tournaments/teams/col_titles", show_speaker_points: false); %>
+            <%= render("tournaments/teams/team_rows",  show_speaker_points: false, origin_place: "individual");  %>
+            <% if @hasNotFilledTeamCap %>
+               <%= render("tournaments/teams/team_form_row", origin_place: "individual"); %>
+            <% end %>
+         </table>
+       </div>
+
+       <div class="tournByRegion">
+         <h3>Adjudicators</h3>
+         <table class="table attendeeTable">
+            <%= render("tournaments/adjudicators/col_titles", with_rating: false); %>
+            <%= render("tournaments/adjudicators/adj_rows", with_rating: false, origin_place: "individual");  %>
+            <% if @hasNotFilledAdjCap %>
+               <%= render("tournaments/adjudicators/adj_form_row", with_rating: false, origin_place: "individual"); %>
+            <% end %>
+         </table>
+      </div>
+
+   <% end %>
+
+</div>

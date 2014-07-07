@@ -1,13 +1,15 @@
 class TournamentsController < ApplicationController
    include TournamentsHelper
    
-   before_action :signed_in_user, only: [:new, :create];
+   before_action :signed_in_user, only: [:new, :create, :register_submission, :individual];
    before_action :authorized_for_tournament, only: [:destroy, :edit, :update, 
                                              :control, :tab_room, :rooms, 
                                              :import_rooms, :import_room,
                                              :remove_room, :rounds,
                                              :adjudicators, :teams,
                                              :edit_adj, :remove_adj];
+   before_action :check_not_manual_tournament, only: [:individual, :register_submission];
+   before_action :authorized_for_institution, only: [:individual];
 
    def index
       #make a has of lists of tournaments by region
@@ -275,12 +277,21 @@ class TournamentsController < ApplicationController
    def open_rego
       @tournament = Tournaments.find(params[:id]);
       @tournament.update_attributes(round_counter: GlobalConstants::TOURNAMENT_PHASE[:open_rego]);
+      redirect_to tournament_path(@tournament);
    end
    
    #post to this will close registration for users
    def close_rego
       @tournament = Tournaments.find(params[:id]);
       @tournament.update_attributes(round_counter: GlobalConstants::TOURNAMENT_PHASE[:closed]);
+      redirect_to tournament_path(@tournament);
+   end
+
+   #need to check that the tournament is not manual - before_action
+   #shows page for users to register their teams
+   def individual
+      @tournament = Tournament.find(params[:id]);
+      @user = current_user
    end
 
    private
@@ -294,5 +305,25 @@ class TournamentsController < ApplicationController
       def safe_import_room_params
          params.permit(:room_id, :id)
       end
-      
+
+      def safe_register_team_by_user_params
+         params.permit(:name, :emails => []);
+      end
+
+      def authorized_for_institution
+         @tournament = Tournament.find(params[:id]);
+         openTournament = (@tournament.tournament_setting.registration == 
+                      GlobalConstants::SETTINGS_VALUES[:registration]["Completely open"]);
+
+         redirect_to tournament_path(params[:id]) unless 
+            (openTournament || current_user.has_exec_position?([:president, :externals]));
+      end
+
+      def check_not_manual_tournament
+         t = Tournament.find(params[:id]);
+
+         redirect_to tournament_path(params[:id]) unless 
+         (!t.nil? &&
+         (t.tournament_setting.registration != GlobalConstants::SETTINGS_VALUES[:registration]["Manual"]));
+      end
 end

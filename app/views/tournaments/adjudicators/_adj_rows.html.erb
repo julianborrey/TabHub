@@ -1,9 +1,23 @@
 <% TournamentAttendee.where(tournament_id: @tournament.id, role: GlobalConstants::TOURNAMENT_ROLES[:adjudicator]).each { |a| %>
+  
+
+  #customize the list here.
+  #above statement for tabbie's view
+  #@tournaemnt.attendees...for the user's view
+
+  #and solve the bug where form doesn't dissappear when reaching cap...
+
    <tr>
       <% u = User.find(a.user_id); %>
       <td><%= link_to(u.full_name, user_path(u)); %></td>
       <td><%= link_to(u.institution.short_name, institution_path(u.institution)); %></td>
-      <td><%= a.rating %></td>
+      
+      <% if with_rating %>
+        <td><%= a.rating %></td>
+      <% else %>
+        <td></td>
+      <% end %>
+      
       <td>
          <ul>
          <% a.user.conflicts.to_a.each { |c| %>
@@ -12,11 +26,21 @@
          </ul>
       </td>
       
-      <td><%= link_to("Edit",   (tournament_path(@tournament) + '/control/adjudicators/' + a.id.to_s + '/edit')) %></td>
-      
-      <td><%= link_to("Remove", (tournament_path(@tournament) + '/control/adjudicators/' + a.id.to_s + '/edit'), 
-                      confirm:  ("Are you sure you want to remove " + 
-                      u.full_name + " as an adjudicator from the tournament?"), method: :delete) %></td>
+      <% if with_rating %>
+        <td><%= link_to("Edit",   (tournament_path(@tournament) + '/control/adjudicators/' + a.id.to_s + '/edit')) %></td>
+      <% else %>
+        <td></td>
+      <% end %>
+
+      <td>
+        <%= form_tag("#{tournament_path(@tournament)}/control/adjudicators/#{a.id}/edit", 
+                      {method: :delete, id: "deleteForm#{a.id}"}) do %>
+            <%= hidden_field_tag('origin', origin_place) %> 
+            <%= link_to "Delete", "#", {confirm: ("Are you sure you want to remove " + 
+                                        u.full_name + " as an adjudicator from the tournament?"), 
+                                        onclick: ('$("' + "#deleteForm#{a.id}" + '").submit()')} %>
+         <% end %>
+      </td>
    </tr>
 <% } %>
 

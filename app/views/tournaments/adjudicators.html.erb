@@ -12,18 +12,9 @@
    </div>
    
    <table class="table attendeeTable">
-      <%= render('tournaments/adjudicators/adj_form_row'); %>
-      
-      <tr class="titlesRow">
-         <td>Name</td>
-         <td>Institution</td>
-         <td>Rating</td>
-         <td>Conflicts</td>
-         <td><!--  edit  --></td>
-         <td><!-- remove --></td>
-      </tr>
-      
-      <%= render('tournaments/adjudicators/adj_rows'); %>
+      <%= render('tournaments/adjudicators/adj_form_row', with_rating: true, origin_place: "adjudicators"); %>
+      <%= render('tournaments/adjudicators/col_titles', with_rating: true); %>
+      <%= render('tournaments/adjudicators/adj_rows', with_rating: true, origin_place: "adjudicators"); %>
    </table>
 
 </div>

@@ -17,8 +17,22 @@
          </span>
       </div>
    <% end %>
-   
+
    <%= render('tournaments/status_bar'); %>
+
+   <% rego_setting = @tournament.tournament_setting.registration %>
+   <% if !@user.nil? && !(rego_setting == GlobalConstants::SETTINGS_VALUES[:manual]) %>
+      <% if (rego_setting == GlobalConstants::SETTINGS_VALUES[:open]) || @user.has_exec_position?([:president, :externals]) %>
+         
+         <div class="row-fluid ctrlBtnRow">
+            <span><%= link_to "Register For Tournament", (tournament_path(@tournament) + "/registration/individual"),
+                  class: "btn btn-primary" %></span>
+         </div>
+      
+      <% end %>
+   <% end %>
+   
+   
    
    <div class="row-fluid">
       <div class="span2">

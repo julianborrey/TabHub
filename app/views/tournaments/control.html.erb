@@ -10,7 +10,10 @@
 
    <% if @tournament.live? %>
       <%= render('tournaments/current_round_control'); %>
-      <%= render('tournaments/next_round_control'); %>
+
+      <% if current_user.is_in_roles?([:ca, :dca], @tournament) # && @tournament.has_a_next_round %>
+         <%= render('tournaments/next_round_control'); %>
+      <% end %>
    <% else %>
       <div class="row-fluid">
          <div class="startButtons">

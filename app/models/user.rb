@@ -147,16 +147,24 @@ class User < ActiveRecord::Base
    end
 
    #returns true if the user is *curretly* a tabbie at any tournament
-   def is_a_tabbie?
-      self.tournament_attendees.each { |ta|
-         if (ta.role == GlobalConstants::TOURNAMENT_ROLES[:tab_room]) && 
-            (ta.tournament.status != GlobalConstants::TOURNAMENT_STATUS[:past])
-            return true;
-         end
-      }
-      return false; #getting here is a fail
-   end
+   # def is_a_tabbie?
+   #    self.tournament_attendees.each { |ta|
+   #       if (ta.role == GlobalConstants::TOURNAMENT_ROLES[:tab_room]) && 
+   #          (ta.tournament.status != GlobalConstants::TOURNAMENT_STATUS[:past])
+   #          return true;
+   #       end
+   #    }
+   #    return false; #getting here is a fail
+   # end
    
+   #returns true if the user is *curretly* a tabbie at give tournament
+   def is_a_tabbie?(tourn)
+      if tourn.tournament_attendees.where(user_id: self.id).count == 1
+         return true;
+      end
+      return false;
+   end
+
    #returns true if THIS user is in ANY of the GIVEN roles for the GIVEN tournament
    #roles is an array of symboles
    def is_in_roles?(roles, t)
@@ -187,11 +195,33 @@ class User < ActiveRecord::Base
       }
       return false;
    end
+
+   #returns true is in at least one of the exec role given by array
+   def has_exec_position?(roles)
+      #check list, if none, return false
+      roles.each { |r| 
+         if self.status == GlobalConstants::SOCIETY_ROLES[r]
+            return true;
+         end
+      }
+      return false;
+   end
    
    #returns the current Team of the user
    def current_team
       self.teams.each { |t|
          if t.current?
+            return t;
+         end
+      }
+      return nil;
+   end
+
+   #returns true if they have a team in the given tournament
+   def get_team_in?(tournament)
+      list = self.teams;
+      list.each { |t|
+         if t.tournament[:id] == tournament[:id]
             return t;
          end
       }
