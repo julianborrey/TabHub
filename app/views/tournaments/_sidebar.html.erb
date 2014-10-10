@@ -1,8 +1,44 @@
 <div class="row-fluid tournamentSidebar">
-   
-   <div><%= link_to("All Attendees", tournament_path(@tournament) + "/attendees", class: "btn btn-success"); %></div>
-   <div><%= link_to("Motions", "#", class: "btn btn-info");       %></div>
-   <div><%= link_to("Tab", "#", class: "btn btn-primary");        %></div>
-   <div><%= link_to("Statistics", "#", class: "btn btn-warning"); %></div>
-   
+	<ul class="nav nav-tabs nav-tabs-imported tabs-imported-left">	
+	   <li 
+	   	<% if activeTab == "home" %>
+	   	<%= 'class=active' %>
+	   	<% end %>
+	   >
+	   	<%= link_to("Home", tournament_path(@tournament), {"data-toggle" => "tab"}); %>
+	   </li>
+
+	   <li 
+	   	<% if activeTab == "attendees" %>
+	   	<%= "class=\"active\"" %>
+	   	<% end %>
+	   >
+	   	<%= link_to("All Attendees", tournament_path(@tournament) + "/attendees", {"data-toggle" => "tab"}); %>
+	   </li>
+
+	   <li 
+	   	<% if activeTab == "motions" %>
+	   	<%= "class=\"active\"" %>
+	   	<% end %>
+	   >
+	   	<%= link_to("Motions",    "#", {"data-toggle" => "tab"}); %>
+	   </li>
+
+
+	   <li
+	   	<% if activeTab == "tab" %>
+	   	<%= "class=\"active\"" %>
+	   	<% end %>
+	   >
+	   	<%= link_to("Tab",        "#", {"data-toggle" => "tab"}); %>
+	   </li>
+	   
+	   <li
+	   	<% if activeTab == "stats" %>
+	   	<%= "class=\"active\"" %>
+	   	<% end %>
+	   >
+	   	<%= link_to("Statistics", "#", {"data-toggle" => "tab"}); %>
+	   </li>
+	</ul>
 </div>

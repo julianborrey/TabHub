@@ -19,7 +19,7 @@ class TournamentAttendeesController < ApplicationController
       end
       
       @ta = TournamentAttendee.new(tournament_id: params[:id], user_id: newTabbie.id,
-                                   role: safe_params[:role][:role_id]);
+                                   role: safe_params[:role][:role_id], institution_id: newTabbie.institution_id);
       
       if @ta.save                       
          #complete; if user same, just redirect anyway. no point putting error message
@@ -86,6 +86,7 @@ class TournamentAttendeesController < ApplicationController
       @ta = TournamentAttendee.new(tournament_id: @tournament.id,
                                    user_id: newAdj.id,
                                    rating: maybeGivenRating,
+                                   institution_id: newAdj.institution_id,
                                    role: GlobalConstants::TOURNAMENT_ROLES[:adjudicator]);
       if @ta.save
          flash[:success] = "Adjudicator added."

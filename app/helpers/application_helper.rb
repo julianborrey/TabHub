@@ -24,15 +24,15 @@ module ApplicationHelper
       rounds= []; #return value
 
       i = 0;
-      potentials = Round.order(created_at: :desc).limit(100).to_a;
+      potentials = Round.order(created_at: :desc).limit(30).to_a;
       potentials.shuffle!;
-      #surely in 100 rounds we can find what we want
+      #surely in 30 rounds we can find what we want
       ###can fix this later to true for larger --- expand this foo later
       
       #keep searching until length is 3
-      while rounds.length < 3
+      while (rounds.length < 3) && (Round.count != 0)
          if true #eventuall --> potentials[i].tournament.settings.public?
-            rounds.push(potentials[i]);
+            #rounds.push;
          end
          i = i + 1;
       end

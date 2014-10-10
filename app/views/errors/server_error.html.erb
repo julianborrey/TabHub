@@ -1,11 +1,18 @@
-<h1>Server Error</h1>
-<p class="error-tag lead">500 Error</p>
+<div class="row-fluid error-page" style="text-align:center;">
 
-<br><br>
+	<h1>Server Error</h1>
+	<p class="error-tag lead">500 Error</p>
 
-<p class="lead">
-Sorry but our server didn't quite make it.<br>
-It was probably something like <%= link_to 'this', 'http://www.youtube.com/watch?v=5d7aruKYkKs', :target => "_blank" %>.
-</p>
+	<br>
 
-<%= render 'errors/back_or_home' %>
+	<p class="lead">
+	Sorry but our server didn't quite make it.<br>
+	It was probably something like this ...
+	</p>
+
+	<iframe width="560" height="315" src="//www.youtube.com/embed/5d7aruKYkKs" frameborder="0" allowfullscreen></iframe>
+
+	<br><br>
+	<%= render 'errors/back_or_home' %>
+
+</div>

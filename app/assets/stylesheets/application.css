@@ -9,5 +9,13 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require_tree .
+ *= require 'application.css'
+ *= require 'custom.css.scss'
+ *= require 'institution_pages.css.scss'
+ *= require 'rounds.css.scss'
+ *= require 'static_pages.css.scss'
+ *= require 'teams.css.scss'
+ *= require 'tournaments.css.scss'
+ *= require 'user_pages.css.scss'
+ *= require 'bootstrap.vertical-tabs.min.css'
  */
