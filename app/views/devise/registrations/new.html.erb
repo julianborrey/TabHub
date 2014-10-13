@@ -1,0 +1,15 @@
+<% provide(:title, "Sign Up"); %>
+
+<div class="info-page signup-page">
+
+	<h1>Welcome to TabHub</h1>
+
+	<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+		
+      <%= render('users/fields', f: f); %>
+      
+		<%= f.submit "Create Account", {class: "btn btn-primary create-account-btn"} %>
+	<% end %>
+
+	<%= render "devise/shared/links" %>
+</div>

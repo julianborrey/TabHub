@@ -7,6 +7,17 @@
 </div>
 
 <div class="input-prepend">
+   <span class="add-on">Region</span>
+   <% regions_array = GlobalConstants::TOURNAMENT_REGIONS.to_a   %>
+   <% regions_array.sort_by! { |i| i[0].downcase }               %>
+   <% if (regions_array.reject! { |i| i[1] == @tournament.region }) != nil; #they are in order  %>
+   <% 	regions_array.insert(0, [GlobalConstants::TOURNAMENT_REGIONS_STR[@tournament.region], @tournament.region]); %>
+   <% 	#put chose uni at top so it is already selected %>
+   <% end %>
+   <%= f.select(:region, options_for_select(regions_array), {}, {class: "span2 uni-dropdown"}); %>
+</div>
+
+<div class="input-prepend">
    <span class="add-on">Location</span>
    <%= f.text_field(:location, {class: "span2", value: "#{@tournament.location}"}); %>
 </div>

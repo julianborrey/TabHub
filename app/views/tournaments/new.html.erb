@@ -9,15 +9,15 @@
    <% end %>
    
    <%= form_for(@tournament) do |f| %>
-         <%= render('shared/error_messages', object: f.object); %>
-         <br>
-         <%= render('tournaments/fields', f: f) %>
-         
-         <%= f.fields_for(:tournament_setting) do |g| %>
-            <%= render('tournaments/secondary_fields', g: g); %>
-         <% end %>
-         
-         <br><br>
+	   <%= render('shared/error_messages', object: f.object); %>
+	   <br>
+	   <%= render('tournaments/fields', f: f) %>
+	   
+	   <%= f.fields_for(:tournament_setting) do |g| %>
+	      <%= render('tournaments/secondary_fields', g: g); %>
+	   <% end %>
+	   
+	   <br><br>
       <%= f.submit "Create Tournament", class: "btn btn-primary create-account-btn" %>
    <% end %>
    

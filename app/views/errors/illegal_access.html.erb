@@ -1,0 +1,17 @@
+<div class="row-fluid" style="text-align:center;">
+	
+	<br><br>
+
+	<h2>You do not have permission to access this page</h2>
+
+	<br><br>
+
+	<% if params[:page] == "motions" %>
+		<p>Only the CA and DCA are allowed to access the motions page.</p>
+	<% end %>
+
+	<br><br>
+
+	<%= render 'errors/back_or_home' %>
+
+</div>

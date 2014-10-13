@@ -1,89 +1,113 @@
-<div class="row-fluid">
-   <div class="settingsBox">
-      <% @next_round = @tournament.next_round %>
-      <p><b><a href="<%= round_path(@next_round) %>">Next Round</a></b> - Status: 
-         <span style="color:<%= @totalCheck[1] %>"><%= @totalCheck[2] %></span><p>
-         <p class="linkP" style="display:inline;" id="motionLink"><b>Motion</b><p>
-         
-         <span id="motionText" class="pull-left infoBox logInfoBox" style="margin-left:60px;">
-            <%= @next_round.motion.wording %>
-         </span>
+<% @next_round = @tournament.next_round %>
+<% if @tournament.has_next_round? %>
 
-         <script>
-            $("#motionLink").mouseover(function(){
-               $("#motionText").show();
-            }).mouseout(function(){
-               $("#motionText").hide();
-            });
-         </script>
+	<div class="row-fluid">
+	   <div class="settingsBox">
+	      
+	      <p><b><a href="<%= round_path(@next_round) %>">Next Round</a></b> - Status: 
+	         <span style="color:<%= @totalCheck[1] %>"><%= @totalCheck[2] %></span><p>
+	         
+	         <p class="linkP" style="display:inline;" id="motionLink"><b>Motion</b><p>
+	         
+	         <span id="motionText" class="pull-left infoBox logInfoBox" style="margin-left:60px;">
+	            <%= @next_round.motion.wording %>
+	         </span>
 
-      <table class="table", style="margin-bottom:0px">
-         <thead><tr>
-            <td>
-               <%= button_to "Make Draw", "#", class: "btn btn-primary", method: :post %>
-            
-               <i class="icon-question-sign qIcon nextRoundIcon" style="margin-top:-40px;" id="makeDrawBtnQue"></i>
-               <span id="makeDrawBtnInfo" class="pull-left infoBox logInfoBox" style="margin-top:-13px"> 
-                  This button will build the next draw for you.
-               </span>
-               <script>
-                  $("#makeDrawBtnQue").mouseover(function() {
-                     $("#makeDrawBtnInfo").show();
-                  }).mouseout(function() {
-                     $("#makeDrawBtnInfo").hide();
-                  });
-               </script>
-            </td>
+	         <script>
+	            $("#motionLink").mouseover(function(){
+	               $("#motionText").show();
+	            }).mouseout(function(){
+	               $("#motionText").hide();
+	            });
+	         </script>
 
-            <td>
-               <%= button_to "See Draw", round_path(@next_round), class: "btn btn-info", method: :post %>
-            
-               <i class="icon-question-sign qIcon nextRoundIcon" style="margin-top:-40px;" id="seeDrawBtnQue"></i>
-               <span id="seeDrawBtnInfo" class="pull-left infoBox logInfoBox" style="margin-top:-13px"> 
-                  This button will show you the draw. Here you can manual edits to each room.
-               </span>
-               <script>
-                  $("#seeDrawBtnQue").mouseover(function() {
-                     $("#seeDrawBtnInfo").show();
-                  }).mouseout(function() {
-                     $("#seeDrawBtnInfo").hide();
-                  });
-               </script>
-            </td>
-            
-            <td>
-               <%= button_to "Release Draw", (round_path(@next_round) + "/release"), class: "btn btn-warning", 
-                     confirm: "Are you sure you want to release the draw? This is an irreversible action.", method: :post %>
-            
-               <i class="icon-question-sign qIcon nextRoundIcon" style="margin-top:-40px; margin-left:122px;" id="releaseDrawBtnQue"></i>
-               <span id="releaseDrawBtnInfo" class="pull-left infoBox logInfoBox" style="margin-top:-13px"> 
-                  This button will make the next round public on this tournament's page and notify all participants.
-               </span>
-               <script>
-                  $("#releaseDrawBtnQue").mouseover(function() {
-                     $("#releaseDrawBtnInfo").show();
-                  }).mouseout(function() {
-                     $("#releaseDrawBtnInfo").hide();
-                  });
-               </script>
-            </td>
-            
-            <td>
-               <%= button_to "Start Round", (round_path(@next_round) + "/start"), class: "btn btn-danger", method: :post %>
-            
-               <i class="icon-question-sign qIcon nextRoundIcon" style="margin-top:-40px;" id="startRoundBtnQue"></i>
-               <span id="startRoundBtnInfo" class="pull-left infoBox logInfoBox" style="margin-top:-13px"> 
-                  This button will build the next draw for you.
-               </span>
-               <script>
-                  $("#startRoundBtnQue").mouseover(function() {
-                     $("#startRoundBtnInfo").show();
-                  }).mouseout(function() {
-                     $("#startRoundBtnInfo").hide();
-                  });
-               </script>
-            </td>
-         </tr></thead>
-      </table>
-   </div>
-</div>
+	      <table class="table", style="margin-bottom:0px">
+	         <thead><tr>
+	            <td>
+	            	<% if !@tournament.made_or_making_next_draw? %>
+	               	<%= button_to "Make Draw", (round_path(@tournament.next_round) + "/progress"), class: "btn btn-primary", method: :post %>
+	               <% else %>
+	               	<%= button_to "Make Draw", (round_path(@tournament.next_round) + "/progress"), class: "btn", confirm: "Draw has been made or is being made now." %>
+	               <% end %>
+	            
+	               <i class="icon-question-sign qIcon nextRoundIcon" style="margin-top:-40px;" id="makeDrawBtnQue"></i>
+	               <span id="makeDrawBtnInfo" class="pull-left infoBox logInfoBox" style="margin-top:-13px"> 
+	                  This button will build the next draw for you.
+	               </span>
+	               <script>
+	                  $("#makeDrawBtnQue").mouseover(function() {
+	                     $("#makeDrawBtnInfo").show();
+	                  }).mouseout(function() {
+	                     $("#makeDrawBtnInfo").hide();
+	                  });
+	               </script>
+	            </td>
+
+	            <td>
+	            	<% if @tournament.next_round_draw_made? %> 
+	               	<%= button_to "See Draw", (round_path(@tournament.next_round) + "/draw"), class: "btn btn-info", method: :post %>
+	               <% else %>
+	               	<%= button_to "See Draw", "#", class: "btn", confirm: "You must make the draw before you can see it." %>
+	               <% end %>
+	            
+	               <i class="icon-question-sign qIcon nextRoundIcon" style="margin-top:-40px;" id="seeDrawBtnQue"></i>
+	               <span id="seeDrawBtnInfo" class="pull-left infoBox logInfoBox" style="margin-top:-13px"> 
+	                  This button will show you the draw. Here you can manually edit each room.
+	               </span>
+	               <script>
+	                  $("#seeDrawBtnQue").mouseover(function() {
+	                     $("#seeDrawBtnInfo").show();
+	                  }).mouseout(function() {
+	                     $("#seeDrawBtnInfo").hide();
+	                  });
+	               </script>
+	            </td>
+	            
+	            <td>
+	            	<% if @tournament.next_round_draw_made? %> 
+	               	<%= button_to "Release Draw", (round_path(@next_round) + "/rounds/release-draw"), class: "btn btn-warning", 
+	                     confirm: "Are you sure you want to release the draw?", method: :post %>
+	               <% else %>
+	               	<%= button_to "Release Draw", "#", class: "btn", confirm: "Cannot release draw until it is made." %>
+	               <% end %>
+
+	               <i class="icon-question-sign qIcon nextRoundIcon" style="margin-top:-40px; margin-left:122px;" id="releaseDrawBtnQue"></i>
+	               <span id="releaseDrawBtnInfo" class="pull-left infoBox logInfoBox" style="margin-top:-13px"> 
+	                  This button will make the draw for the next round public. Participants will see their room on their home page or 
+	                  alternatively, users can view the full draw on the web page for the tournament. 
+	               </span>
+	               <script>
+	                  $("#releaseDrawBtnQue").mouseover(function() {
+	                     $("#releaseDrawBtnInfo").show();
+	                  }).mouseout(function() {
+	                     $("#releaseDrawBtnInfo").hide();
+	                  });
+	               </script>
+	            </td>
+	            
+	            <td>
+	            	<% if @tournament.next_round_draw_made? %> 
+	               	<%= button_to "Start Round", (tournament_path(@tournament) + "/rounds/release-motion"), class: "btn btn-danger", 
+	                     confirm: "Are you sure you want to start the round? This is an irreversible action.", method: :post %>
+	               <% else %>
+	               	<%= button_to "Start Round", "#", class: "btn", confirm: "Cannot start round until it is made." %>
+	               <% end %>
+	            
+	               <i class="icon-question-sign qIcon nextRoundIcon" style="margin-top:-40px;" id="startRoundBtnQue"></i>
+	               <span id="startRoundBtnInfo" class="pull-left infoBox logInfoBox" style="margin-top:-13px"> 
+	                  This button will launch the next round.
+	               </span>
+	               <script>
+	                  $("#startRoundBtnQue").mouseover(function() {
+	                     $("#startRoundBtnInfo").show();
+	                  }).mouseout(function() {
+	                     $("#startRoundBtnInfo").hide();
+	                  });
+	               </script>
+	            </td>
+	         </tr></thead>
+	      </table>
+	   </div>
+	</div>
+
+<% end %>

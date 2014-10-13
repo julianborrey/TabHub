@@ -1,0 +1,24 @@
+TODO:
+
+- automatically active...not alumni
+- correct handling of 'active' status and alumni stuff
+- removal of conflicts
+- put cursor on "mkaing pages" to be driectly on the first field
+- all the resources for teams
+- the resources for rounds (show page should have stats)
+- test with scaling
+- round numbers for each round struct and moving rounds up and down...
+- JS on page to have counter of prep time down automatically, starts from timer given and goes down to 0
+- if home, in round, show round
+- fix user side bar for diff user roles
+- make active (not alumni) by default
+- make system to deal with more than 1 alumni
+- @user = find() ... make some of them get_confirmed_user()
+- remove/edit for institutions
+- president approval when sign up
+- hybrid teams (new tournament setting + change the check for create_team_by_...())
+
+
+
+Way later:
+	- conflicts between individuals

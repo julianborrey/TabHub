@@ -1,6 +1,12 @@
 <div class="row-fluid">
    <div class="settingsBox">
-      <p><b>Settings</b> - <%= link_to "Edit", edit_tournament_path(@tournament) %></p>
+      <p>
+      	<b>Settings</b>
+      	<% if !@user.nil? && @user.is_in_roles?([:tab_room, :ca, :dca], @tournament) %>
+      		- 
+      		<%= link_to "Edit", edit_tournament_path(@tournament) %>
+      	<% end %>
+      </p>
       <% a = @tournament.tournament_setting.to_paired_array; %>
       
       <table class="table">

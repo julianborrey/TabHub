@@ -11,3 +11,6 @@
 <br><br>
 <div><b>Remarks:</b></div>
 <%= f.text_area(:remarks, {value: @room.remarks, style: "height:100px; width:500px;"}) %>
+
+<%= hidden_field_tag 'institution_id', @tournament.institution.id %>
+<%= hidden_field_tag 'tournament_id', @tournament.id %>

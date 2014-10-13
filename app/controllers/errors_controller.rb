@@ -6,4 +6,7 @@ class ErrorsController < ApplicationController
    def server_error
       render :status => 500, :formats => [:html]
    end
+
+   def illegal_access
+   end
 end

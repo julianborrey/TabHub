@@ -1,0 +1,68 @@
+<% provide(:title, "User Profile - " + getUserName(params[:id])) %>
+
+<div class="row-fluid" id="profile-page">
+   <div class="span6" style="font-size:100px">
+      <!-- Photo Here! -->
+
+      <% if current_user.id == params[:id].to_i %>
+         <%= link_to("Edit Account", edit_user_path(current_user), class: "btn"); %>
+         <%= link_to("Sign Out", signout_path, method: "delete", class: "btn"); %>
+      <% end %>
+   </div>
+
+   <div class="span6">
+      <div class="user-name">
+         <%= "#{current_user.fname} #{current_user.lname}"  %>
+      </div>
+
+      <div class="user-inst">
+         <%= current_user.institution.full_name %>
+      </div>
+   </div>
+   
+   <% if !@tour_list[:present].empty? %>
+   <div class="row">
+      <h3>Current Tournaments</h3> 
+      <table class="table table-striped">
+         <% @tour_list[:present].each { |t| %>
+            <tr class="last-row">
+               <td><a href="<%= tournament_path(t.tournament_id) %>"><%= t.tournament.name %></a></td>
+               <td><%= t.tournament.location   %></td>
+               <td><%= t.tournament.start_time %></td>
+               <td><%= GlobalConstants::TOURNAMENT_ROLES_STR[t.role].capitalize %></td>
+            </tr>
+         <% } %>
+      </table>
+   </div>
+   <% end %>
+   
+   <% if !@tour_list[:future].empty? %>
+   <div class="row">
+      <h3>Future Tournaments</h3> 
+      <table class="table table-striped">
+         <% @tour_list[:future].each { |t| %>
+            <tr class="last-row">
+               <td><a href="<%= tournament_path(t.tournament_id) %>"><%= t.tournament.name %></a></td>
+               <td><%= t.tournament.location   %></td>
+               <td><%= t.tournament.start_time %></td>
+               <td><%= GlobalConstants::TOURNAMENT_ROLES_STR[t.role].capitalize %></td>
+            </tr>
+         <% } %>
+      </table>
+   </div>
+   <% end %>
+   
+   <div class="row">
+      <h3>Past Tournaments</h3> 
+      <table class="table table-striped">
+         <% @tour_list[:past].each { |t| %>
+            <tr class="last-row">
+               <td><a href="<%= tournament_path(t.tournament_id) %>"><%= t.tournament.name %></a></td>
+               <td><%= t.tournament.location   %></td>
+               <td><%= t.tournament.start_time %></td>
+               <td><%= GlobalConstants::TOURNAMENT_ROLES_STR[t.role].capitalize %></td>
+            </tr>
+         <% } %>
+      </table>
+   </div>
+</div>

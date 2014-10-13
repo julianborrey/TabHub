@@ -5,8 +5,18 @@
    <div class="tourIndexTitle">
       <h1>Import Rooms from Past Tournaments</h1><br>
       <p><%= link_to("back to Rooms List", (tournament_path(@tournament) + '/control/rooms')); %></p>
+      <br>
+      <div style="width:500px;margin-right:auto;margin-left:auto">
+	      <p class="lead", style="font-size:15px;">
+	      	The rooms listed here are rooms previously registered from the hosting instution and 
+	      	from the logged in user's institution. If you would like to import rooms from a 
+	      	particular institution you will need to make someone from that institution a tab room 
+	         official and have them import the rooms on this page.
+	      </p>
+	   </div>
    </div>
    
+
    <% @list = get_past_rooms %>
       <div class="tournByRegion">
          <table class="table table-striped attendeeTable">

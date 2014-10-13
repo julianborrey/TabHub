@@ -1,15 +1,18 @@
+<%= devise_error_messages! %>
+
 <span class="input-prepend" style="margin-left:18px">
-   <span class="add-on">Institution</span>
-      <% inst_array = Institution.all.map { |inst| [inst.full_name, inst.id]}       %>
-      <% inst_array.sort_by! { |i| i[0].downcase }                                  %>
-      <% tmp = inst_array.delete_at(@user.institution_id || 0); #they are in order  %>
-      <% inst_array.insert(0, tmp); #put chose uni at top so it is already selected %>
-      <%= f.select(:institution_id, options_for_select(inst_array), {}, {class: "span2 uni-dropdown"}); %>
+<span class="add-on">Institution</span>
+   <% inst_array = Institution.all.map { |inst| [inst.full_name, inst.id]}       %>
+   <% inst_array.sort_by! { |i| i[0].downcase }                                  %>
+   <% tmp = inst_array.delete_at(@user.institution_id || 0); #they are in order  %>
+   <% inst_array.insert(0, tmp); #put chose uni at top so it is already selected %>
+   <%= f.select(:institution_id, options_for_select(inst_array), {}, {class: "span2 uni-dropdown"}); %>
 </span>
+
 <i class="icon-question-sign" id="inst-info-btn"></i>
 <span id="inst-info-box" class="pull-left infoBox">
    Your institution isn't listed?<br>
-   <a href="<%= new_institution_path %>">Register your institution</a>
+   <a href="<%= new_institution_path %>" target="_blank">Register your institution</a>
    <br><br>
    If you are here just to look<br>
    around select <i>'Test Univserity'</i>.<br>
@@ -33,14 +36,18 @@
 
 <div class="input-prepend">
    <span class="add-on">E-mail</span>
-   <%= f.text_field(:email, {class: "span2", value: "#{@user.email}"}); %>
+   <%= f.email_field(:email, {class: "span2"}); %>
+   <!-- devise does the value for email field -->
 </div>
+
+<% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+		<div class="input-prepend">Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+<% end %>
 
 <div class="input-prepend">
-   <span class="add-on">Password</span>
+   <span class="add-on">Password <i>(min length 8)</i></span>
    <%= f.password_field(:password, {class: "span2"}); %>
 </div>
-
 
 <div class="input-prepend">
    <span class="add-on">

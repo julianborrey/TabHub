@@ -31,7 +31,7 @@
                   <td><a href="<%= institution_path(t.institution) %>"><%= t.institution.short_name %></a></td>
                   <td><%= t.location %></td>
                   <td><%= t.start_time %></td>
-                  <td><%= GlobalConstants::TOURNAMENT_ROLES_STR[ta.role].capitalize %></td>
+                  <td><%= GlobalConstants::TOURNAMENT_ROLES_STR[ta.role].to_s.titleize %></td>
                </tr>
             <% } %>
          </table>

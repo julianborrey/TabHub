@@ -2,15 +2,26 @@
 	<ul class="nav nav-tabs nav-tabs-imported tabs-imported-left">	
 	   <li 
 	   	<% if activeTab == "home" %>
-	   	<%= 'class=active' %>
+	   		<%= 'class=active' %>
 	   	<% end %>
 	   >
 	   	<%= link_to("Home", tournament_path(@tournament), {"data-toggle" => "tab"}); %>
 	   </li>
 
+	   <% if @tournament.live? %>
+			<li 
+		   	<% if activeTab == "draw" %>
+		   		<%= "class=active" %>
+		   	<% end %>
+		   >
+		   	<%= link_to("Current Draw", (tournament_path(@tournament) + "/draws/#{@tournament[:round_counter]}"), 
+		   				   {"data-toggle" => "tab"}); %>
+		   </li>
+		<% end %>
+
 	   <li 
 	   	<% if activeTab == "attendees" %>
-	   	<%= "class=\"active\"" %>
+	   		<%= "class=active" %>
 	   	<% end %>
 	   >
 	   	<%= link_to("All Attendees", tournament_path(@tournament) + "/attendees", {"data-toggle" => "tab"}); %>
@@ -18,7 +29,7 @@
 
 	   <li 
 	   	<% if activeTab == "motions" %>
-	   	<%= "class=\"active\"" %>
+	   		<%= "class=active" %>
 	   	<% end %>
 	   >
 	   	<%= link_to("Motions",    "#", {"data-toggle" => "tab"}); %>
@@ -27,7 +38,7 @@
 
 	   <li
 	   	<% if activeTab == "tab" %>
-	   	<%= "class=\"active\"" %>
+	   		<%= "class=active" %>
 	   	<% end %>
 	   >
 	   	<%= link_to("Tab",        "#", {"data-toggle" => "tab"}); %>
@@ -35,7 +46,7 @@
 	   
 	   <li
 	   	<% if activeTab == "stats" %>
-	   	<%= "class=\"active\"" %>
+	   		<%= "class=active" %>
 	   	<% end %>
 	   >
 	   	<%= link_to("Statistics", "#", {"data-toggle" => "tab"}); %>

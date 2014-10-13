@@ -54,7 +54,7 @@
          
          <ul class="dropdown-menu">
             <li><%= link_to "Edit", edit_user_path(@user) %></li>
-            <li><%= link_to "Sign Out", signout_path, method: 'delete' %></li>
+            <li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
          </ul>
       </div>
       
@@ -119,16 +119,17 @@
 <div class="row-fluid">
   
    <div class="span6" style="padding-right:60px">
-      <% flash.each do |key, value| %>
+
+   	<% flash.each do |key, value| %>
          <%= content_tag(:div, value, class: "alert alert-#{key}") %>
       <% end %>
 
       <table class="table table-bordered">
-         <%= form_for(:session, url: sessions_path) do |f| %>
+      	<%= form_for(:user, as: resource_name, url: session_path(resource_name)) do |f| %>
 
          <tr>
             <td>
-               <%= f.text_field(:email, {placeholder: "E-mail"}); %>
+               <%= f.email_field(:email, {placeholder: "E-mail"}); %>
                <!-- <input type="text" placeholder="E-mail"> -->
             </td>
          </tr>
@@ -140,7 +141,18 @@
             </td>
          </tr>
 
+		<% if devise_mapping.rememberable? -%>
          <tr>
+         	<td>	         	
+	    			<div style="text-align:center">
+	    				<span style="padding-right:10px">Remember me:</span>
+	    				<%= f.check_box :remember_me %>
+	    			</div>
+  				</td>
+  			</tr>
+		<% end -%>
+
+  			<tr>
             <td>
                <%= f.submit("Sign In", {class: "btn btn-primary btn-lg btn-block"}); %>  
                <!-- <button type="button" class="btn btn-primary btn-lg btn-block">
@@ -152,8 +164,8 @@
 
          <tr>
             <th>
-               <a href="#">Forgot my password</a>
-               <a href="<%= signup_path %>" style="float:right">Sign Up</a>
+               <%= link_to("Forgot my password", new_password_path(resource_name)); %>
+               <a href="<%= new_registration_path(:user) %>" style="float:right">Sign Up</a>
             </th>
          </tr>
      

@@ -9,69 +9,105 @@
    <%= render('tournaments/status_bar'); %>
 
    <% if @tournament.live? %>
+   	<% if current_user.is_in_roles?([:ca, :dca], @tournament) %>
+	   	<div class="row-fluid" style="text-align:center;">
+		   	<% endIssues = @tournament.check_for_end(); %>
+		      <span class="startButton" style="margin-left:30px">
+		         <% if true #startIssues.empyt? %>
+		            <%= button_to "Close Tournament", 
+		                 (tournament_path(@tournament) + "/control/close"), class: "btn btn-danger", method: :post,
+		                 confirm: "Are you sure you would like to close the tournament? This is an irreversible action." %>
+		         <% else %> 
+		            <%= button_to "Close Tournament", "#", class: "btn", 
+		                    confirm: "There are some problems which are preventing you from ending the tournament: ..." %>
+		         <% end %>
+		      </span>
+
+		   
+		      <i class="icon-question-sign qIcon" id="closeQueBtn"></i>
+		      <span id="closeInfo" class="pull-left infoBox logInfoBox">
+		      	This will declare the tournament officially closed.
+		         (This action is irreverisble!)
+		      </span>
+		      <script>
+		         $("#closeQueBtn").mouseover(function() {
+		            $("#closeInfo").show();
+		         }).mouseout(function() {
+		            $("#closeInfo").hide();
+		         });
+		      </script>
+	   	</div>
+   	<% end %>
+
       <%= render('tournaments/current_round_control'); %>
 
       <% if current_user.is_in_roles?([:ca, :dca], @tournament) # && @tournament.has_a_next_round %>
          <%= render('tournaments/next_round_control'); %>
       <% end %>
+
    <% else %>
       <div class="row-fluid">
          <div class="startButtons">
             
-            <% if current_user.is_in_roles?([:ca, :dca], @tournament) && (@tournament.status < 1) #if not past tournament%>
-               <% if @tournament.round_counter < 0 %>
-                  <span class="startButton">
-                     <%= button_to "Open Registration", (tournament_path(@tournament) + "control/registration/open"),
-                                                class: "btn btn-info", method: :post %>
-                  </span>
-               <% elsif @tournament.round_counter = 0 %>
-                  <span class="startButton">
-                     <%= button_to "Close Registration", (tournament_path(@tournament) + "control/open/registration/close"),
-                                                class: "btn btn-info", method: :post %>
-                  </span>
-               <% end %>
+            <% if current_user.is_in_roles?([:ca, :dca], @tournament) #if authority%>
+               <% if @tournament.status == GlobalConstants::TOURNAMENT_STATUS[:future] #if coming up tournament %>
+	               <% if @tournament.tournament_setting[:registration] != GlobalConstants::SETTINGS_VALUES[:registration]["Manual"] %>
+		               <% if @tournament.round_counter < 0 %>
+		                  <span class="startButton">
+		                     <%= button_to "Open Registration", (tournament_path(@tournament) + "control/registration/open"),
+		                                                class: "btn btn-info", method: :post %>
+		                  </span>
+
+		                  <i class="icon-question-sign qIcon" id="regoQueBtn"></i>
+			               <span id="regoInfo" class="pull-left infoBox logInfoBox"> 
+			                  This will allow users to officially submit teams and 
+			                  adjudicators.
+			                  (You can open and close registration as much as you like.)
+			               </span>
+			               <script>
+			                  $("#regoQueBtn").mouseover(function() {
+			                     $("#regoInfo").show();
+			                  }).mouseout(function() {
+			                     $("#regoInfo").hide();
+			                  });
+			               </script>
+
+		               <% elsif @tournament.round_counter = 0 %>
+		                  <span class="startButton">
+		                     <%= button_to "Close Registration", (tournament_path(@tournament) + "control/open/registration/close"),
+		                                                class: "btn btn-info", method: :post %>
+		                  </span>
+		               <% end %>
+	               <% end %>
                
-               <i class="icon-question-sign qIcon" id="regoQueBtn"></i>
-               <span id="regoInfo" class="pull-left infoBox logInfoBox"> 
-                  This will allow users to officially submit teams and 
-                  adjudicators.
-                  (You can open and close registration as much as you like.)
-               </span>
-               <script>
-                  $("#regoQueBtn").mouseover(function() {
-                     $("#regoInfo").show();
-                  }).mouseout(function() {
-                     $("#regoInfo").hide();
-                  });
-               </script>
+		            <% startIssues = @tournament.check_for_start(); %>
+		            <span class="startButton" style="margin-left:30px">
+		               <% if true #startIssues.empyt? %>
+		                  <%= button_to "Start Tournament", 
+		                       (tournament_path(@tournament) + "/control/start"), class: "btn btn-success", method: :post,
+		                       confirm: "Are you sure you would like to begin the tournament? This is an irreversible action." %>
+		               <% else %> 
+		                  <%= button_to "Start Tournament", "#", class: "btn", 
+		                          confirm: "There are some problems which are preventing you from starting the tournament: ..." %>
+		               <% end %>
+		            </span>
+
                
-               
-               <% startIssues = @tournament.check_for_start(); %>
-               <span class="startButton" style="margin-left:30px">
-                  <% if true #startIssues.empyt? %>
-                     <%= button_to "Start Tournament", 
-                          (tournament_path(@tournament) + "/control/start"), class: "btn btn-primary", method: :post,
-                          confirm: "Are you sure you would like to begin the tournament? This is an irreversible process." %>
-                  <% else %> 
-                     <%= button_to "Start Tournament", "#", class: "btn", 
-                             confirm: "There are some problems which are preventing you from starting the tournament: ..." %>
-                  <% end %>
-               </span>
-               
-               <i class="icon-question-sign qIcon" id="startQueBtn"></i>
-               <span id="startInfo" class="pull-left infoBox logInfoBox"> 
-                  This will declare the tournament officially live and 
-                  then allow the CA to release the first motion. (Pressing 
-                  the start button will not release the first motion.)
-               </span>
-               <script>
-                  $("#startQueBtn").mouseover(function() {
-                     $("#startInfo").show();
-                  }).mouseout(function() {
-                     $("#startInfo").hide();
-                  });
-               </script>
-            <% end %>
+		            <i class="icon-question-sign qIcon" id="startQueBtn"></i>
+		            <span id="startInfo" class="pull-left infoBox logInfoBox"> 
+		               This will declare the tournament officially live and 
+		               then allow the CA to release the first motion. (Pressing 
+		               the start button will not release the first motion.)
+		            </span>
+		            <script>
+		               $("#startQueBtn").mouseover(function() {
+		                  $("#startInfo").show();
+		               }).mouseout(function() {
+		                  $("#startInfo").hide();
+		               });
+		            </script>
+		         <% end %>
+         	<% end %>
             
          </div>
       </div>

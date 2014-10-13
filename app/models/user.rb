@@ -5,6 +5,10 @@
 # The code to use the User model.
 
 class User < ActiveRecord::Base
+   # Include default devise modules. Others available are:
+   # :lockable, :timeoutable and :omniauthable
+   devise :database_authenticatable, :confirmable, :registerable,
+          :recoverable, :rememberable, :trackable, :validatable
    belongs_to(:institution);
    
    has_many(:team_1, class_name: 'Team', foreign_key: 'member_1_id');
@@ -21,7 +25,7 @@ class User < ActiveRecord::Base
    ### Code to ensure that certain attributes constrainted ###
    #ensure that we are going to input an all lowercase email 
    #(helps with uniqueness check)
-   before_save { email.downcase! } #new verions
+   #before_save { email.downcase! } #new verions
 
    #we are going to set the user as only a general user by default
    before_create { self.status  = GlobalConstants::PRIVILEGES[:general] }
@@ -35,18 +39,18 @@ class User < ActiveRecord::Base
    ### ^^ could do a check to see that it is a valid id ################################
 
    #make a REGEX
-   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i;
-   validates(:email, presence: true, format: { with: VALID_EMAIL_REGEX },
-                     uniqueness: { case_sensitive: false });
+   #VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i;
+   #validates(:email, presence: true, format: { with: VALID_EMAIL_REGEX },
+   #                  uniqueness: { case_sensitive: false });
    #put uniqueness check on db as well to prevent double submit error
    
    ### CHECK THAT ^^^ ###
    
-   has_secure_password #contains the validation against blank entries
+   #has_secure_password #contains the validation against blank entries
    #also provides the fields password, confirmation on demand
    
    #password will be a minimum of 6 characters
-   validates(:password, length: { minimum: 6 });
+   #validates(:password, length: { minimum: 6 });
   
    #validate they have selected a univeristy
    validates(:institution_id, numericality: {greater_than: 0});
@@ -105,9 +109,9 @@ class User < ActiveRecord::Base
       current_tourns = [];
       list.each { |ta|
          if Tournament.exists?(ta.tournament_id)
-            t = Tournament.find(ta.tournament_id);
-            if !t.nil? && t.status == GlobalConstants::TOURNAMENT_STATUS[status]
-               #if ### SHould have something here about someone leaving a tournament
+            t = ta.tournament;
+            if !t.nil? && (t.status == GlobalConstants::TOURNAMENT_STATUS[status])
+               #if ### Should have something here about someone leaving a tournament
                current_tourns.push(t);
                #end
             end
@@ -115,7 +119,7 @@ class User < ActiveRecord::Base
       }
       
       #if we made it here, there was no active tournament
-      return current_tourns;
+      return current_tourns.uniq;
    end
    #could for see a situation where someone is somehow in 2 tournaments
    #at the same time and isn't given access to the one they need.
@@ -133,18 +137,6 @@ class User < ActiveRecord::Base
       #something like the above, but also goes into finding the tournament and then cheking if any rounds are active.
       return false;
    end
-   
-   #returns true if THIS user is in the tab room of a tournament for the GIVEN user
-   def in_tab_room_of?(u)
-      tournaments_not_past = u.get_tournaments(:present) + u.get_tournaments(:future);
-
-      tournaments_not_past.each { |t|
-         if self.in_tab_room?(t)
-            return true;
-         end
-      }
-      return false;
-   end
 
    #returns true if the user is *curretly* a tabbie at any tournament
    # def is_a_tabbie?
@@ -157,12 +149,9 @@ class User < ActiveRecord::Base
    #    return false; #getting here is a fail
    # end
    
-   #returns true if the user is *curretly* a tabbie at give tournament
+   #returns true if the user is a tabbie at given tournament
    def is_a_tabbie?(tourn)
-      if tourn.tournament_attendees.where(user_id: self.id).count == 1
-         return true;
-      end
-      return false;
+      return is_in_roles?([:tab_room, :ca, :dca], tourn);
    end
 
    #returns true if THIS user is in ANY of the GIVEN roles for the GIVEN tournament

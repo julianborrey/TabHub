@@ -1,15 +1,18 @@
 class TournamentsController < ApplicationController
+	include ApplicationHelper
    include TournamentsHelper
    
-   before_action :signed_in_user, only: [:new, :create, :register_submission, :individual];
+   before_action :redirect_if_not_signed_in, only: [:new, :create, :register_submission, :individual];
    before_action :authorized_for_tournament, only: [:destroy, :edit, :update, 
-                                             :control, :tab_room, :rooms, 
-                                             :import_rooms, :import_room,
-                                             :remove_room, :rounds,
-                                             :adjudicators, :teams,
-                                             :edit_adj, :remove_adj];
+		                                              :control, :tab_room, :rooms, 
+		                                              :import_rooms, :import_room,
+		                                              :remove_room, :rounds,
+		                                              :adjudicators, :teams,
+		                                              :edit_adj, :remove_adj];
    before_action :check_not_manual_tournament, only: [:individual, :register_submission];
    before_action :authorized_for_institution, only: [:individual];
+   before_action :authorized_for_rounds, only: [:rounds]
+   before_action :authorized_for_start_next_close_tournament, only: [:start_tournament, :close_tournament, :next_round]
 
    def index
       #make a has of lists of tournaments by region
@@ -31,12 +34,11 @@ class TournamentsController < ApplicationController
    end
    
    def create
-      puts("Creating tuornament");
+      puts("Creating Tournament");
       @tournament = Tournament.new(tournament_params);
       #@tournament.tournament_setting = TournamentSetting.new(tournament_params);
       #@setting    = TournamentSetting.new(setting_params);
       
-      puts("in creat there si: " + @tournament.tournament_setting.motion.to_s)
       u = current_user;
       @tournament.user_id = u.id;
       @tournament.institution_id = u.institution_id;
@@ -84,6 +86,7 @@ class TournamentsController < ApplicationController
    
    #control panel page
    def control
+   	@user = current_user;
       @tournament = Tournament.find(params[:id]);
       @roomCheck = @tournament.enough_rooms;
       @multiple4Check = @tournament.multiple4Check;
@@ -161,9 +164,8 @@ class TournamentsController < ApplicationController
    #   can be done with params. Look at input for rounds()
    #   and remove_room(). (one without safe and one with)
    # also, should @t = T.find() be abstracted? (private foo?)
-   
+
    def rounds
-      @tournament = Tournament.find(params[:id]);
       @round = Round.new();
       @round.motion = Motion.new();
    end
@@ -250,29 +252,6 @@ class TournamentsController < ApplicationController
       #that should be it...
    end
    
-   def draw
-      @tournament = Tournament.find(params[:id]);
-      
-      #need to make a list where there is one entry for each team
-      #[... {team, draw} ...]
-      @list = [];
-      
-      @tournament.next_round.room_draws { |rd|
-         rd.teams.each { |t|
-            arr = rd.adjudicators.to_a;
-            
-            adjs_arr = [];
-            arr.each { |a|
-               adjs_arr.push({name: a.user.full_name, chair: a[:chair] });
-            }
-            
-            @list.push({team: t, room_draw: rd, adjs: adjs_arr});
-         }
-      }
-      
-      @list.sort_by! { |i| i[:team].name.downcase; } #makes alphabetical
-   end
-   
    #post to this will allow for users to register
    def open_rego
       @tournament = Tournaments.find(params[:id]);
@@ -287,17 +266,62 @@ class TournamentsController < ApplicationController
       redirect_to tournament_path(@tournament);
    end
 
+   #post to /control/start which changes state from future to present
+   def start_tournament
+   	#check tournament is yet to be started
+   	if @tournament[:status] == GlobalConstants::TOURNAMENT_STATUS[:future]
+   		@tournament.update(status: GlobalConstants::TOURNAMENT_STATUS[:present]);
+   		redirect_to (tournament_path(@tournament) + '/control');
+   		return;
+   	else #if it was ... hack
+   		puts("HACK ###");
+   	end
+   	redirect_to root_path
+   	return;
+   end
+
+   #post to /control/close which changes state from present to past
+   def close_tournament
+   	#check tournament is yet to be closed
+   	if @tournament[:status] == GlobalConstants::TOURNAMENT_STATUS[:present]
+   		@tournament.update(status: GlobalConstants::TOURNAMENT_STATUS[:past]);
+   		redirect_to (tournament_path(@tournament) + '/control');
+   		return;
+   	else #if it was ... hack
+   		puts("HACK ###");
+   	end
+   	redirect_to root_path
+   	return;
+   end
+
+   #post to /control/next_round which increments the round counter
+   def next_round
+   	#check tournament is currently running
+   	if @tournament[:status] == GlobalConstants::TOURNAMENT_STATUS[:present]
+   		if @tournament[:round_counter] < @tournament.num_rounds #check not at max rounds
+   			@tournament.update(round_counter: @tournament[:round_counter] + 1); #increment
+   			redirect_to (tournament_path(@tournament) + '/control');
+   			return;
+   		else
+   			puts("HACK ###");
+   		end
+   	else #if it was ... hack
+   		puts("HACK ###");
+   	end
+   	redirect_to root_path
+   	return;
+   end
+
    #need to check that the tournament is not manual - before_action
    #shows page for users to register their teams
    def individual
-      @tournament = Tournament.find(params[:id]);
       @user = current_user
    end
 
    private
       def tournament_params
          params.require(:tournament).permit(:name, :institution_id, :location, 
-         :start_time, :end_time, :remarks, tournament_setting_attributes: 
+         :start_time, :end_time, :remarks, :region, tournament_setting_attributes: 
          [:motion, :tab, :registration, :privacy, :attendees, :teams]);
          #the :institution_id may come from selecting from a list (convenor does this) or by the users :id
       end
@@ -319,11 +343,25 @@ class TournamentsController < ApplicationController
             (openTournament || current_user.has_exec_position?([:president, :externals]));
       end
 
+      def authorized_for_rounds
+      	@tournament = Tournament.find(params[:id]);
+         redirect_to illegal_access_path(:motions) unless current_user.is_in_roles?([:ca, :dca], @tournament);
+      end
+
       def check_not_manual_tournament
-         t = Tournament.find(params[:id]);
+         @tournament = Tournament.find(params[:id]);
 
          redirect_to tournament_path(params[:id]) unless 
-         (!t.nil? &&
-         (t.tournament_setting.registration != GlobalConstants::SETTINGS_VALUES[:registration]["Manual"]));
+         (!@tournament.nil? &&
+         (@tournament.tournament_setting.registration != GlobalConstants::SETTINGS_VALUES[:registration]["Manual"]));
+      end
+
+      def illegal_access_path(page)
+      	return root_path + 'errors/illegal-access/' + page.to_s;
+      end
+
+      def authorized_for_start_next_close_tournament
+      	@tournament = Tournament.find(params[:id]);
+      	redirect_to illegal_access_path(:tournament_state) unless current_user.is_in_roles?([:ca], @tournament);
       end
 end

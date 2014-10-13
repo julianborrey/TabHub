@@ -2,7 +2,7 @@ class TeamsController < ApplicationController
    include ApplicationHelper
    include TournamentsHelper
    
-   before_action :signed_in_user, only: [:show, :new, :authorized_for_make_team]
+   before_action :user_signed_in?, only: [:show, :new, :authorized_for_make_team]
    #check to see if we can chain these before actions like I have tried here
    #create_by... will call authorized_for... which callse :signed_in_user.
 
@@ -58,9 +58,15 @@ class TeamsController < ApplicationController
          institution_ids.push(u.institution.id);
       }
 
+      #### FOR HYBRID ###
+      #@institution_id = GlobalConstants::HYBRID_INSTITUTION;
+      #else
+      @institution_id = users[0][:institution_id]; #just take it from one of the them
+
       #if this is not from tabbie, 
       #if this is a capped/restricted tournament, the members have to be from the user's institution
-      #if open, at least one member needs to be the current_user
+      #if this is an open tournament, the current user needs to be the president of the team being made
+      #if completely open, at least one member needs to be the current_user
       if render_place().split('/').last == "individual"
          if @tournament.tournament_setting[:registration] != 
             GlobalConstants::SETTINGS_VALUES[:registration]["Completely open"]
@@ -137,7 +143,13 @@ class TeamsController < ApplicationController
 
       if @team.save()
          #in this case, we must update the attendees table
-         #actually, for now I don't think we need to ...
+         
+         #gerenalized adding to tournament attendee
+         users.each { |u|
+         	TournamentAttendee.new(user_id: u[:id], tournament_id: @tournament[:id],
+         								  role: GlobalConstants::TOURNAMENT_ROLES[:debater],
+         								  institution_id: @institution_id).save();
+         }
          
          #@msg.add(:success, "Team Created!"); #make sure the flash is below the form
          #redirect needs to use flash

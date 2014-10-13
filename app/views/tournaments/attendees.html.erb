@@ -4,29 +4,37 @@
    
    <%= render('tournaments/title_shim'); %>
    
-   <table class="table attendeeTable">
-      <thead><tr>
-         <td>Attendee</td>
-         <td>Institution</td>
-         <td>Team / Role</td>
-      </tr></thead>
-      
-      <% @list.to_a.each { |key,val| %>
-         for the insitution --> key, for the ta[]=- --> val
-         <tr>
-            <% u = User.find(ta.user_id); %>
-            <td><a href="<%= user_path(u) %>"><%= u.full_name %></a></td>
-            <td><a href="<%= institution_path(u.institution) %>"><%= u.institution.short_name %></a></td>
-            <td>  
-               <% u_team = u.team_at(@tournament) %>
-               <% if !u_team.nil? %>
-                  <%= u_team.name %>
-               <% else %>
-                  <%= nice_role(ta.role); %>
-               <% end %>
-            </td>
-         </tr>
-      <% } %>
-   </table>
-   
+   <div class="row-fluid">
+   	<div class="span2">
+         <%= render('tournaments/sidebar', {activeTab: "attendees"}); %>
+   	</div>
+
+	   <div class="span10">
+		   <table class="table attendeeTable">
+		      <thead><tr>
+		         <td>Attendee</td>
+		         <td>Institution</td>
+		         <td>Team / Role</td>
+		      </tr></thead>
+		      
+		      <% @list.to_a.each { |key,val| %>
+		         for the insitution --> key, for the ta[]=- --> val
+		         <tr>
+		            <% u = User.find(ta.user_id); %>
+		            <td><a href="<%= user_path(u) %>"><%= u.full_name %></a></td>
+		            <td><a href="<%= institution_path(u.institution) %>"><%= u.institution.short_name %></a></td>
+		            <td>  
+		               <% u_team = u.team_at(@tournament) %>
+		               <% if !u_team.nil? %>
+		                  <%= u_team.name %>
+		               <% else %>
+		                  <%= nice_role(ta.role); %>
+		               <% end %>
+		            </td>
+		         </tr>
+		      <% } %>
+		   </table>
+		</div>
+	</div>
+	   
 </div>

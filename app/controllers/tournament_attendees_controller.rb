@@ -2,7 +2,7 @@ class TournamentAttendeesController < ApplicationController
    include ApplicationHelper
    include TournamentsHelper
 
-   before_action :signed_in_user
+   before_action :user_signed_in?
    before_action :authorized_for_tournament, only: [:destroy_tabbie_by_tabbie, :create_tabbie_by_tabbie];
    before_action :authorized_for_making_adj, only: [:create_adj_by_tabbie_or_user,
                                                      :destroy_adj_by_tabbie_or_user];
@@ -63,7 +63,8 @@ class TournamentAttendeesController < ApplicationController
       end
       
       #check to make sure the person they have submitted is in their institution
-      if newAdj.institution_id != current_user.institution_id
+      #if this is not a tabbie doing the job
+      if !current_user.is_a_tabbie?(@tournament) && (newAdj.institution_id != current_user.institution_id)
          @msg.add(:error, "You can only submit someone from your own institution.");
          render(render_place());
          return;
@@ -80,7 +81,7 @@ class TournamentAttendeesController < ApplicationController
       
       maybeGivenRating = 0;
       if current_user.is_a_tabbie?(@tournament) #if a tabbie submitting
-         maybeGivenRating ||= safe_params[:rating]; #if they gave it
+         maybeGivenRating = safe_params[:rating]; #if they gave it
       end
 
       @ta = TournamentAttendee.new(tournament_id: @tournament.id,
@@ -159,7 +160,7 @@ class TournamentAttendeesController < ApplicationController
       def render_place #returns the place to render based on origin
          if safe_params[:origin] == "individual"
             return 'tournaments/individual';
-         elsif safe_params[:origin] == "tab_room"
+         elsif safe_params[:origin] == "adjudicators"
             return 'tournaments/adjudicators';
          else
             puts("Hack ###");
@@ -172,7 +173,7 @@ class TournamentAttendeesController < ApplicationController
       def redirect_place #returns the place to redirect to based on origin
          if safe_params[:origin] == "individual"
             return (tournament_path(@tournament) + '/registration/individual');
-         elsif safe_params[:origin] == "tab_room"
+         elsif safe_params[:origin] == "adjudicators"
             return (tournament_path(params[:id]) + '/control/adjudicators');
          else
             puts("Hack ###");

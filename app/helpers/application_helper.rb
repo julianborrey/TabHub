@@ -21,23 +21,10 @@ module ApplicationHelper
 
    #give 3 random but recent rounds - must have been launched and public
    def recent_rounds
-      rounds= []; #return value
-
-      i = 0;
-      potentials = Round.order(created_at: :desc).limit(30).to_a;
-      potentials.shuffle!;
-      #surely in 30 rounds we can find what we want
-      ###can fix this later to true for larger --- expand this foo later
-      
-      #keep searching until length is 3
-      while (rounds.length < 3) && (Round.count != 0)
-         if true #eventuall --> potentials[i].tournament.settings.public?
-            #rounds.push;
-         end
-         i = i + 1;
-      end
-
-      return rounds;
+      rounds = []; #return value
+      rounds = Round.order(created_at: :desc).limit(30).to_a;
+      rounds.shuffle!;
+      return rounds[0..2];
    end
    
    #function to put all object errors into the message object
@@ -56,4 +43,35 @@ module ApplicationHelper
       end
       return nil;
    end
+
+   def redirect_if_not_signed_in
+   	redirect_to root_path unless user_signed_in?
+   end
+
+   def devise_mapping
+	  Devise.mappings[:user]
+	end
+
+	def resource_name
+	  devise_mapping.name
+	end
+
+	def resource_class
+	  devise_mapping.to
+	end
+
+	def resource
+    @resource ||= User.new
+   end
+
+   def get_confirmed_user(u_id)
+   	possible_u = User.find(u_id);
+   	if possible_u != nil #if found something
+   		if possible_u.confirmation_token == nil #mean they are confirmed
+   			return possible_u;
+   		end
+   	end
+   	return nil;
+   end
+
 end

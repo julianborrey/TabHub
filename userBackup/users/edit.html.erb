@@ -1,0 +1,21 @@
+<% provide(:title, "Edit - " + @user.fname + @user.lname); %>
+
+<div class="info-page signup-page">
+   
+   <h1>Update User</h1>
+   
+   <% flash.each do |key, val| %>
+      <%= content_tag(:div, val, class: "alert alert-#{key}"); %>
+   <% end %>
+   
+   <%= form_for(@user) do |f| %>
+      <%= render('shared/error_messages', object: f.object); %>
+      <br>
+      <%= render('users/fields', f: f); %>
+      
+      <br>
+      
+      <%= f.submit "Update Account", {class: "btn btn-primary create-account-btn"} %>
+   <% end %>
+   
+</div>

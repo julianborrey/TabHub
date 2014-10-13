@@ -59,12 +59,12 @@ class Tournament < ActiveRecord::Base
    #returns a string of the number of rounds for this tournament
    def get_num_rounds
         #fill in when do rounds
-        return "9";
+        return self.rounds.count;
    end
 
    #returns number of rounds complete so far
    def num_rounds_complete
-      return "4";
+      return self.round_counter;
    end
    
    #true if tournament is currently happening
@@ -75,15 +75,9 @@ class Tournament < ActiveRecord::Base
    
    #true if tournament is currently happening
    def live?
-      puts("We have :   " + self.round_counter.to_s)
-      puts("we have )))))))))))))))))) " + self.name.to_s);
-      
-      val = self.round_counter;
-      puts("here is the val " + val.to_s);
-
-      #if true #self.round_counter > 0
-      #    return true;
-      #end
+      if self.status == GlobalConstants::TOURNAMENT_STATUS[:present]
+         return true;
+      end
       return false;
    end
    
@@ -104,14 +98,39 @@ class Tournament < ActiveRecord::Base
       return status;
    end
    
-   def current_round
+   #returns the round number string
+   def get_current_round_num_str
+   	#if counter is -1 or 0
+   	if self[:round_counter] <= GlobalConstants::TOURNAMENT_PHASE[:open_rego]
+   		return "N/A"
+   	else
+   		return self[:round_counter].to_s;
+   	end
+   end
+
+   def current_round #can we not use some sort of select() ?
       r = self.rounds.reject { |i| i.round_num != self.round_counter }.first
-      return r;
+	   return r;
    end
    
    def next_round
       r = self.rounds.reject { |i| i.round_num != (self.round_counter + 1) }.first
       return r;
+   end
+
+   #returns true if the tournament has a next round
+   def has_next_round?
+   	return (self[:round_counter] < self.rounds.count);
+   end
+
+   #returns true if the next round draw is made or is being made
+   def made_or_making_next_draw?
+   	return (progress > 0);
+   end
+
+   #returns true if the next round draw has been made
+   def next_round_draw_made?
+   	return (self.progress == 100);
    end
    
    #return current topic or "" if there is none
@@ -134,7 +153,11 @@ class Tournament < ActiveRecord::Base
    def ballotCheck
       return [false, "red", "No"];
    end
-   
+
+   def hasRounds?
+   	return  (self.rounds != nil) && (self.rounds.count > 0)
+   end
+
    #return true is user is a debater at this tournament
    def debater_in?(user)
       #again, coming from the user side for faster processing
@@ -169,7 +192,19 @@ class Tournament < ActiveRecord::Base
    end
    
    #returns array of issues with starting the tournament now
+   #they must have closed rego - for the non-manual tournaments that is
+   #manual tournament will already have closed rego status
    def check_for_start
+      return [];
+   end
+
+   #returns array of issues with ending the tournament now
+   def check_for_end
+      return [];
+   end
+
+   #returns array of issues with going to the next round
+   def check_for_next_round
       return [];
    end
 
@@ -184,6 +219,15 @@ class Tournament < ActiveRecord::Base
    #return number of teams
    def count_teams
       return self.teams.count;
+   end
+
+   #returns the number of rooms needed for the next round
+   def num_rooms_next_round
+   	if self.hasRounds?
+   		return 1; #self.next_round.room_draws.count;
+   	else
+   		return 0;
+   	end
    end
 
    #gives ranked list of teams
@@ -204,9 +248,9 @@ class Tournament < ActiveRecord::Base
    def institutions
       insts = [];
       self.tournament_attendees.each { |ta|
-         insts.push(ta.user.institution);
+         insts.push(ta.user.institution);    
       }
-      return insts.uniq!
+      return insts.uniq; #remove duplicates
    end
 
    #returns a list of teams sorted by alphabetical institution

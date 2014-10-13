@@ -2,9 +2,33 @@
 
 <div class="row-fluid">
    <div class="settingsBox">
-      <% @current_round = @tournament.current_round %>
-      <p><b><a href="<%= round_path(@current_round) %>">Current Round</a></b><p>
-      <p><b>Motion:</b><%= " " + @current_round.motion.wording %></p>
+
+      <% @current_round = @tournament.current_round %> 
+      <% if @current_round.nil? %>
+      	
+      	<% if @tournament[:round_counter] <= 0 #not started yet %>
+	      	<% @current_round                    = {}  %>
+	      	<% @current_round[:start_time]       = "-" %>
+	      	<% @current_round[:prep_time_passed] = "-" %>
+	      	<% @current_round[:prep_time_end]    = "-" %>
+	      	<% @current_round[:motion]           = {}  %>
+	      	<% @motion = "Motion not released yet." %>
+      	<% else #we have exhausted all rounds %>
+	      	<% @current_round                    = {}  %>
+	      	<% @current_round[:start_time]       = "-" %>
+	      	<% @current_round[:prep_time_passed] = "-" %>
+	      	<% @current_round[:prep_time_end]    = "-" %>
+	      	<% @current_round[:motion]           = {}  %>
+	      	<% @motion = "No more motions for this tournament." %>
+      	<% end %>
+      	<p><b>Current Round</b></p>
+
+      <% else %>
+      	<% @motion = @current_round.motion.wording; %>
+      	<p><b><a href="<%= round_path(@current_round) %>">Current Round</a></b><p>
+      <% end %>
+
+      <p><b>Motion:</b><%= " " + @motion %></p>
       
       <table class="table", style="margin-bottom:0px">
          <thead><tr>
@@ -14,9 +38,9 @@
          </tr></thead>
 
          <tr>
-            <td><%= @current_round.start_time %></td>
-            <td><%= @current_round.prep_time_passed %></td>
-            <td><%= @current_round.prep_time_end %></td>
+            <td><%= @current_round[:start_time] %></td>
+            <td><%= @current_round[:prep_time_passed] %></td>
+            <td><%= @current_round[:prep_time_end] %></td>
          <tr>
       </table>
    </div>

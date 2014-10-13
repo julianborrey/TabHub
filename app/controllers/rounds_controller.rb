@@ -58,6 +58,45 @@ class RoundsController < ApplicationController
       @round.destroy();
       redirect_to(tournament_path(t.id) + '/control/rounds');
    end
+
+   #executes algorithm to build the next draw!
+   def make_draw
+   end
+
+   #reports on draw progress by sending JSON
+   def make_draw_progress
+   end
+
+   #changes bit in tourament to release the draw
+   def release_draw
+   end
+
+   #release the motion and start the round
+   def release_motion
+   end
+
+   def show_draw
+      @tournament = Tournament.find(params[:id]);
+      
+      #need to make a list where there is one entry for each team
+      #[... {team, draw} ...]
+      @list = [];
+      
+      @tournament.next_round.room_draws { |rd|
+         rd.teams.each { |t|
+            arr = rd.adjudicators.to_a;
+            
+            adjs_arr = [];
+            arr.each { |a|
+               adjs_arr.push({name: a.user.full_name, chair: a[:chair] });
+            }
+            
+            @list.push({team: t, room_draw: rd, adjs: adjs_arr});
+         }
+      }
+      
+      @list.sort_by! { |i| i[:team].name.downcase; } #makes alphabetical
+   end
    
    private
       def round_params #permit only said inputs
@@ -68,7 +107,7 @@ class RoundsController < ApplicationController
 
       def authorized_for_round
          @t = Round.find(params[:id]).tournament;
-         redirect_to tournament_path(@t) unless current_user.in_tab_room?(@t);
+         redirect_to tournament_path(@t) unless current_user.is_a_tabbie?(@t);
       end
 
       #checks that the user is authorized to view ctrlPanel or edit tournament (tabRoom power)
@@ -78,6 +117,6 @@ class RoundsController < ApplicationController
             id = id.to_i;
          end
          @t = Tournament.find(id);
-         redirect_to tournament_path(@t) unless current_user.in_tab_room?(@t);
+         redirect_to tournament_path(@t) unless current_user.in_tab_room_of?(@t);
       end
 end

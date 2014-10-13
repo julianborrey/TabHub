@@ -1,8 +1,7 @@
 class RoomsController < ApplicationController
-   include TournamentsHelper
-   include RoomsHelper
+   include RoomHelper
    
-   before_action :authorized_for_tournament, only: [:create, :edit, :update, :show];
+   before_action :authorized_for_room, only: [:create, :edit, :update, :show];
    #before_action :authorized_for_room, only: [:show, :update];
    #still a bit of a flaw with this room authorization thing...
    
@@ -11,6 +10,9 @@ class RoomsController < ApplicationController
       #only for tab room officials
       #the room info will be displayed for users in the draw/another page
       @room = Room.find(params[:id]);
+
+      #need to find institution in a similar way
+      @institution = nil;
    end
    
    def edit
@@ -19,17 +21,21 @@ class RoomsController < ApplicationController
    
    def update
       @room = Room.find(params[:id]);
-      if @room.update_attributes(safe_params)
+      
+      @tournament = nil;
+      if params["tournament_id"] != nil
+      	@tournament = Tournament.find(params["tournament_id"]);
+      end
+
+      if @room.update_attributes(room_params)
          flash[:success] = "Room updated.";
-         redirect_to(room_path(@room));
+         redirect_to(room_path(id: @room[:id], tournament_id: @tournament[:id]));
       else
          render 'rooms/edit';
       end
    end
    
    def create
-      room_params = safe_params;
-      puts("room para s: " + room_params.to_s);
       @room = Room.new(room_params);
       @room.place_id = 0; 
       @flash = [];
@@ -72,9 +78,16 @@ class RoomsController < ApplicationController
    
    private
       def safe_params
-         p = params.require(:room).permit(:name, :location, :remarks, :id, :institution_id);
+         p = params.require(:room).permit(:name, :location, :remarks, :id, :institution_id, :tournament_id);
          p["institution_id"] = params["institution_id"].to_i; #hole?
+         p["tournament_id"] = params["tournament_id"].to_i; #hole?
          return p;
+      end
+
+      def room_params
+      	p = safe_params;
+      	p.delete(:tournament_id); #not included in the room
+      	return p;
       end
       
 end

@@ -2,20 +2,23 @@
 
 <div class="info-page signup-page">
    
-   <h1>Update User</h1>
+   <h1>Update Your Account</h1>
    
    <% flash.each do |key, val| %>
       <%= content_tag(:div, val, class: "alert alert-#{key}"); %>
    <% end %>
    
-   <%= form_for(@user) do |f| %>
-      <%= render('shared/error_messages', object: f.object); %>
-      <br>
-      <%= render('users/fields', f: f); %>
-      
-      <br>
-      
-      <%= f.submit "Update Account", {class: "btn btn-primary create-account-btn"} %>
-   <% end %>
+   <%= form_for(:user, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+
+   	<%= render('users/fields', f: f); %>
+
+	   <%= f.submit "Update Account", {class: "btn btn-primary create-account-btn"} %>
+	<% end %>
+
+	<h3>Cancel my account</h3>
+	   <p><%= button_to("Cancel my account", registration_path(resource_name), {data: {confirm: "Are you sure?"}, method: :delete, class: "btn btn-warning"})%></p>
+
+	<%= link_to "Back", user_path(@user) %>
    
 </div>
+

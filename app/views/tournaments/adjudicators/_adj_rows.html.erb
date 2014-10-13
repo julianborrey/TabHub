@@ -1,11 +1,12 @@
 <% TournamentAttendee.where(tournament_id: @tournament.id, role: GlobalConstants::TOURNAMENT_ROLES[:adjudicator]).each { |a| %>
   
-
+<!--
   #customize the list here.
   #above statement for tabbie's view
   #@tournaemnt.attendees...for the user's view
 
   #and solve the bug where form doesn't dissappear when reaching cap...
+-->
 
    <tr>
       <% u = User.find(a.user_id); %>

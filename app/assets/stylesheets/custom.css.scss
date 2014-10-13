@@ -5,6 +5,11 @@
 
 //code for all, all for code
 
+.primary-container { 
+	margin-bottom: 40px;
+	max-width:    780px;
+}
+
 html {
    overflow-y: scroll; //assuming this allows for scroll bar??
 }
@@ -88,7 +93,7 @@ h1 {
    }
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"], input[type="email"] {
    width: 95%;
    height: 30px;
    margin-bottom: 0px;

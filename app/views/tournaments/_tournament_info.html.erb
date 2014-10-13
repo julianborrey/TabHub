@@ -26,7 +26,7 @@
             <a href="#linkToFormatrules">British Parliamentary</a>
          </td>
          -->
-         <td class="info-name">Rounds:</td>
+         <td class="info-name"># Rounds:</td>
          <td class="info-value"><%= @tournament.get_num_rounds %></td>
       </tr>
       
@@ -37,6 +37,8 @@
          <td class="info-value"><%= @tournament.end_time %></td>
       </tr>
    </table>
+
+   <%= render("tournaments/settings") %>
    
    <div class="remarksBox">
       <p><b>Information:</b></p>

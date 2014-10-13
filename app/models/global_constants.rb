@@ -12,7 +12,9 @@ module GlobalConstants
    #############   Make sure these two are 1-1 revesable ###########################
    #the privilidges code                                                         
    PRIVILEGES     = {general: 0, site_admin: 1}.freeze();                        
-   PRIVILEGES_STR = PRIVILEGES.invert().freeze(); #swaps all key-value pairs     
+   PRIVILEGES_STR = PRIVILEGES.invert().freeze(); #swaps all key-value pairs
+
+   URLs = {blog: "http://newtabware.blogspot.com/", github: "http://github.com/julianborrey/TabHub"}.freeze();
    
    #the roles that people may act in a society, 
    #these previliages will allow for registration ...
@@ -22,7 +24,7 @@ module GlobalConstants
    #during a trounament these constants help keep track of who has what powers
    #and what information they should be prompted with
    #not that these actually have an order (importance)
-   TOURNAMENT_ROLES = {adjudicator: 1, tab_room: 2, ca: 4, dca: 3}.freeze();
+   TOURNAMENT_ROLES = {adjudicator: 1, tab_room: 2, ca: 4, dca: 3, debater: 5}.freeze();
    TOURNAMENT_ROLES_STR = TOURNAMENT_ROLES.invert().freeze();
    
    #these keep track of tournaments activity
@@ -33,9 +35,9 @@ module GlobalConstants
    TOURNAMENT_PHASE = {closed: -1, open_rego: 0}
    
    #tournament reigons
-   TOURNAMENT_REGIONS = {international: 1, australasia: 2, asia: 3, africa: 4, 
-                         middle_east: 5, europe: 6, north_america: 7, 
-                         south_america: 8}.freeze();
+   TOURNAMENT_REGIONS = {"International" => 1, "Australasia" => 2, "Asia" => 3, "Africa" => 4, 
+                         "Middle East" => 5, "Europe" => 6, "North America" => 7, 
+                         "South America" => 8}.freeze();
    TOURNAMENT_REGIONS_STR = TOURNAMENT_REGIONS.invert().freeze();
    
    #tournament formats

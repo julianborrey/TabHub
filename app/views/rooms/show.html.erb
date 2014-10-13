@@ -5,9 +5,12 @@
    <h2><span style="color:gray">Room:</span> <%= @room.name %></h2>
    <h3><span style="color:gray">Location:</span> <%= @room.location %></h2>
 
-
-   <p><%= link_to("back to my tournaments list", (user_path(current_user) + '/tournaments')); %></p>
-
+   <% if !@tournament.nil? %>
+		<p><a href="<%= tournament_path(@tournament) + '/control'%>">back to control panel</a></p>
+	   <p><%= link_to("back to rooms list", tournament_path(@tournament) + '/control/rooms') %></p>
+   <% elsif !@instituton.nil? %>
+   	<!-- stuff for inst -->
+   <% end %>
 
    <% flash.each do |key, val| %>
       <%= content_tag(:div, val, class: "alert alert-#{key}"); %>
@@ -22,7 +25,7 @@
    </div>
 
    <div class="roomShowLinks">
-      <p><%= link_to "Edit", edit_room_path(@room) %></p>
+      <p><%= link_to "Edit", edit_room_path(id: @room[:id], tournament_id: @tournament[:id]) %></p>
       <!-- <p> #link_to("Delete", room_path(id: r.id, tournament_id: @tournament.id), 
              #confirm: "Are you sure you want to delete this room? You want this 
              #for later tournaments.", method: :delete) </p> -->

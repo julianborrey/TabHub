@@ -75,7 +75,7 @@
             <td><%= link_to "Current Draw", (tournament_path(@tournament) + "/control/draw") %>
             <i class="icon-question-sign qIcon" id="drawBtn"></i>
                <span id="drawInfo" class="pull-left infoBox logInfoBox"> 
-                     This the draw which shows in which room each team and adjudicator will be.
+                     This is the draw which shows you which room each team and adjudicator will be in.
                      (The number refers to the the number of debates taking place.)
                </span>
                <script>
@@ -86,9 +86,11 @@
                   });
                </script>
             </td>
-            <td><%= @tournament.next_round.room_draws.count %></td>
-            <td>Enough rooms?</td>
-            <td><span style="color:<%= @roomCheck[1] %>"><%= @roomCheck[2] %></span></td>
+
+            
+         	<td><%= @tournament.num_rooms_next_round %></td>
+         	<td>Enough rooms?</td>
+         	<td><span style="color:<%= @roomCheck[1] %>"><%= @roomCheck[2] %></span></td>
          </tr>
          
          <tr>

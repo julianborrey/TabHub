@@ -1,4 +1,6 @@
 TabSite::Application.configure do
+  #require 'tlsmail'
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
@@ -13,8 +15,26 @@ TabSite::Application.configure do
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
 
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  # tell me if mail doesn't send
+  config.action_mailer.raise_delivery_errors = true
+  
+  config.perform_deliveries = true
+
+  #Net::SMTP.enable_tls(OpenSSL::SSL:VERIFY_NONE)
+
+  # For Devise
+  config.action_mailer.default_url_options = { host: '0.0.0.0', port: 3000 }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+  	   #:tls				 => true,
+  	   :address 	    => "smtp.gmail.com",
+  	   :port   			 => "587",
+  	   :domain 			 => "gmail.com",
+  	   :authentication => "plain",
+  	   #:authentication => :login,
+  	   :user_name      => "tabhubserver@gmail.com",
+  	   :password 		 => "admin0fTabHub3"
+  }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

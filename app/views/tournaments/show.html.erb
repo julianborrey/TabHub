@@ -3,43 +3,43 @@
 <div class="row-fluid tournament-page">
    
    <%= render('tournaments/title_shim'); %>
-   
-   <% if !@user.nil? && @user.is_in_roles?([:tab_room, :ca, :dca], @tournament) %>  
-      <div class="row-fluid ctrlBtnRow">
-         <% flash.each do |key, val| %>
-            <%= content_tag(:div, val, class: "alert alert-#{key}"); %>
-         <% end %>
-         
-         <span><%= link_to "Tournament Control Panel", (tournament_path(@tournament) + "/control"),
-             class: "btn btn-danger" %></span>
-         <span>
-            <b> | <%= link_to "Edit Tournament", edit_tournament_path(@tournament) %></b>
-         </span>
-      </div>
-   <% end %>
 
-   <%= render('tournaments/status_bar'); %>
-
-   <% rego_setting = @tournament.tournament_setting.registration %>
-   <% if !@user.nil? && !(rego_setting == GlobalConstants::SETTINGS_VALUES[:manual]) %>
-      <% if (rego_setting == GlobalConstants::SETTINGS_VALUES[:open]) || @user.has_exec_position?([:president, :externals]) %>
-         
-         <div class="row-fluid ctrlBtnRow">
-            <span><%= link_to "Register For Tournament", (tournament_path(@tournament) + "/registration/individual"),
-                  class: "btn btn-primary" %></span>
-         </div>
-      
-      <% end %>
-   <% end %>
-   
-   
-   
    <div class="row-fluid">
       <div class="span2">
          <%= render('tournaments/sidebar', {activeTab: "home"}); %>
       </div>
       
       <div class="span10">
+
+		   <% if !@user.nil? && @user.is_in_roles?([:tab_room, :ca, :dca], @tournament) %>  
+		      <div class="row-fluid ctrlBtnRow">
+		         <% flash.each do |key, val| %>
+		            <%= content_tag(:div, val, class: "alert alert-#{key}"); %>
+		         <% end %>
+		         
+		         <span><%= link_to "Tournament Control Panel", (tournament_path(@tournament) + "/control"),
+		             class: "btn btn-danger" %></span>
+		         <span>
+		            <b> | <%= link_to "Edit Tournament", edit_tournament_path(@tournament) %></b>
+		         </span>
+		      </div>
+		   <% end %>
+
+		   <%= render('tournaments/status_bar'); %>
+
+		   <% rego_setting = @tournament.tournament_setting.registration %>
+		   <% if !@user.nil? && !(rego_setting == GlobalConstants::SETTINGS_VALUES[:manual]) %>
+		      <% if (rego_setting == GlobalConstants::SETTINGS_VALUES[:open]) || @user.has_exec_position?([:president, :externals]) %>
+		         
+		         <div class="row-fluid ctrlBtnRow">
+		            <span><%= link_to "Register For Tournament", (tournament_path(@tournament) + "/registration/individual"),
+		                  class: "btn btn-primary" %></span>
+		         </div>
+		      
+		      <% end %>
+		   <% end %>
+
+
          <% @current_round = @tournament.current_round %>
          <% if !@current_round.nil? %>
             <%= render('tournaments/current_round'); %>
@@ -52,7 +52,7 @@
             <% end %>
          <% end %>
 
-         <%= render('tournaments/tournament_info'); %>   
+         <%= render('tournaments/tournament_info'); %>  
       </div>
    </div>
    

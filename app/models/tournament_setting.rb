@@ -4,7 +4,7 @@ class TournamentSetting < ActiveRecord::Base
    #returns a hash of the settings
    def to_paired_array
       #little JSON trick to get a hash of our object
-      hash = JSON.parse(Tournament.find(8).tournament_setting.to_json, {symbolize_names: true});
+      hash = JSON.parse(self.to_json, {symbolize_names: true});
       
       #remove the values we don't want (remenants of database)
       hash.reject! { |key, val| key == :id };
@@ -15,6 +15,6 @@ class TournamentSetting < ActiveRecord::Base
       
       #make array and return
       arr  = hash.map { |key,val| [key, val] };
-      return arr;
+	   return arr;
    end
 end
