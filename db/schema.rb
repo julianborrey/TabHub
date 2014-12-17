@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141014034710) do
+ActiveRecord::Schema.define(version: 20141217210608) do
 
   create_table "adj_assignments", force: true do |t|
     t.integer  "user_id"
@@ -57,6 +57,13 @@ ActiveRecord::Schema.define(version: 20141014034710) do
     t.boolean  "show_members"
   end
 
+  create_table "motion_genres", force: true do |t|
+    t.integer  "motion_id"
+    t.integer  "genre_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "motions", force: true do |t|
     t.string   "wording"
     t.integer  "user_id"
@@ -64,6 +71,7 @@ ActiveRecord::Schema.define(version: 20141014034710) do
     t.integer  "round_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "motion_genre_id"
   end
 
   create_table "room_draws", force: true do |t|

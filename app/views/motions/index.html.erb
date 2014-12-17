@@ -1,0 +1,159 @@
+<% provide(:title, "Past Motions") %>
+
+<div class="row-fluid" id="profile-page">
+   
+   <div>
+   	<h2>Random Motion</h2>
+   	
+   	<% possible_genres      = MotionGenre.possible_genres_for_select_tag(); %>
+   	<% possible_years 	   = Motion.get_year_range_for_select_tag();       %>
+   	<% possible_tournaments = Motion.get_tournaments_for_select_tag(); 		%>
+
+   	<p>Select a motion from 
+   		<%= select_tag(:rand_start_year, options_for_select(possible_genres), 
+   			 				{class: "genre-select rand-field", id: "rand_genre"}); %>
+   		between 
+   		<%= select_tag(:rand_start_year, options_for_select(possible_years), 
+   			 				{class: "year-select rand-field",  id: "rand_start_year"}); %>
+   		and 
+   		<%= select_tag(:rand_end_year,   options_for_select(possible_years), 
+   							{class: "year-select rand-field",  id: "rand_end_year"}); %>
+   		.</p>
+   	<div class="well random_motion_well">
+   		<p id="motion">Click 'generate' to select a random motion.</p>
+   	</div>
+   	<p class="random_motion_meta_data" id="random_motion_meta_data">
+   		--- info about motion ---
+   	</p>
+
+   	<button class="btn" id="generate-button">Generate</button>
+   	<br><br>
+   </div>
+
+   <div>
+   	<h2>Past Motions</h2>
+   	<!-- drop down to select year (includes all) -->
+   	<!-- drop down for region (includes all) -->
+   	<!-- drop down for genre -->
+   	<!-- give the table based after hitting button -->
+
+   	<table class="table" id="motion-table">
+   		<tr>
+   		 	<th>Motion</th>
+   		 	<th>Genre</th>
+   		 	<th>Tournament</th>
+   		 	<th>Date (dd/mm/yyyy)</th>
+   		</tr>
+
+   		<tr>
+   		 	<td>
+   		 		<button class="btn" id="filter-button">Search</button>
+   		 	</td>
+   		 	<td>
+   		 		<%= select_tag(:filter_genre,              options_for_select(possible_genres), 
+   							{class: "genre-select      filter-field", id: "filter_genre"}); %>
+   		 	</td>
+   		 	<td>
+   		 		<%= select_tag(:filter_tournament,         options_for_select(possible_tournaments), 
+   							{class: "tournament-select filter-field", id: "filter_tournament"}); %>
+   		 	</td>
+   		 	<td>
+   		 		<%= select_tag(:filter_start_year,   options_for_select(possible_years), 
+   							{class: "year-select       filter-field", id: "filter_start_year"}); %> 
+   				to 
+   				<%= select_tag(:filter_end_year,     options_for_select(possible_years), 
+   							{class: "year-select       filter-field", id: "filter_end_year"}); %>
+   		 	</td>
+   		</tr>
+
+   	</table>
+   </div>
+
+   <script>
+   		// regenerates the table/well from the API
+   		// ajax json which is coverted into the table
+
+   		$("#generate-button").on("click", function(){
+	   		getAjax("random_motion", getData("rand"), updateWell);
+
+	   		
+   		});
+
+   		$("#filter-button").on("click", function() { 
+   			getAjax("filtered_motions", getData("filter"), makeTable);
+   		});
+
+   		function getAjax(path, data, successFoo){
+   			var requestURL = "<%= motions_url %>".concat("/").concat(path);
+
+   			console.log("Making requeust to " + requestURL);
+
+   			$.ajax({
+   				dataType: "json",
+   				url: requestURL,
+   				data: data,
+   				success: successFoo
+   			});
+   		}
+
+			function getData(type){
+				var data = {}; //return value
+				var targetClass = ".".concat(type).concat("-field");
+				allFields = $(targetClass); //get all the fields of interest
+				
+				for(var i = 0; i < allFields.length; i++){
+					data[allFields[i].id] = allFields[i].value;
+				}
+				return data;
+			}
+
+			function updateWell(motion){
+   			console.log("Random motion received: ".concat(motion));
+   			$("#motion").text(motion["wording"]);
+   			$("#motion").css("color", "black");
+   			$("#random_motion_meta_data").text("From " + 
+   				motion["tournament"] + " on " + motion["date"]);
+   		}
+
+   		function makeTable(motions){
+   			console.log("Filtered motions received: ".concat(motions));
+
+   			//clear the table
+   			$(".result-row").remove();
+
+   			//append new rows to table
+   			for(var i = 0; i < motions.length; i++){
+	   			$("#motion-table").append(htmlOfRow(motions[i]));
+   			}
+   		}
+
+   		function htmlOfRow(motionStruct){
+   			htmlString = "";
+   			htmlString = htmlString.concat("<tr class=\"result-row\">\n");
+   				htmlString = htmlString.concat("\t<td>\n");
+   					htmlString = htmlString.concat("\t\t" + motionStruct.wording + "\n");
+   				htmlString = htmlString.concat("\t</td>\n");
+
+   				htmlString = htmlString.concat("\t<td>\n");
+   					htmlString = htmlString.concat("\t\t<ul>\n");
+   					for(var i = 0; i < motionStruct.genres.length; i++){
+   						htmlString = htmlString.concat("\t\t\t<li>\n");
+   							htmlString = htmlString.concat("\t\t\t\t\t" + motionStruct.genres[i] + "\n");
+   						htmlString = htmlString.concat("\t\t\t</li>\n");
+   					}
+   					htmlString = htmlString.concat("\t\t</ul>\n");
+   				htmlString = htmlString.concat("\t</td>\n");
+
+   				htmlString = htmlString.concat("\t<td>\n");
+   					htmlString = htmlString.concat("\t\t" + motionStruct.tournament + "\n");
+   				htmlString = htmlString.concat("\t</td>\n");
+
+   				htmlString = htmlString.concat("\t<td>\n");
+   					htmlString = htmlString.concat("\t\t" + motionStruct.date + "\n");
+   				htmlString = htmlString.concat("\t</td>\n");
+   			htmlString = htmlString.concat("</tr>\n");
+   			return htmlString;
+   		}
+	</script>
+   
+</div>

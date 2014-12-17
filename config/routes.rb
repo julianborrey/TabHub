@@ -22,12 +22,17 @@ TabSite::Application.routes.draw do
    resources :rooms, except: [:index, :destroy]
    resources :conflicts, only: [:create]
    resources :room_draws, except: [:show, :index]
-  	
+  	resources :motions, only: [:index]
+
    ### Static Pages ###
-   match '/about',    to: 'static_pages#about',    via: 'get'
-   match '/contact',  to: 'static_pages#contact',  via: 'get'
-   match '/sponsors', to: 'static_pages#sponsors', via: 'get'
-   match '/test',     to: 'static_pages#test',     via: 'get'
+   match '/about',     		to: 'static_pages#about',     	 via: 'get'
+   match '/contact',   		to: 'static_pages#contact',  		 via: 'get'
+   match '/sponsors',  	   to: 'static_pages#sponsors', 		 via: 'get'
+   match '/test',     	   to: 'static_pages#test',     		 via: 'get'
+   match '/bp_rules',	   to: 'static_pages#bp_rules',      via: 'get'
+   match '/bp_tutorial',   to: 'static_pages#bp_tutorial',   via: 'get'
+   match '/useful_links',  to: 'static_pages#useful_links',  via: 'get'
+   match '/timer',         to: 'static_pages#timer',			 via: 'get'
    
    ### Session Pages ###
    match '/signin',   to: 'sessions#new',          via: 'get'
@@ -38,6 +43,13 @@ TabSite::Application.routes.draw do
    #^ this is just an additional path to it
    
    #match 'users/:id/tournaments', to: 'users#tournaments', via: 'get'
+
+   ### Motions ###
+   # we already have index
+
+   #for random motion API
+   match '/motions/random_motion',   to: 'motions#random_motion',   via: 'get'
+   match '/motions/filtered_motions', to: 'motions#filtered_motions', via: 'get'
 
    ### Tournament Offshoots ###
    match '/tournaments/:id/control',        to: 'tournaments#control',                via: 'get'

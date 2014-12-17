@@ -130,8 +130,7 @@ class User < ActiveRecord::Base
       list.reject! { |i| i.tournament.status != GlobalConstants::TOURNAMENT_STATUS[status] }
       return list;
    end
-   
-      
+
    #true if the user is currently in a round
    def round_now?
       #something like the above, but also goes into finding the tournament and then cheking if any rounds are active.

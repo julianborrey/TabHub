@@ -30,7 +30,15 @@ class StaticPagesController < ApplicationController
    def test
    end
 
-   def pastmotions
-      render "static_pages/past", :layout => false
+   def bp_rules
    end
+
+   def bp_tutorial
+   end
+
+   def useful_links
+   end
+
+   def timer
+  	end
 end

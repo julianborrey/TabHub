@@ -1,34 +1,35 @@
-<div class="upcoming-table">
-   <h2>Your Upcoming Tournaments</h2>
+<% list = @user.get_tournaments(:future); %>
+<% if !list.empty? %>
 
-   <table class="table table-striped">
-      <tr>
-         <th>Tournament</th>
-         <th>Team</th>
-         <th>Start Date</th>
-         <th>End Date</th>
-      </tr>
+	<div class="upcoming-table">
+	   <h2>Your Upcoming Tournaments</h2>
 
-      <tr>
-         <td>Colgate IV</td>
-         <td>Duke A</td>
-         <td>08/09/2013</td>
-         <td>48/12/1232</td>
-      </tr>
+	   <table class="table table-striped">
+	   	<tr>
+	         <th>Tournament</th>
+	         <th>Role</th>
+	         <th>Start Date</th>
+	         <th>End Date</th>
+	      </tr>
 
-      <tr>
-         <td>Stanford IV</td>
-         <td>Duke B</td>
-         <td>09/12/3213</td>
-         <td>48/23/1233</td>
-      </tr>
+		   <% list.each { |t| %>
 
-      <tr class="last-row">
-         <td>WUDC</td>
-         <td>Duke C</td>
-         <td>09/12/3223</td>
-         <td>10/10/1010</td>
-      </tr>
+		      <tr>
+		         <td><a href="<%= tournament_path(t) %>"><%= t.name %></a></td>
+		         <td>
+		         	<% team_of_user = t.team_of(@user); %>
+			         <% if !team_of_user.nil? %>
+			         	Debating for <a href="<%= team_path(team_of_user) %>"><%= team_of_user %></a>
+			         <% else %>
+			         	<%= GlobalConstants.TOURNAMENT_ROLES_STR[@user.tournament_attendees.where(tournament_id: t.id).role].titleize(); %>
+			         <% end %>
+		         </td>
+		         <td>t.start_time</td>
+		         <td>t.end_time</td>
+		      </tr>
 
-   </table>
-</div>
+		   <% } %>
+	   </table>
+	</div>
+
+<% end %>

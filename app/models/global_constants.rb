@@ -52,6 +52,16 @@ module GlobalConstants
                          "Middle East" => 5, "Europe" => 6, "North America" => 7, 
                          "South America" => 8}.freeze();
    TOURNAMENT_REGIONS_STR = TOURNAMENT_REGIONS.invert().freeze();
+
+   MOTION_GENRE = {international_relations: 1,
+   					 social_policy: 2,
+   					 economics: 3,
+   					 religion: 4,
+   					 gender: 5,
+   					 minorities: 6,
+   					 government: 7,
+   					 }.freeze();
+   MOTION_GENRE_STR = MOTION_GENRE.invert().freeze();
    
    #tournament formats
    FORMAT = {bp:  {num_speakers_per_team: 2, num_teams_per_room: 4}, 

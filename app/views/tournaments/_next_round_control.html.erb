@@ -136,7 +136,7 @@
 							}
 
 							console.log("Making request to server for draw building progress.");
-							$.getJSON("<%= 'http://0.0.0.0:3000' + tournament_path(@tournament) + '/rounds/progress' %>", 
+							$.getJSON("<%= tournament_url(@tournament) + '/rounds/progress' %>", 
 										  function(data){ updateProgressBar(data); });
 							
 							return;

@@ -4,6 +4,10 @@
       <%= g.text_field(:wording, {class: "span2", value: "#{@round.motion.wording}",
                                   style: "width:572px;"}); %>
    <% end %>
+
+   <div class="genre_ticks">
+      
+   </div>
 </div>
 
 <%= f.hidden_field(:tournament_id, value: @tournament.id) %>
