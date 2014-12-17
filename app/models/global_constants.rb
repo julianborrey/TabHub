@@ -15,6 +15,13 @@ module GlobalConstants
    PRIVILEGES_STR = PRIVILEGES.invert().freeze(); #swaps all key-value pairs
 
    URLs = {blog: "http://newtabware.blogspot.com/", github: "http://github.com/julianborrey/TabHub"}.freeze();
+
+   #to show on the tournament control panel page
+   COLOR = {yes: "#33cc33", no: "red"}.freeze();
+
+   #tripple of values for functional parsing and display of logistics results
+   LOGISTICS_RESULT = {yes: [true,  GlobalConstants::COLOR[:yes], "Yes"],
+   						  no:  [false, GlobalConstants::COLOR[:no],   "No"]}.freeze();
    
    #the roles that people may act in a society, 
    #these previliages will allow for registration ...
@@ -31,9 +38,15 @@ module GlobalConstants
    TOURNAMENT_STATUS = {past: -1, present: 0, future: 1}.freeze();
    TOURNAMENT_STATUS_STR = TOURNAMENT_STATUS.invert().freeze();
 
-   #reeps track of open/closed registration and current round
+   #keeps track of open/closed registration and current round
    TOURNAMENT_PHASE = {closed: -1, open_rego: 0}
-   
+
+   #used to the status of a round
+   ROUND_STATUS = {hidden: -1, draw_released: 0, round_started: 1}.freeze();
+
+   #room draw status of a round
+   ROOM_DRAW_STATUS = {not_finished: -1, finished: 1}.freeze();
+	   
    #tournament reigons
    TOURNAMENT_REGIONS = {"International" => 1, "Australasia" => 2, "Asia" => 3, "Africa" => 4, 
                          "Middle East" => 5, "Europe" => 6, "North America" => 7, 
@@ -41,8 +54,8 @@ module GlobalConstants
    TOURNAMENT_REGIONS_STR = TOURNAMENT_REGIONS.invert().freeze();
    
    #tournament formats
-   FORMAT = {bp:  {num_speakers_per_team: 2}, 
-             v3v: {num_speakers_per_team: 3}}.freeze();
+   FORMAT = {bp:  {num_speakers_per_team: 2, num_teams_per_room: 4}, 
+             v3v: {num_speakers_per_team: 3, num_teams_per_room: 2}}.freeze();
    
    #used for the tournament settings
    SETTINGS_TITLES     = {registration: "Registration", motion: "Motion", tab: "Tab",
@@ -113,4 +126,5 @@ module GlobalConstants
                                   (<b>Visible to account holders</b>) or to people who are attending the 
                                   tournament (<b>Visible to participants</b>). <b>Closed</b> will make 
                                   the teams list unavailable."}.freeze();
+
 end

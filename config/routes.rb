@@ -57,7 +57,7 @@ TabSite::Application.routes.draw do
    match '/tournaments/:id/rounds/progress',        to: 'rounds#make_draw_progress', via: 'get'
    match '/tournaments/:id/rounds/:round_num/draw', to: 'rounds#show_draw',          via: 'get'
    match '/tournaments/:id/rounds/release-draw',    to: 'rounds#release_draw',		 via: 'post'
-   match '/tournaments/:id/rounds/release-motion/', to: 'rounds#release_motion', 	 via: 'post'
+   match '/tournaments/:id/rounds/start-round/',    to: 'rounds#start_round', 	    via: 'post'
 
    #handling user registration
    match '/tournaments/:id/registration/individual', to: 'tournaments#individual', via: 'get'

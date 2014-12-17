@@ -1,5 +1,7 @@
 TODO:
 
+- implement each of the next 3 buttons
+- implement ballots
 - automatically active...not alumni
 - correct handling of 'active' status and alumni stuff
 - removal of conflicts
@@ -17,7 +19,10 @@ TODO:
 - remove/edit for institutions
 - president approval when sign up
 - hybrid teams (new tournament setting + change the check for create_team_by_...())
-
+- make round tag table
+- write about how to do parrallel jobs, the thing doesn't auto sync
+- details of draw making algorithms so ppl can assign judge ratings effectively
+- there are many functions with FORMAT[:bp] hardcoded, switch them to using a stored value from db
 
 
 Way later:

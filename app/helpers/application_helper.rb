@@ -23,6 +23,9 @@ module ApplicationHelper
    def recent_rounds
       rounds = []; #return value
       rounds = Round.order(created_at: :desc).limit(30).to_a;
+
+      #better make sure this thing is public...
+      rounds.reject { |r| r[:status] != GlobalConstants::ROUND_STATUS[:round_started] }
       rounds.shuffle!;
       return rounds[0..2];
    end
@@ -72,6 +75,10 @@ module ApplicationHelper
    		end
    	end
    	return nil;
+   end
+
+   def illegal_access_path(page)
+      return root_path + 'errors/illegal-access/' + page.to_s;
    end
 
 end

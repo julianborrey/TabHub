@@ -25,9 +25,10 @@
 	         <thead><tr>
 	            <td>
 	            	<% if !@tournament.made_or_making_next_draw? %>
-	               	<%= button_to "Make Draw", (round_path(@tournament.next_round) + "/progress"), class: "btn btn-primary", method: :post %>
+	               	<%= button_to "Make Draw", (tournament_path(@tournament) + "/rounds/make-next-draw"), class: "btn btn-primary",
+	               		 				confirm: "Are you sure you want to make the draw for the next round?", method: :post %>
 	               <% else %>
-	               	<%= button_to "Make Draw", (round_path(@tournament.next_round) + "/progress"), class: "btn", confirm: "Draw has been made or is being made now." %>
+	               	<%= button_to "Make Draw", "", class: "btn", confirm: "Draw has been made or is being made now. No need to resubmit.", method: :get %>
 	               <% end %>
 	            
 	               <i class="icon-question-sign qIcon nextRoundIcon" style="margin-top:-40px;" id="makeDrawBtnQue"></i>
@@ -47,7 +48,7 @@
 	            	<% if @tournament.next_round_draw_made? %> 
 	               	<%= button_to "See Draw", (round_path(@tournament.next_round) + "/draw"), class: "btn btn-info", method: :post %>
 	               <% else %>
-	               	<%= button_to "See Draw", "#", class: "btn", confirm: "You must make the draw before you can see it." %>
+	               	<%= button_to "See Draw", "", class: "btn", confirm: "You must make the draw before you can see it.", method: :get %>
 	               <% end %>
 	            
 	               <i class="icon-question-sign qIcon nextRoundIcon" style="margin-top:-40px;" id="seeDrawBtnQue"></i>
@@ -68,7 +69,7 @@
 	               	<%= button_to "Release Draw", (round_path(@next_round) + "/rounds/release-draw"), class: "btn btn-warning", 
 	                     confirm: "Are you sure you want to release the draw?", method: :post %>
 	               <% else %>
-	               	<%= button_to "Release Draw", "#", class: "btn", confirm: "Cannot release draw until it is made." %>
+	               	<%= button_to "Release Draw", "", class: "btn", confirm: "Cannot release draw until it is made.", method: :get %>
 	               <% end %>
 
 	               <i class="icon-question-sign qIcon nextRoundIcon" style="margin-top:-40px; margin-left:122px;" id="releaseDrawBtnQue"></i>
@@ -87,10 +88,10 @@
 	            
 	            <td>
 	            	<% if @tournament.next_round_draw_made? %> 
-	               	<%= button_to "Start Round", (tournament_path(@tournament) + "/rounds/release-motion"), class: "btn btn-danger", 
+	               	<%= button_to "Start Round", (tournament_path(@tournament) + "/rounds/start-round"), class: "btn btn-danger", 
 	                     confirm: "Are you sure you want to start the round? This is an irreversible action.", method: :post %>
 	               <% else %>
-	               	<%= button_to "Start Round", "#", class: "btn", confirm: "Cannot start round until it is made." %>
+	               	<%= button_to "Start Round", "", class: "btn", confirm: "Cannot start round until the draw is made.", method: :get %>
 	               <% end %>
 	            
 	               <i class="icon-question-sign qIcon nextRoundIcon" style="margin-top:-40px;" id="startRoundBtnQue"></i>
@@ -107,6 +108,53 @@
 	            </td>
 	         </tr></thead>
 	      </table>
+
+	      <% if @tournament.made_or_making_next_draw? %>
+	      	<p style="text-align:center;"><b>Progress Making the Next Draw<b></p>
+		      <div class="progress">
+		      	<% prog = @tournament[:progress] %>
+					<div id="progress-bar" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:<%= prog.to_s %>%;">
+					 <%= prog.to_s %>%
+					</div>
+
+					<script>
+						var globalInterval;
+						var globalProgress = 0; //keeps track of progress
+
+						//once page loaded
+						$(document).ready(function() {
+							if(<%= prog.to_s %> != 100) {
+								globalInterval = setInterval(function(){ checkStatusAndUpdate() }, 1000);
+							}
+						});
+
+						//check the status (make ajax JSON request) + update progress bas
+						function checkStatusAndUpdate() {
+							if(globalProgress == 100){ //break the interval ticker if done
+								clearInterval(globalInterval); //stops ticker
+								location.reload(); //refresh page to make all the buttons light up
+							}
+
+							console.log("Making request to server for draw building progress.");
+							$.getJSON("<%= 'http://0.0.0.0:3000' + tournament_path(@tournament) + '/rounds/progress' %>", 
+										  function(data){ updateProgressBar(data); });
+							
+							return;
+						}
+
+						function updateProgressBar(data) {
+							//update the global
+							globalProgress = data["progress"];
+
+							//update the bar
+							$("#progress-bar").html(globalProgress + "%");
+							$("#progress-bar").attr("style", ("width:" + globalProgress.toString() + "%"));
+							return;
+						}
+					</script>
+				</div>
+			<% end %>
+			
 	   </div>
 	</div>
 

@@ -21,6 +21,7 @@ class Tournament < ActiveRecord::Base
    validates(:start_time, presence: true);
    validates(:end_time, presence: true);
    validates(:user_id, presence: true);
+   validates(:progress, {presence: true, numericality: true})
 
    #returns true if the user is authorized to edit this tournament
    def is_authorized?(user)
@@ -125,7 +126,7 @@ class Tournament < ActiveRecord::Base
 
    #returns true if the next round draw is made or is being made
    def made_or_making_next_draw?
-   	return (progress > 0);
+   	return (self.progress > 0);
    end
 
    #returns true if the next round draw has been made
@@ -135,23 +136,41 @@ class Tournament < ActiveRecord::Base
    
    #return current topic or "" if there is none
    def current_topic
-      return "THW go ham.";
+   	allRounds = self.rounds.to_a;
+   	allRounds.reject! { |r| r[:round_num] != self[:round_counter] }
+      return allRounds.first;
+   end
+
+   def num_rooms_needed
+   	return (self.teams.count / GlobalConstants::FORMAT[:bp][:num_teams_per_room]);
    end
    
    def enough_rooms
-      return [false, "red", "No"];
+   	if self.rooms.count < self.num_rooms_needed;
+      	return GlobalConstants::LOGISTICS_RESULT[:no];
+      else
+      	return GlobalConstants::LOGISTICS_RESULT[:yes]
+      end
    end
    
    def multiple4Check
-      return [true, "#33cc33", "Yes"];
+   	if ((self.teams.count % GlobalConstants::FORMAT[:bp][:num_teams_per_room]) == 0)
+      	return GlobalConstants::LOGISTICS_RESULT[:yes];
+      else
+      	return GlobalConstants::LOGISTICS_RESULT[:no];
+      end
    end
    
    def enoughAdj
-      return [true, "#33cc33", "Yes"];
+   	if self.adjs.count < num_rooms_needed
+      	return GlobalConstants::LOGISTICS_RESULT[:no];
+      else
+      	return GlobalConstants::LOGISTICS_RESULT[:yes];
+      end
    end
    
    def ballotCheck
-      return [false, "red", "No"];
+      return GlobalConstants::LOGISTICS_RESULT[:no];
    end
 
    def hasRounds?

@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141013212411) do
+ActiveRecord::Schema.define(version: 20141014034710) do
+
+  create_table "adj_assignments", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "tournament_id"
+    t.integer  "round_id"
+    t.integer  "room_draw_id"
+    t.boolean  "chair"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "adjudicators", force: true do |t|
     t.integer  "user_id"

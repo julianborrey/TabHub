@@ -1,5 +1,5 @@
 <% @tournament.tournament_attendees.each { |ta| %>
-   <% if ta.role != GlobalConstants::TOURNAMENT_ROLES[:adjudicator] %>
+   <% if ((ta.role != GlobalConstants::TOURNAMENT_ROLES[:adjudicator]) && (ta.role != GlobalConstants::TOURNAMENT_ROLES[:debater])) %>
       <tr>
          <% u = User.find(ta.user_id); %>
          <td><a href="<%= user_path(u) %>"><%= u.full_name %></a></td>

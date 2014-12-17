@@ -1,13 +1,18 @@
 class RoundsController < ApplicationController
+	include TournamentHelper
 
-   #later we need to make this accessible only to CA/DCAs
-   before_action :authorized_for_round, only: [:edit, :update, :destroy]
-   before_action :authorized_for_make_round, only: [:create]
+   #all tabbies
+   before_action :authorized_for_round, only: [:edit, :update, :destroy, 
+   														  :make_draw_progress]
+
+   #DCA and CA's
+   before_action :authorized_for_make_round, only: [:create, :make_draw, 
+   																 :release_draw, :release_motion]
 
    def create
       @round = Round.new(); #user_params comes from private foo
       @round.tournament_id = round_params["tournament_id"].to_i;
-      @round.status = GlobalConstants::TOURNAMENT_STATUS[:future]; #it is always coming up at first
+      @round.status = GlobalConstants::ROUND_STATUS[:hidden]; #at first, no draw and not released
       @round.round_num = 0; #@round.tournament.rounds.count + 1;
       @round.motion = Motion.new(wording: round_params["motion_attributes"]["wording"],
                                  user_id: current_user.id);
@@ -61,18 +66,59 @@ class RoundsController < ApplicationController
 
    #executes algorithm to build the next draw!
    def make_draw
+   	next_round = @tournament.next_round();
+   	if next_round.nil? #hack?
+   		puts("HACK ###");
+   		redirect_to root_path;
+   	else
+   		dm = DrawMaker::DrawMakerClass.new;
+   		
+   		#it can go off and do this
+   		child_pid = fork do
+   			dm.make_draw(next_round, :bp);
+   			exit;
+   		end
+
+   		#ensure there is > 0 progress so that 
+   		#the control page loads with a progress bar
+   		if Tournament.find(@tournament[:id])[:progress] == 0
+   			@tournament.update(progress: 0.01);
+   		end
+   		redirect_to (tournament_path(@tournament) + "/control");
+   	end
+   	return;
    end
 
    #reports on draw progress by sending JSON
+   #renders page directly
    def make_draw_progress
+   	@tournament = Tournament.find(params[:id]);
+   	render(layout: false); #send the data directly
    end
 
    #changes bit in tourament to release the draw
    def release_draw
+   	@tournament.next_round.update(draw_released: true);
+   	redirect_to tournament_control_path(@tournament);
    end
 
    #release the motion and start the round
-   def release_motion
+   def start_round
+   	#check tournament is currently running
+   	if @tournament[:status] == GlobalConstants::TOURNAMENT_STATUS[:present]
+   		if @tournament[:round_counter] < @tournament.num_rounds #check not at max rounds
+   			@tournament.update(round_counter: @tournament[:round_counter] + 1); #increment
+   			@tournament.current_round.update(status: GlobalConstants::ROUND_STATUS[:round_started]);
+   			redirect_to (tournament_path(@tournament) + '/control');
+   			return;
+   		else
+   			puts("HACK ###");
+   		end
+   	else #if it was ... hack
+   		puts("HACK ###");
+   	end
+   	redirect_to root_path
+   	return;
    end
 
    def show_draw
@@ -106,17 +152,13 @@ class RoundsController < ApplicationController
 
 
       def authorized_for_round
-         @t = Round.find(params[:id]).tournament;
-         redirect_to tournament_path(@t) unless current_user.is_a_tabbie?(@t);
+         @tournament = Round.find(params[:id]).tournament;
+         redirect_to tournament_path(@t) unless current_user.is_a_tabbie?(@tournament);
       end
 
-      #checks that the user is authorized to view ctrlPanel or edit tournament (tabRoom power)
+      #checks that the user is ca/dca
       def authorized_for_make_round
-         id = params[:round][:tournament_id]
-         if !id.is_a?(Fixnum)
-            id = id.to_i;
-         end
-         @t = Tournament.find(id);
-         redirect_to tournament_path(@t) unless current_user.in_tab_room_of?(@t);
+         @tournament = Tournament.find(params[:id]);
+         redirect_to illegal_access_path("make_round") unless current_user.is_a_tabbie?(@tournament);
       end
 end

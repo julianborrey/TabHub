@@ -62,5 +62,10 @@ module TournamentHelper
       
       return current;
    end
-   
+
+   #gives path of control panel for the tournament
+   def tournament_control_path(t)
+		return (tournament_path(t) + "/control");
+	end
+	
 end

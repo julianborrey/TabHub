@@ -45,6 +45,7 @@ class TournamentsController < ApplicationController
       @tournament.status = GlobalConstants::TOURNAMENT_STATUS[:future]; #starts not begun (naturally)
       @tournament.rooms = [];
       @tournament.round_counter = -1; #start in the pre-rego stage
+      @tournament.progress = 0; #have not made a draw yet
       
       if @tournament.save()
          #need to set this person as authorized at least
@@ -294,24 +295,6 @@ class TournamentsController < ApplicationController
    	return;
    end
 
-   #post to /control/next_round which increments the round counter
-   def next_round
-   	#check tournament is currently running
-   	if @tournament[:status] == GlobalConstants::TOURNAMENT_STATUS[:present]
-   		if @tournament[:round_counter] < @tournament.num_rounds #check not at max rounds
-   			@tournament.update(round_counter: @tournament[:round_counter] + 1); #increment
-   			redirect_to (tournament_path(@tournament) + '/control');
-   			return;
-   		else
-   			puts("HACK ###");
-   		end
-   	else #if it was ... hack
-   		puts("HACK ###");
-   	end
-   	redirect_to root_path
-   	return;
-   end
-
    #need to check that the tournament is not manual - before_action
    #shows page for users to register their teams
    def individual
@@ -354,10 +337,6 @@ class TournamentsController < ApplicationController
          redirect_to tournament_path(params[:id]) unless 
          (!@tournament.nil? &&
          (@tournament.tournament_setting.registration != GlobalConstants::SETTINGS_VALUES[:registration]["Manual"]));
-      end
-
-      def illegal_access_path(page)
-      	return root_path + 'errors/illegal-access/' + page.to_s;
       end
 
       def authorized_for_start_next_close_tournament

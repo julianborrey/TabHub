@@ -1,0 +1,77 @@
+<% provide(:title, "Add/Edit Rounds"); %>
+
+<div class="info-page signup-page">
+   
+   <h2>Add Round <%= (@tournament.num_rounds + 1).to_s %> to Tournament </h2>
+   <div class="tableTitle">
+      <a href="<%= tournament_path(@tournament) + '/control'%>">back to control panel</a>
+   </div>
+   
+   <table class="table attendeeTable">
+      <thead><tr>
+         <td>Round #</td>
+         <td>Motion</td>
+         <td></td>
+         <td></td>
+      </tr></thead>
+      
+      <% i = 1 %>
+      <% @tournament.rounds.each { |r| %>
+         <tr>
+            <td><%= 1 %></td>
+            <td><a href="<%= round_path(r) %>"><%= wording %></a></td>
+            <td><%= link_to("Edit", edit_round_path(r)) %></td>
+            <td><%= link_to("Delete", round_path(r), 
+                            confirm: ("Are you sure you want to delete round " + <%= i %>), method: :delete) %></td>
+         </tr>
+      <% } %>
+
+      <tr>
+         <td><p id="addUserBtn" class="linkP">Add Round</td>
+         <td></td>
+         <td></td>
+      </tr>
+   </table>
+
+   <div class="newTabbieForm" id="tabRoomForm" 
+      <% if @wording.empty? %>
+         style="display:none;"
+      <% end %>
+   >
+      <%= form_tag(tournament_attendees_path) do %>
+         <span class="newTabbieField">User's E-mail: <%= email_field_tag(:email, @temp_email, 
+                                                         class: "addTabbieEmail", 
+                                                         style: "height:14px; margin-bottom:0px;") %></span>
+         <%= hidden_field_tag 'request_origin', "tab_room" %>
+         <%= hidden_field_tag 'tournament_id', @tournament.id %>
+         <%= submit_tag "Add", {class: "btn newTabbieBtn"} %>
+      <% end %>
+
+      <script>
+         $("#addUserBtn").on("click", function() {
+            $("#tabRoomForm").toggle();
+         });
+      </script>
+   </div>
+
+   <div class="newTabbieForm" 
+      <% if flash.nil? %>
+         style="display:none"
+      <% end %>
+   >
+      <% flash.each do |key, val| %>
+         <%= content_tag(:div, val, class: "fadeSoon alert alert-#{key}", style: "margin-top:60px;"); %>
+      <% end %>
+   </div>
+   
+   <%= form_for(@round) do |f| %>
+      <%= render('shared/error_messages', object: f.object); %>
+      <br>
+      <%= render('institutions/fields', f: f); %>
+      
+      <br><br>
+      
+      <%= f.submit "Create Institution", {class: "btn btn-primary create-account-btn"} %>
+   <% end %>
+   
+</div>

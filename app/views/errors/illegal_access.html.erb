@@ -8,6 +8,8 @@
 
 	<% if params[:page] == "motions" %>
 		<p>Only the CA and DCA are allowed to access the motions page.</p>
+	<% elsif params[:page] == "make_draw" %>
+		<p>Only the CA and DCA are allowed to build the next draw.</p>
 	<% end %>
 
 	<br><br>
