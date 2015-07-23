@@ -1,6 +1,7 @@
 TabSite::Application.routes.draw do
    
-   #home page
+   ### Home Pages
+   get '/', to: 'blog_posts#index', constraints: {subdomain: 'blog'}, as: 'blog_root'
    root 'static_pages#home'
 
    #devise user control
@@ -23,6 +24,7 @@ TabSite::Application.routes.draw do
    resources :conflicts, only: [:create]
    resources :room_draws, except: [:show, :index]
   	resources :motions, only: [:index]
+   resources :blog_posts, only: [:index, :show]
 
    ### Static Pages ###
    match '/about',     		to: 'static_pages#about',     	 via: 'get'
@@ -33,7 +35,7 @@ TabSite::Application.routes.draw do
    match '/bp_tutorial',   to: 'static_pages#bp_tutorial',   via: 'get'
    match '/useful_links',  to: 'static_pages#useful_links',  via: 'get'
    match '/timer',         to: 'static_pages#timer',			 via: 'get'
-   
+
    ### Session Pages ###
    match '/signin',   to: 'sessions#new',          via: 'get'
    match '/signout',  to: 'sessions#destroy',      via: 'delete'
