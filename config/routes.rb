@@ -24,7 +24,9 @@ TabSite::Application.routes.draw do
    resources :conflicts, only: [:create]
    resources :room_draws, except: [:show, :index]
   	resources :motions, only: [:index]
-   resources :blog_posts, only: [:index, :show]
+   constraints :subdomain => 'blog' do
+     resources :blog_posts, contraints: { subdomain: 'blog' }
+   end
 
    ### Static Pages ###
    match '/about',     		to: 'static_pages#about',     	 via: 'get'
