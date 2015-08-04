@@ -8,8 +8,8 @@
 /.bundle
 
 # Ignore the default SQLite database.
-#/db/*.sqlite3
-#/db/*.sqlite3-journal
+/db/*.sqlite3
+/db/*.sqlite3-journal
 
 ######### for now I want to sync databases ###########
 
