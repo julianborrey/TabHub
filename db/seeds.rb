@@ -243,4 +243,3 @@ TournamentSetting.new(format: 1, registration: 1, motion: 2, tab: 1,
                       attendees: 1, teams: 1, privacy: 1).save!
 
 ### Blog posts
-
